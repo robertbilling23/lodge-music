@@ -78,7 +78,7 @@
             align-items: center;
             justify-content: center;
             line-height: 1.2;
-            transition: transform 0.1s ease, border-color 0.2s ease;
+            transition: transform 0.1s ease, border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .nav-chip.color-blue { background-color: var(--btn-blue); }
@@ -95,11 +95,18 @@
             transform: scale(0.98);
         }
 
-        /* NEW: Flashing highlight specifically when audio is actively playing */
+        /* Enhanced Playing State: Thicker border and intense green glow */
         .nav-chip.playing-now {
-            border-color: var(--play-green) !important;
-            box-shadow: 0 0 15px var(--play-green);
-            animation: chipPulse 1.2s infinite ease-in-out;
+            border: 4px solid var(--play-green) !important;
+            box-shadow: 0 0 25px 5px var(--play-green) !important;
+            animation: playPulse 1.2s infinite ease-in-out;
+        }
+
+        /* NEW ENHANCEMENT: High-intensity fading state with thick red border and heavy crimson aura */
+        .nav-chip.fading-now {
+            border: 4px solid var(--stop-red) !important;
+            box-shadow: 0 0 30px 8px var(--stop-red) !important;
+            animation: stopPulse 0.6s infinite ease-in-out; /* Faster pulse rate for urgent feedback */
         }
 
         .control-deck {
@@ -201,7 +208,6 @@
             line-height: 1.4;
         }
 
-        /* Volume Layout Panel */
         .volume-pad {
             display: flex;
             flex-direction: column;
@@ -283,10 +289,17 @@
             margin-right: -10px;
         }
 
-        @keyframes chipPulse {
-            0% { opacity: 0.8; }
-            50% { opacity: 1; filter: brightness(1.2); }
-            100% { opacity: 0.8; }
+        /* Keyframe Engines */
+        @keyframes playPulse {
+            0% { box-shadow: 0 0 15px 2px var(--play-green); }
+            50% { box-shadow: 0 0 30px 8px var(--play-green); filter: brightness(1.15); }
+            100% { box-shadow: 0 0 15px 2px var(--play-green); }
+        }
+
+        @keyframes stopPulse {
+            0% { box-shadow: 0 0 20px 4px var(--stop-red); }
+            50% { box-shadow: 0 0 40px 12px var(--stop-red); filter: brightness(1.25); }
+            100% { box-shadow: 0 0 20px 4px var(--stop-red); }
         }
     </style>
 </head>
@@ -320,7 +333,6 @@
         <div class="lyric-line">Awaiting selection...</div>
     </div>
 
-    <!-- NEW: Volume Pad with Visual Metric String Row -->
     <div class="volume-pad">
         <div class="volume-status-row">
             <span>Output Level Baseline</span>
@@ -422,7 +434,6 @@
 
     function handleTrackSelection(index) {
         if (currentTrackIndex === index) {
-            // NEW: If already playing, tapping the button again executes a safe fade out stop
             if (!audioEngine.paused && !fadeInterval) {
                 fadeCurrentTrack();
             } else {
@@ -440,10 +451,8 @@
     function loadTrack(index) {
         if (fadeInterval) clearInterval(fadeInterval);
         
-        // Clear down all custom lighting states across old grid chips
         document.querySelectorAll('.nav-chip').forEach(c => {
-            c.classList.remove('active');
-            c.classList.remove('playing-now');
+            c.className = c.className.replace(/\b(active|playing-now|fading-now)\b/g, '').trim();
         });
         
         const activeChip = document.getElementById(`chip-${index}`);
@@ -486,8 +495,6 @@
         if (newVol > 1) newVol = 1;
         if (newVol < 0) newVol = 0;
         audioEngine.volume = newVol;
-        
-        // NEW: Updates text interface dynamically to reflect clear percentage metrics
         document.getElementById('volumePct').innerText = `${Math.round(newVol * 100)}%`;
     }
 
@@ -526,10 +533,10 @@
         playBtn.innerText = "▶ PLAYING";
         fadeBtn.disabled = false;
 
-        // NEW: Injects pulsating green light boundaries straight to the active chip row asset
         const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
         if (activeChip) {
             activeChip.classList.remove('active');
+            activeChip.classList.remove('fading-now');
             activeChip.classList.add('playing-now');
         }
     }
@@ -538,6 +545,14 @@
         if (audioEngine.paused || fadeInterval) return;
 
         fadeBtn.disabled = true;
+        
+        // NEW: Instantly shift the visual style of the active button to a heavy, fast-pulsing crimson halo
+        const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
+        if (activeChip) {
+            activeChip.classList.remove('playing-now');
+            activeChip.classList.add('fading-now');
+        }
+
         const fadeDuration = 1500; 
         const stepTime = 50;
         const startVolume = audioEngine.volume;
@@ -557,8 +572,7 @@
                 playBtn.disabled = false;
                 playBtn.innerText = "▶ PLAY";
                 
-                const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
-                if (activeChip) activeChip.classList.remove('playing-now');
+                if (activeChip) activeChip.classList.remove('fading-now');
 
                 if (currentTrackIndex + 1 < tracks.length) {
                     loadTrack(currentTrackIndex + 1);
