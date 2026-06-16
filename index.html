@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Ceremonial Audio Console</title>
     <style>
         :root {
@@ -10,7 +10,7 @@
             --panel-bg: #161f2b;
             --panel-border: #233145;
             --text-bright: #ffffff;
-            --text-dim: #8fa0b5;
+            --text-dim: #9ab0c7;
             --cue-gold: #f39c12;
             --play-green: #2ecc71;
             --stop-red: #e74c3c;
@@ -23,123 +23,96 @@
             background-color: var(--bg-dark);
             color: var(--text-bright);
             margin: 0;
-            padding: 12px;
+            padding: 10px;
             box-sizing: border-box;
             -webkit-user-select: none;
             user-select: none;
             touch-action: manipulation;
+            /* Force the app to exactly fit the mobile screen without overflow */
             height: 100vh;
+            height: -webkit-fill-available;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
-        .header-status {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--panel-bg);
-            padding: 10px 15px;
-            border-radius: 8px;
-            border: 1px solid var(--panel-border);
-            margin-bottom: 12px;
-            font-size: 0.85rem;
-            flex-shrink: 0;
-        }
-
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--text-dim);
-            font-weight: bold;
-        }
-
-        .status-indicator.ready { color: var(--play-green); }
-        .status-indicator.playing { color: var(--active-blue); }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #555;
-            border-radius: 50%;
-        }
-        .ready .status-dot { background-color: var(--play-green); animation: pulse 1.5s infinite; }
-        .playing .status-dot { background-color: var(--active-blue); animation: pulse 0.8s infinite; }
-
-        .console-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            flex: 1;
-            min-height: 0; /* Critical for inner scrolling */
-        }
-
-        /* Playlist Dock */
-        .playlist-dock {
+        /* Compact, multi-row grid for seeing heaps of tracks at once */
+        .playlist-grid-container {
+            flex: 0 0 35%; /* Allocates a solid third of the screen to track selection */
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
             border-radius: 8px;
-            padding: 10px;
-            display: flex;
+            padding: 8px;
+            overflow-y: auto; /* Scroll vertically through the grid if more than 12 tracks */
+            min-height: 0;
+        }
+
+        .playlist-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 clean columns side-by-side */
             gap: 8px;
-            overflow-x: auto;
-            white-space: nowrap;
-            scrollbar-width: none;
-            flex-shrink: 0;
         }
-        .playlist-dock::-webkit-scrollbar { display: none; }
 
         .nav-chip {
             background: #1e293b;
             border: 1px solid var(--panel-border);
             color: var(--text-dim);
-            padding: 8px 14px;
-            border-radius: 20px;
+            padding: 12px 6px;
+            border-radius: 6px;
             font-size: 0.85rem;
-            font-weight: 600;
+            font-weight: bold;
+            text-align: center;
             cursor: pointer;
+            white-space: normal; /* Wrap text neatly inside the block */
+            word-break: break-word;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.2;
         }
+        
         .nav-chip.active {
-            background: rgba(0, 188, 212, 0.15);
+            background: rgba(0, 188, 212, 0.25);
             border-color: var(--active-blue);
-            color: var(--active-blue);
+            color: var(--text-bright);
+            box-shadow: 0 0 8px rgba(0, 188, 212, 0.3);
         }
 
-        /* Cue Banner */
+        /* Simplified Instruction Cue Box */
         .cue-banner {
-            background: rgba(243, 156, 18, 0.1);
-            border: 1px solid var(--cue-gold);
+            flex: 0 0 auto;
+            background: rgba(243, 156, 18, 0.12);
+            border: 2px solid var(--cue-gold); /* Thicker border for clear visibility */
             border-radius: 8px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            flex-shrink: 0;
+            padding: 10px 12px;
+            margin: 4px 0;
         }
         .cue-label {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             color: var(--cue-gold);
-            font-weight: bold;
+            font-weight: 800;
+            margin-bottom: 2px;
+            display: block;
         }
         .cue-text {
-            font-size: 0.95rem;
-            font-weight: 600;
+            font-size: 1rem;
+            font-weight: bold;
             line-height: 1.3;
         }
 
-        /* Teleprompter Panel */
+        /* Teleprompter Display Screen */
         .lyrics-panel {
-            flex: 1;
+            flex: 1; /* Automatically takes up whatever space is left in the middle */
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
             border-radius: 8px;
-            padding: 20px 15px;
+            padding: 10px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
             min-height: 0;
             mask-image: linear-gradient(to bottom, transparent 0%, white 15%, white 85%, transparent 100%);
             -webkit-mask-image: linear-gradient(to bottom, transparent 0%, white 15%, white 85%, transparent 100%);
@@ -154,44 +127,46 @@
         }
         .lyric-line.active {
             color: var(--text-bright);
-            font-size: 1.3rem;
-            font-weight: 700;
+            font-size: 1.25rem;
+            font-weight: bold;
         }
 
-        /* Performance Control Deck */
+        /* Locked Bottom Control Panel */
         .control-deck {
+            flex: 0 0 auto;
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
             border-radius: 8px;
-            padding: 15px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            flex-shrink: 0;
+            gap: 8px;
+            margin-top: auto; /* Anchors it completely to the screen bottom */
         }
 
         .track-info-row {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
+            align-items: center;
         }
-        .current-track-title { font-weight: bold; font-size: 1.1rem; }
-        .running-time { font-family: monospace; color: var(--text-dim); font-size: 0.9rem; }
+        .current-track-title { font-weight: 800; font-size: 1.1rem; color: var(--active-blue); }
+        .running-time { font-family: monospace; color: var(--text-dim); font-size: 0.9rem; font-weight: bold; }
 
         .timeline-slider {
             -webkit-appearance: none;
             appearance: none;
             width: 100%;
-            height: 6px;
+            height: 8px;
             background: #233145;
-            border-radius: 3px;
+            border-radius: 4px;
             outline: none;
+            margin: 4px 0;
         }
         .timeline-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 16px;
-            height: 16px;
+            width: 20px; /* Larger hit area for easier finger tracking */
+            height: 20px;
             border-radius: 50%;
             background: var(--active-blue);
             cursor: pointer;
@@ -199,16 +174,16 @@
 
         .action-grid {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
 
         .btn-tactical {
             flex: 1;
-            padding: 18px;
+            padding: 16px; /* Massive, friendly touch button targets */
             border: none;
             border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: bold;
+            font-size: 1.2rem;
+            font-weight: 900;
             color: white;
             display: flex;
             justify-content: center;
@@ -218,42 +193,35 @@
         }
         .btn-tactical:disabled {
             background-color: var(--disabled) !important;
-            color: var(--text-dim) !important;
+            color: #4f637d !important;
             cursor: not-allowed;
+            opacity: 0.4;
         }
 
         .btn-tactical-play { background-color: var(--play-green); }
         .btn-tactical-fade { background-color: var(--stop-red); }
-
-        @keyframes pulse {
-            0% { opacity: 0.4; }
-            50% { opacity: 1; }
-            100% { opacity: 0.4; }
-        }
     </style>
 </head>
 <body>
 
-<div class="header-status">
-    <div>Source: <strong>GitHub Pages</strong></div>
-    <div class="status-indicator" id="globalStatus">
-        <div class="status-dot"></div>
-        <span id="statusText">LOADING SYSTEM...</span>
-    </div>
-</div>
-
 <div class="console-grid">
-    <div class="playlist-dock" id="playlistDock"></div>
-
-    <div class="cue-banner">
-        <span class="cue-label">Visual Cue Target</span>
-        <span class="cue-text" id="cueText">Select a track to stand by...</span>
+    <!-- Top Grid Section: Keeps up to 12-15 tracks visible simultaneously without scrolling -->
+    <div class="playlist-grid-container">
+        <div class="playlist-grid" id="playlistGrid"></div>
     </div>
 
+    <!-- Intuitive Operational Instructions Box -->
+    <div class="cue-banner">
+        <span class="cue-label">When to Press Play</span>
+        <span class="cue-text" id="cueText">Select a track above to stand by...</span>
+    </div>
+
+    <!-- Teleprompter Screen -->
     <div class="lyrics-panel" id="lyricsPanel">
         <div class="lyric-line active">Awaiting selection...</div>
     </div>
 
+    <!-- Fixed Bottom Controls Target -->
     <div class="control-deck">
         <div class="track-info-row">
             <span class="current-track-title" id="trackTitle">---</span>
@@ -282,52 +250,43 @@
     const fadeBtn = document.getElementById('fadeBtn');
     const timeline = document.getElementById('timeline');
 
-    // 1. Fetch Playlist Setup Data File Immediately
     async function initConsole() {
         try {
             const response = await fetch('playlist.json');
             tracks = await response.json();
             
             if (tracks.length > 0) {
-                buildPlaylistMenu();
+                buildPlaylistGrid();
                 loadTrack(0);
-                updateSystemStatus('ready', 'SYSTEM ARMED');
-            } else {
-                updateSystemStatus('error', 'EMPTY PLAYLIST');
             }
         } catch (err) {
-            updateSystemStatus('error', 'CONFIG ERR');
-            document.getElementById('cueText').innerText = "Failed to load playlist.json. Ensure it exists at the root.";
+            document.getElementById('cueText').innerText = "Error reading playlist.json layout.";
         }
     }
 
-    function updateSystemStatus(state, message) {
-        const indicator = document.getElementById('globalStatus');
-        indicator.className = `status-indicator ${state}`;
-        document.getElementById('statusText').innerText = message;
-    }
-
-    // 2. Build out Horizontal Scrolling Touch Menu Items
-    function buildPlaylistMenu() {
-        const dock = document.getElementById('playlistDock');
-        dock.innerHTML = '';
+    // Generates a 3-column button matrix from your playlist.json arrays
+    function buildPlaylistGrid() {
+        const grid = document.getElementById('playlistGrid');
+        grid.innerHTML = '';
         tracks.forEach((track, index) => {
             const chip = document.createElement('div');
             chip.className = `nav-chip ${index === 0 ? 'active' : ''}`;
             chip.id = `chip-${index}`;
             chip.innerText = `${index + 1}. ${track.title}`;
             chip.onclick = () => { if (audioEngine.paused) { loadTrack(index); } else { fadeAndSwitch(index); } };
-            dock.appendChild(chip);
+            grid.appendChild(chip);
         });
     }
 
-    // 3. Stage and Buffer Selected Track Element
     function loadTrack(index) {
         if (fadeInterval) clearInterval(fadeInterval);
         
-        // Clear active highlighting toggles on menu chips
         document.querySelectorAll('.nav-chip').forEach(c => c.classList.remove('active'));
-        document.getElementById(`chip-${index}`).classList.add('active');
+        const activeChip = document.getElementById(`chip-${index}`);
+        if (activeChip) {
+            activeChip.classList.add('active');
+            activeChip.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
 
         currentTrackIndex = index;
         const track = tracks[index];
@@ -337,7 +296,7 @@
         audioEngine.volume = 1;
 
         document.getElementById('trackTitle').innerText = track.title;
-        document.getElementById('cueText').innerText = track.cue || "No special visual cues assigned.";
+        document.getElementById('cueText').innerText = track.cue || "No special cues assigned.";
         
         buildTeleprompter(track.lyrics || []);
         
@@ -348,12 +307,11 @@
         document.getElementById('trackTime').innerText = `0:00 / 0:00`;
     }
 
-    // 4. Construct Teleprompter Lyrics Display 
     function buildTeleprompter(lines) {
         const panel = document.getElementById('lyricsPanel');
         panel.innerHTML = '';
         if (lines.length === 0) {
-            panel.innerHTML = '<div class="lyric-line active">(Instrumental / No Lyrics)</div>';
+            panel.innerHTML = '<div class="lyric-line active">(Instrumental / No Words)</div>';
             return;
         }
         lines.forEach((line, idx) => {
@@ -365,11 +323,6 @@
         });
         panel.scrollTop = 0;
     }
-
-    // 5. Native Timing Engine Event Binding Links
-    audioEngine.addEventListener('loadedmetadata', () => {
-        updateTimeDisplay();
-    });
 
     audioEngine.addEventListener('timeupdate', () => {
         if (!isUserScrubbing) {
@@ -384,18 +337,13 @@
         playBtn.disabled = false;
         playBtn.innerText = "▶ PLAY";
         fadeBtn.disabled = true;
-        updateSystemStatus('ready', 'SYSTEM ARMED');
-        
-        // Auto-advance to next track in layout if available
         if (currentTrackIndex + 1 < tracks.length) {
             loadTrack(currentTrackIndex + 1);
         }
     });
 
     function updateTimeDisplay() {
-        const cur = formatTime(audioEngine.currentTime);
-        const dur = formatTime(audioEngine.duration);
-        document.getElementById('trackTime').innerText = `${cur} / ${dur}`;
+        document.getElementById('trackTime').innerText = `${formatTime(audioEngine.currentTime)} / ${formatTime(audioEngine.duration)}`;
     }
 
     function formatTime(secs) {
@@ -405,12 +353,10 @@
         return `${m}:${s < 10 ? '0' : ''}${s}`;
     }
 
-    // 6. Map Progress Tracking to Teleprompter Highlighting Line Splits
     function syncTeleprompterProgress() {
         const lines = tracks[currentTrackIndex].lyrics || [];
         if (lines.length === 0) return;
 
-        // Spread layout lines evenly across total duration of track asset
         const segmentDuration = audioEngine.duration / lines.length;
         const currentLineIndex = Math.floor(audioEngine.currentTime / segmentDuration);
 
@@ -426,7 +372,6 @@
         });
     }
 
-    // 7. Tactical Operation Triggers
     function playCurrentTrack() {
         if (fadeInterval) clearInterval(fadeInterval);
         audioEngine.volume = 1;
@@ -435,15 +380,12 @@
         playBtn.disabled = true;
         playBtn.innerText = "▶ PLAYING";
         fadeBtn.disabled = false;
-        updateSystemStatus('playing', 'AUDIO RUNNING');
     }
 
     function fadeCurrentTrack() {
         if (audioEngine.paused || fadeInterval) return;
 
         fadeBtn.disabled = true;
-        updateSystemStatus('ready', 'FADING STATE...');
-
         const fadeDuration = 1500; 
         const stepTime = 50;
         const startVolume = audioEngine.volume;
@@ -462,24 +404,22 @@
                 
                 playBtn.disabled = false;
                 playBtn.innerText = "▶ PLAY";
-                updateSystemStatus('ready', 'SYSTEM ARMED');
-                logTrackTransition();
+                
+                if (currentTrackIndex + 1 < tracks.length) {
+                    loadTrack(currentTrackIndex + 1);
+                }
             }
         }, stepTime);
     }
 
     function fadeAndSwitch(nextIndex) {
         fadeCurrentTrack();
-        // Wait for fade down before changing tracks
-        setTimeout(() => {
-            loadTrack(nextIndex);
-        }, 1600);
+        setTimeout(() => { loadTrack(nextIndex); }, 1600);
     }
 
     function scrubAudio(value) {
         isUserScrubbing = true;
-        const targetTime = (value / 100) * audioEngine.duration;
-        audioEngine.currentTime = targetTime;
+        audioEngine.currentTime = (value / 100) * audioEngine.duration;
         updateTimeDisplay();
         syncTeleprompterProgress();
         isUserScrubbing = false;
