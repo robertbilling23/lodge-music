@@ -2,7 +2,7 @@
   {
     "id": "track1",
     "title": "Rob 2",
-    "color":"yellow",
+    "color": "yellow",
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "When the Chaplain says HARMONY",
     "lyrics": [
@@ -17,7 +17,7 @@
   {
     "id": "track1",
     "title": "So Mote It Be",
-    "color":"green",
+    "color": "purple",
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "When the Chaplain says HARMONY",
     "lyrics": [
@@ -32,7 +32,7 @@
   {
     "id": "track1",
     "title": "So Mote It Be",
-    "color":"red",
+    "color": "purple",
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "When the Chaplain says HARMONY",
     "lyrics": [
@@ -47,7 +47,7 @@
   {
     "id": "track1",
     "title": "So Mote It Be",
-    "color":"orange",
+    "color": "purple",
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "When the Chaplain says HARMONY",
     "lyrics": [
@@ -62,7 +62,7 @@
   {
     "id": "track1",
     "title": "So Mote It Be",
-    "color":"purple",
+    "color": "purple",
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "When the Chaplain says HARMONY",
     "lyrics": [
