@@ -1,0 +1,23 @@
+[
+  {
+    "id": "track1",
+    "title": "So Mote It Be",
+    "file": "audio/1-Open-1st-SMIB-Faster.mp3",
+    "cue": "Wait for the gavel to strike, then trigger immediately.",
+    "lyrics": [
+      "Behold how good and how pleasant it is",
+      "For brethren to dwell together in unity",
+      "So mote it be."
+    ]
+  },
+  {
+    "id": "track2",
+    "title": "Open First Degree TB",
+    "file": "audio/2-Open-1st-TB.mp3",
+    "cue": "Wait for the handshake to completely drop.",
+    "lyrics": [
+      "The tracing board displays the light",
+      "Guided safely through the night..."
+    ]
+  }
+]
