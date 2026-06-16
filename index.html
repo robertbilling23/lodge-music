@@ -711,3 +711,21 @@
         currentVolume += amount;
         if (currentVolume > 1.0) currentVolume = 1.0;
         if (currentVolume < 0.0) currentVolume = 0.0;
+        
+        if (gainNode && isPlaying && !fadeInterval) {
+            gainNode.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
+        }
+        document.getElementById('volumePct').innerText = `${Math.round(currentVolume * 100)}%`;
+    }
+
+    function formatTime(secs) {
+        if (isNaN(secs) || secs === 0) return "0:00";
+        const m = Math.floor(secs / 60);
+        const s = Math.floor(secs % 60);
+        return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    window.onload = initConsole;
+</script>
+</body>
+</html>
