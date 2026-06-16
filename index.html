@@ -124,20 +124,6 @@
         .current-track-title { font-weight: 900; font-size: 1.3rem; color: var(--active-blue); }
         .running-time { font-family: monospace; color: var(--text-dim); font-size: 1.1rem; font-weight: bold; }
 
-        /* Memory Status Row Elements */
-        .memory-status-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            font-weight: bold;
-            padding: 2px 4px 0 4px;
-            border-top: 1px dashed var(--panel-border);
-            margin-top: 2px;
-        }
-        .memory-label { color: var(--text-dim); }
-        .memory-value { font-family: monospace; transition: color 0.3s ease; }
-
         .timeline-container {
             width: 100%;
             background: #233145;
@@ -229,14 +215,14 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 4px;
-            font-size: 1.05rem;
+            font-size: 1.15rem;
             font-weight: bold;
             color: var(--text-dim);
         }
         .volume-pct-display {
             color: var(--active-blue);
             font-family: monospace;
-            font-size: 1.15rem;
+            font-size: 1.2rem;
         }
         .volume-btn-grid {
             display: flex;
@@ -289,6 +275,19 @@
             box-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
         }
 
+        /* Re-positioned Memory Status Row layout elements */
+        .memory-status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 6px 4px 0 4px;
+            margin-top: 6px;
+        }
+        .memory-label { color: var(--text-dim); }
+        .memory-value { font-family: monospace; transition: color 0.3s ease; }
+
         .ceremonial-footer {
             background-color: var(--footer-blue);
             color: var(--text-bright);
@@ -337,11 +336,6 @@
             <button class="btn-tactical btn-tactical-play" id="playBtn" onclick="playCurrentTrack()" disabled>▶ PLAY</button>
             <button class="btn-tactical btn-tactical-fade" id="fadeBtn" onclick="fadeCurrentTrack()" disabled>■ STOP</button>
         </div>
-
-        <div class="memory-status-row">
-            <span class="memory-label">Active Set Payload Tracker</span>
-            <span class="memory-value" id="memoryValue" style="color: var(--text-dim);">0.00 MB (Initializing)</span>
-        </div>
     </div>
 
     <div class="cue-banner">
@@ -353,9 +347,10 @@
         <div class="lyric-line">Awaiting system initialization...</div>
     </div>
 
+    <!-- Cleaned Volume Label Row -->
     <div class="volume-pad">
         <div class="volume-status-row">
-            <span>Output Level Baseline</span>
+            <span>Volume</span>
             <span class="volume-pct-display" id="volumePct">100%</span>
         </div>
         <div class="volume-btn-grid">
@@ -366,6 +361,12 @@
 
     <div class="playlist-grid-container-switcher">
         <div class="set-switcher-grid" id="setSwitcherRow"></div>
+        
+        <!-- Moved & Renamed: Music Size Tracking Gauge -->
+        <div class="memory-status-row">
+            <span class="memory-label">Music Size</span>
+            <span class="memory-value" id="memoryValue" style="color: var(--text-dim);">0.00 MB (Initializing)</span>
+        </div>
     </div>
 </div>
 
@@ -470,14 +471,13 @@
         audioCache = {}; 
         
         let loadedCount = 0;
-        let totalBytesDownloaded = 0; // Tracks network content payload metrics directly
+        let totalBytesDownloaded = 0; 
 
         for (let track of tracks) {
             try {
                 const res = await fetch(track.file);
                 const arrayBuffer = await res.arrayBuffer();
                 
-                // Track physical array byte allocations before browser audio uncompression processes
                 totalBytesDownloaded += arrayBuffer.byteLength;
                 updateMemoryDisplayMetric(totalBytesDownloaded);
 
@@ -491,13 +491,12 @@
         }
     }
 
-    // NEW: Handles dynamic style color adjustments based on real-time byte allocations
     function updateMemoryDisplayMetric(totalBytes) {
         const totalMB = totalBytes / (1024 * 1024);
         const displayEl = document.getElementById('memoryValue');
         
         let baselineStatus = "Safe";
-        let trackingColor = 'var(--play-green)'; // Safe standard configuration lighting color token
+        let trackingColor = 'var(--play-green)'; 
 
         if (totalMB >= 50 && totalMB < 150) {
             baselineStatus = "Moderate";
