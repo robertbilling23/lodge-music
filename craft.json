@@ -87,7 +87,7 @@
     "id": "track_1781591259190",
     "title": "Fidelity Fidelity",
     "color": "blue",
-    "file": "audio/fi69 Close 1st Fidelity f.mp3",
+    "file": "audio/69 Close 1st Fidelity f.mp3",
     "cue": "When the IPM is saying - the act",
     "lyrics": [
       "Brethren, nothing now remains but, according to Antient custom, to lock up our s . . . ts in a safe and sacred repository, uniting in the act"
@@ -105,6 +105,26 @@
       "The darkness falls at Thy behest;",
       "To Thee our morning hymns ascended,",
       "Thy praise shall sanctify our rest."
+    ]
+  },
+  {
+    "id": "track_1781595909450",
+    "title": "Exit Normal",
+    "color": "blue",
+    "file": "audio/WMExit 63 GL Exit March.mp3",
+    "cue": "After the WM says - and Brethren",
+    "lyrics": [
+      "Onwards Brother Masons.."
+    ]
+  },
+  {
+    "id": "track_1781595969860",
+    "title": "Exit Fancy",
+    "color": "blue",
+    "file": "audio/WMExit_William Tell.mp3",
+    "cue": "After the WM says - and Brethren",
+    "lyrics": [
+      "This is a bit fun, so use appropriately"
     ]
   }
 ]
