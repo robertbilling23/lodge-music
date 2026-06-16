@@ -113,25 +113,34 @@
             padding: 14px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
         .track-info-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
         }
-        .current-track-title { font-weight: 900; font-size: 1.3rem; color: var(--active-blue); }
-        .running-time { font-family: monospace; color: var(--text-dim); font-size: 1.1rem; font-weight: bold; }
+        
+        /* ENHANCED: Massive, readable track display name configuration */
+        .current-track-title { 
+            font-weight: 900; 
+            font-size: 1.65rem; 
+            color: var(--active-blue); 
+            line-height: 1.2;
+            word-break: break-word;
+        }
+        .running-time { font-family: monospace; color: var(--text-dim); font-size: 1.15rem; font-weight: bold; white-space: nowrap; }
 
         .timeline-container {
             width: 100%;
             background: #233145;
-            height: 10px;
-            border-radius: 5px;
+            height: 12px;
+            border-radius: 6px;
             position: relative;
             overflow: hidden;
-            margin: 6px 0;
+            margin: 2px 0;
         }
         .timeline-progress {
             background: var(--active-blue);
@@ -139,29 +148,49 @@
             width: 0%;
         }
 
+        /* UPDATED: Custom asymmetrical spacing grid layout for unequal action button widths */
         .action-grid {
             display: flex;
             gap: 12px;
+            width: 100%;
         }
 
         .btn-tactical {
-            flex: 1;
-            padding: 18px; 
             border: none;
-            border-radius: 8px;
-            font-size: 1.4rem; 
+            border-radius: 10px;
             font-weight: 900;
             color: white;
             cursor: pointer;
+            /* ENHANCED: Boosted height for swift, error-free physical touch mapping */
+            padding: 24px 10px; 
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-sizing: border-box;
         }
         .btn-tactical:disabled {
             background-color: var(--disabled) !important;
             color: #4f637d !important;
             opacity: 0.4;
+            box-shadow: none !important;
         }
 
-        .btn-tactical-play { background-color: var(--play-green); }
-        .btn-tactical-fade { background-color: var(--stop-red); }
+        /* ENHANCED: Allocates 70% width explicitly to the critical execution trigger target */
+        .btn-tactical-play { 
+            flex: 0 0 70%; 
+            background-color: var(--play-green); 
+            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+        }
+        
+        /* ENHANCED: Limits the stop button block structure down neatly to 30% width footprint */
+        .btn-tactical-fade { 
+            flex: 0 0 30%; 
+            background-color: var(--stop-red); 
+            font-size: 1.25rem; /* Slightly smaller text layout to scale clean within 30% width */
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+        }
 
         .cue-banner {
             background: rgba(243, 156, 18, 0.12);
@@ -275,7 +304,6 @@
             box-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
         }
 
-        /* Re-positioned Memory Status Row layout elements */
         .memory-status-row {
             display: flex;
             justify-content: space-between;
@@ -347,7 +375,6 @@
         <div class="lyric-line">Awaiting system initialization...</div>
     </div>
 
-    <!-- Cleaned Volume Label Row -->
     <div class="volume-pad">
         <div class="volume-status-row">
             <span>Volume</span>
@@ -362,7 +389,6 @@
     <div class="playlist-grid-container-switcher">
         <div class="set-switcher-grid" id="setSwitcherRow"></div>
         
-        <!-- Moved & Renamed: Music Size Tracking Gauge -->
         <div class="memory-status-row">
             <span class="memory-label">Music Size</span>
             <span class="memory-value" id="memoryValue" style="color: var(--text-dim);">0.00 MB (Initializing)</span>
@@ -685,21 +711,3 @@
         currentVolume += amount;
         if (currentVolume > 1.0) currentVolume = 1.0;
         if (currentVolume < 0.0) currentVolume = 0.0;
-        
-        if (gainNode && isPlaying && !fadeInterval) {
-            gainNode.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
-        }
-        document.getElementById('volumePct').innerText = `${Math.round(currentVolume * 100)}%`;
-    }
-
-    function formatTime(secs) {
-        if (isNaN(secs) || secs === 0) return "0:00";
-        const m = Math.floor(secs / 60);
-        const s = Math.floor(secs % 60);
-        return `${m}:${s < 10 ? '0' : ''}${s}`;
-    }
-
-    window.onload = initConsole;
-</script>
-</body>
-</html>
