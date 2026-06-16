@@ -114,8 +114,6 @@
             flex-direction: column;
             gap: 12px;
             min-height: 0;
-            mask-image: linear-gradient(to bottom, transparent 0%, white 15%, white 85%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, white 15%, white 85%, transparent 100%);
         }
 
         .lyric-line {
@@ -308,21 +306,31 @@
         document.getElementById('trackTime').innerText = `0:00 / 0:00`;
     }
 
+    // 4. Construct static, highly legible lyric screen layout
     function buildTeleprompter(lines) {
         const panel = document.getElementById('lyricsPanel');
         panel.innerHTML = '';
+        
         if (lines.length === 0) {
-            panel.innerHTML = '<div class="lyric-line active">(Instrumental / No Words)</div>';
+            panel.innerHTML = '<div class="lyric-line">(Instrumental / No Words)</div>';
             return;
         }
-        lines.forEach((line, idx) => {
+        
+        // Prints every single line immediately at full brightness
+        lines.forEach((line) => {
             const div = document.createElement('div');
-            div.className = `lyric-line ${idx === 0 ? 'active' : ''}`;
-            div.id = `lyric-line-${idx}`;
+            div.className = 'lyric-line';
+            div.style.color = 'var(--text-bright)'; /* Forces 100% full brightness */
             div.innerText = line;
             panel.appendChild(div);
         });
+        
         panel.scrollTop = 0;
+    }
+
+    // 6. Disabled tracking engine to keep lyrics perfectly static
+    function syncTeleprompterProgress() {
+        // Left intentionally blank so the text never shifts or fades during playback
     }
 
     audioEngine.addEventListener('timeupdate', () => {
@@ -354,24 +362,6 @@
         return `${m}:${s < 10 ? '0' : ''}${s}`;
     }
 
-    function syncTeleprompterProgress() {
-        const lines = tracks[currentTrackIndex].lyrics || [];
-        if (lines.length === 0) return;
-
-        const segmentDuration = audioEngine.duration / lines.length;
-        const currentLineIndex = Math.floor(audioEngine.currentTime / segmentDuration);
-
-        document.querySelectorAll('.lyric-line').forEach((el, idx) => {
-            if (idx === currentLineIndex) {
-                if (!el.classList.contains('active')) {
-                    el.classList.add('active');
-                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            } else {
-                el.classList.remove('active');
-            }
-        });
-    }
 
     function playCurrentTrack() {
         if (fadeInterval) clearInterval(fadeInterval);
