@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Ceremonial Audio Console</title>
     <style>
         :root {
@@ -17,6 +17,14 @@
             --active-blue: #00bcd4;
             --disabled: #2d3d52;
             --footer-blue: #0f2c59;
+
+            /* Button Color Variants Mapping */
+            --btn-blue: #1e293b;
+            --btn-yellow: #b58900;
+            --btn-green: #27ae60;
+            --btn-red: #c0392b;
+            --btn-orange: #d35400;
+            --btn-purple: #8e44ad;
         }
 
         body {
@@ -24,51 +32,46 @@
             background-color: var(--bg-dark);
             color: var(--text-bright);
             margin: 0;
-            padding: 10px 10px 0 10px;
+            padding: 10px;
             box-sizing: border-box;
             -webkit-user-select: none;
             user-select: none;
             touch-action: manipulation;
-            height: 100vh;
-            height: -webkit-fill-available;
+            /* Re-enabled native scrolling cleanly across the full viewport scope */
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow-y: auto;
         }
 
         .console-grid {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             flex: 1;
-            min-height: 0; 
         }
 
-        /* Top Grid Container: Hard locked to 35% to give up to 21 tracks a persistent home */
+        /* Playlist Grid Section */
         .playlist-grid-container {
-            flex: 0 0 35%; 
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
             border-radius: 8px;
-            padding: 8px;
-            overflow-y: auto; 
-            min-height: 0;
+            padding: 10px;
         }
 
         .playlist-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr); 
-            gap: 8px;
+            gap: 10px;
         }
 
         .nav-chip {
-            background: #1e293b;
-            border: 1px solid var(--panel-border);
-            color: var(--text-dim);
-            padding: 14px 6px; /* Enhanced padding for an easier tap area */
-            border-radius: 6px;
-            font-size: 1.15rem; /* Scaled up font for ultra-fast reading */
-            font-weight: 800;
+            border: 2px solid var(--panel-border);
+            color: var(--text-bright);
+            padding: 16px 6px; 
+            border-radius: 8px;
+            font-size: 1.25rem; 
+            font-weight: 900;
             text-align: center;
             cursor: pointer;
             white-space: normal; 
@@ -77,25 +80,32 @@
             align-items: center;
             justify-content: center;
             line-height: 1.2;
-        }
-        
-        .nav-chip.active {
-            background: rgba(0, 188, 212, 0.25);
-            border-color: var(--active-blue);
-            color: var(--text-bright);
-            box-shadow: 0 0 8px rgba(0, 188, 212, 0.3);
+            transition: transform 0.1s ease, border-color 0.2s ease;
         }
 
-        /* Middle Control Panel: Anchored immediately under track grid selection targets */
+        /* Dynamic Class Injectors matching JSON strings */
+        .nav-chip.color-blue { background-color: var(--btn-blue); }
+        .nav-chip.color-yellow { background-color: var(--btn-yellow); border-color: #f1c40f; }
+        .nav-chip.color-green { background-color: var(--btn-green); border-color: #2ecc71; }
+        .nav-chip.color-red { background-color: var(--btn-red); border-color: #e74c3c; }
+        .nav-chip.color-orange { background-color: var(--btn-orange); border-color: #e67e22; }
+        .nav-chip.color-purple { background-color: var(--btn-purple); border-color: #9b59b6; }
+        
+        .nav-chip.active {
+            border-color: var(--text-bright) !important;
+            box-shadow: 0 0 12px var(--text-bright);
+            transform: scale(0.98);
+        }
+
+        /* Fixed Center Control Deck */
         .control-deck {
-            flex: 0 0 auto;
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
             border-radius: 8px;
-            padding: 12px;
+            padding: 14px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
 
         .track-info-row {
@@ -103,114 +113,151 @@
             justify-content: space-between;
             align-items: center;
         }
-        .current-track-title { font-weight: 900; font-size: 1.25rem; color: var(--active-blue); }
-        .running-time { font-family: monospace; color: var(--text-dim); font-size: 1rem; font-weight: bold; }
+        .current-track-title { font-weight: 900; font-size: 1.3rem; color: var(--active-blue); }
+        .running-time { font-family: monospace; color: var(--text-dim); font-size: 1.1rem; font-weight: bold; }
 
         .timeline-slider {
             -webkit-appearance: none;
             appearance: none;
             width: 100%;
-            height: 8px;
+            height: 10px;
             background: #233145;
-            border-radius: 4px;
+            border-radius: 5px;
             outline: none;
-            margin: 4px 0;
+            margin: 6px 0;
         }
         .timeline-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 22px; 
-            height: 22px;
+            width: 24px; 
+            height: 24px;
             border-radius: 50%;
             background: var(--active-blue);
-            cursor: pointer;
         }
 
         .action-grid {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         .btn-tactical {
             flex: 1;
-            padding: 16px; 
+            padding: 18px; 
             border: none;
             border-radius: 8px;
-            font-size: 1.3rem; /* Scaled up text sizing */
+            font-size: 1.4rem; 
             font-weight: 900;
             color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
             cursor: pointer;
         }
         .btn-tactical:disabled {
             background-color: var(--disabled) !important;
             color: #4f637d !important;
-            cursor: not-allowed;
             opacity: 0.4;
         }
 
         .btn-tactical-play { background-color: var(--play-green); }
         .btn-tactical-fade { background-color: var(--stop-red); }
 
-        /* "When to Press Play" Box: Sits right below control triggers */
+        /* Directive Banner Box */
         .cue-banner {
-            flex: 0 0 auto;
             background: rgba(243, 156, 18, 0.12);
             border: 2px solid var(--cue-gold); 
             border-radius: 8px;
-            padding: 10px 12px;
+            padding: 12px;
         }
         .cue-label {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
             color: var(--cue-gold);
             font-weight: 900;
             margin-bottom: 2px;
             display: block;
         }
         .cue-text {
-            font-size: 1.1rem; /* Slightly larger instructions text */
+            font-size: 1.15rem;
             font-weight: bold;
             line-height: 1.3;
         }
 
-        /* Lyrics Panel: Flexible buffer area. Safely shrinks down to 0 text lines if screen limits require it */
+        /* Lyrics Panel: Allowed to grow naturally to completely prevent text cut-off */
         .lyrics-panel {
-            flex: 1; 
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
             border-radius: 8px;
-            padding: 10px;
-            overflow-y: auto;
+            padding: 15px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            min-height: 0; 
+            gap: 12px;
         }
 
         .lyric-line {
-            font-size: 1.15rem;
+            font-size: 1.25rem;
             color: var(--text-bright);
             text-align: center;
             font-weight: bold;
             line-height: 1.4;
         }
 
-        /* Centered Bottom Custom Badge Bar */
+        /* Volume Adjustment Pad - Positioned directly below lyrics */
+        .volume-pad {
+            display: flex;
+            gap: 12px;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .btn-vol {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: white;
+            background-color: #34495e;
+            cursor: pointer;
+        }
+        .btn-vol:active { background-color: #2c3e50; }
+
+        /* Set Switcher Control Array */
+        .set-switcher-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+            background: rgba(0,0,0,0.2);
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px dashed var(--panel-border);
+        }
+        .btn-set-switch {
+            flex: 1;
+            padding: 12px 4px;
+            border: 1px solid var(--panel-border);
+            background: #1e293b;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-set-switch.active {
+            background: var(--active-blue);
+            color: var(--bg-dark);
+            border-color: var(--text-bright);
+        }
+
+        /* Dedicated Bottom Badge Footer */
         .ceremonial-footer {
-            flex: 0 0 auto;
             background-color: var(--footer-blue);
             color: var(--text-bright);
             text-align: center;
-            padding: 8px 5px;
-            font-size: 0.9rem;
+            padding: 12px 5px;
+            font-size: 0.95rem;
             font-weight: bold;
             letter-spacing: 0.5px;
-            margin-top: 5px;
+            margin-top: 15px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             margin-left: -10px;
             margin-right: -10px;
@@ -220,12 +267,10 @@
 <body>
 
 <div class="console-grid">
-    <!-- 1. Track Picker Matrix Array -->
     <div class="playlist-grid-container">
         <div class="playlist-grid" id="playlistGrid"></div>
     </div>
 
-    <!-- 2. Primary Control Interface (Safely positioned near center-screen) -->
     <div class="control-deck">
         <div class="track-info-row">
             <span class="current-track-title" id="trackTitle">---</span>
@@ -240,19 +285,27 @@
         </div>
     </div>
 
-    <!-- 3. Operational Timing Directives -->
     <div class="cue-banner">
         <span class="cue-label">When to Press Play</span>
         <span class="cue-text" id="cueText">Select a track above to stand by...</span>
     </div>
 
-    <!-- 4. Text Display Window (Shrinks dynamically when space is minimal) -->
     <div class="lyrics-panel" id="lyricsPanel">
         <div class="lyric-line">Awaiting selection...</div>
     </div>
+
+    <div class="volume-pad">
+        <button class="btn-vol" onclick="changeVolume(-0.1)">🔉 Quieter</button>
+        <button class="btn-vol" onclick="changeVolume(0.1)">🔊 LOUDER</button>
+    </div>
+
+    <div class="set-switcher-row">
+        <button class="btn-set-switch active" id="setBtn-1" onclick="switchCeremonialSet('playlist.json', 1)">Set 1</button>
+        <button class="btn-set-switch" id="setBtn-2" onclick="switchCeremonialSet('playlist2.json', 2)">Set 2</button>
+        <button class="btn-set-switch" id="setBtn-3" onclick="switchCeremonialSet('playlist3.json', 3)">Set 3</button>
+    </div>
 </div>
 
-<!-- Dedicated Traditional Footer -->
 <div class="ceremonial-footer">
     WBro. Robert Billing PGSwdB GLHer
 </div>
@@ -270,9 +323,17 @@
     const fadeBtn = document.getElementById('fadeBtn');
     const timeline = document.getElementById('timeline');
 
-    async function initConsole() {
+    async function switchCeremonialSet(jsonPath, setNum) {
+        if (!audioEngine.paused) {
+            audioEngine.pause();
+            audioEngine.currentTime = 0;
+        }
+        
+        document.querySelectorAll('.btn-set-switch').forEach(b => b.classList.remove('active'));
+        document.getElementById(`setBtn-${setNum}`).classList.add('active');
+
         try {
-            const response = await fetch('playlist.json');
+            const response = await fetch(jsonPath);
             tracks = await response.json();
             
             if (tracks.length > 0) {
@@ -280,7 +341,7 @@
                 loadTrack(0);
             }
         } catch (err) {
-            document.getElementById('cueText').innerText = "Error reading playlist.json layout file assets.";
+            document.getElementById('cueText').innerText = `Failed to load ${jsonPath}. Ensure the file exists.`;
         }
     }
 
@@ -289,12 +350,13 @@
         grid.innerHTML = '';
         tracks.forEach((track, index) => {
             const chip = document.createElement('div');
-            // Grabs clean title without prefixes
-            chip.className = `nav-chip ${index === 0 ? 'active' : ''}`;
+            
+            // Evaluates customized JSON color string tokens or defaults to blue
+            const chosenColor = track.color ? track.color.toLowerCase() : 'blue';
+            chip.className = `nav-chip color-${chosenColor} ${index === 0 ? 'active' : ''}`;
             chip.id = `chip-${index}`;
             chip.innerText = track.title; 
             
-            // Handles both activation loading and instant play on repetitive triggers
             chip.onclick = () => { handleTrackSelection(index); };
             grid.appendChild(chip);
         });
@@ -302,10 +364,8 @@
 
     function handleTrackSelection(index) {
         if (currentTrackIndex === index) {
-            // Re-trigger playback directly if clicked while already selected
             playCurrentTrack();
         } else {
-            // Standard loading path transition
             if (audioEngine.paused) { 
                 loadTrack(index); 
             } else { 
@@ -319,17 +379,13 @@
         
         document.querySelectorAll('.nav-chip').forEach(c => c.classList.remove('active'));
         const activeChip = document.getElementById(`chip-${index}`);
-        if (activeChip) {
-            activeChip.classList.add('active');
-            activeChip.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
+        if (activeChip) activeChip.classList.add('active');
 
         currentTrackIndex = index;
         const track = tracks[index];
 
         audioEngine.src = track.file;
         audioEngine.load();
-        audioEngine.volume = 1;
 
         document.getElementById('trackTitle').innerText = track.title;
         document.getElementById('cueText').innerText = track.cue || "No special cues assigned.";
@@ -356,7 +412,13 @@
             div.innerText = line;
             panel.appendChild(div);
         });
-        panel.scrollTop = 0;
+    }
+
+    function changeVolume(amount) {
+        let newVol = audioEngine.volume + amount;
+        if (newVol > 1) newVol = 1;
+        if (newVol < 0) newVol = 0;
+        audioEngine.volume = newVol;
     }
 
     audioEngine.addEventListener('timeupdate', () => {
@@ -385,9 +447,7 @@
 
     function playCurrentTrack() {
         if (fadeInterval) clearInterval(fadeInterval);
-        audioEngine.volume = 1;
         audioEngine.play();
-
         playBtn.disabled = true;
         playBtn.innerText = "▶ PLAYING";
         fadeBtn.disabled = false;
@@ -411,7 +471,7 @@
                 fadeInterval = null;
                 audioEngine.pause();
                 audioEngine.currentTime = 0;
-                audioEngine.volume = 1;
+                audioEngine.volume = startVolume; // Resets hardware volume baseline back to before fade
                 
                 playBtn.disabled = false;
                 playBtn.innerText = "▶ PLAY";
@@ -435,7 +495,8 @@
         isUserScrubbing = false;
     }
 
-    window.onload = initConsole;
+    // Default initialization loads playlist.json first
+    window.onload = () => { switchCeremonialSet('playlist.json', 1); };
 </script>
 </body>
 </html>
