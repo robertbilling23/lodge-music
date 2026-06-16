@@ -88,25 +88,22 @@
         .nav-chip.color-orange { background-color: var(--btn-orange); border-color: #e67e22; }
         .nav-chip.color-purple { background-color: var(--btn-purple); border-color: #9b59b6; }
         
-        /* Armed state selection highlight */
         .nav-chip.active {
             border-color: var(--text-bright) !important;
             box-shadow: 0 0 12px var(--text-bright);
             transform: scale(0.98);
         }
 
-        /* Enhanced Playing State: Thicker border and intense green glow */
         .nav-chip.playing-now {
             border: 4px solid var(--play-green) !important;
             box-shadow: 0 0 25px 5px var(--play-green) !important;
             animation: playPulse 1.2s infinite ease-in-out;
         }
 
-        /* NEW ENHANCEMENT: High-intensity fading state with thick red border and heavy crimson aura */
         .nav-chip.fading-now {
             border: 4px solid var(--stop-red) !important;
             box-shadow: 0 0 30px 8px var(--stop-red) !important;
-            animation: stopPulse 0.6s infinite ease-in-out; /* Faster pulse rate for urgent feedback */
+            animation: stopPulse 0.6s infinite ease-in-out; 
         }
 
         .control-deck {
@@ -127,23 +124,33 @@
         .current-track-title { font-weight: 900; font-size: 1.3rem; color: var(--active-blue); }
         .running-time { font-family: monospace; color: var(--text-dim); font-size: 1.1rem; font-weight: bold; }
 
-        .timeline-slider {
-            -webkit-appearance: none;
-            appearance: none;
+        /* Memory Status Row Elements */
+        .memory-status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 2px 4px 0 4px;
+            border-top: 1px dashed var(--panel-border);
+            margin-top: 2px;
+        }
+        .memory-label { color: var(--text-dim); }
+        .memory-value { font-family: monospace; transition: color 0.3s ease; }
+
+        .timeline-container {
             width: 100%;
-            height: 10px;
             background: #233145;
+            height: 10px;
             border-radius: 5px;
-            outline: none;
+            position: relative;
+            overflow: hidden;
             margin: 6px 0;
         }
-        .timeline-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 24px; 
-            height: 24px;
-            border-radius: 50%;
+        .timeline-progress {
             background: var(--active-blue);
+            height: 100%;
+            width: 0%;
         }
 
         .action-grid {
@@ -247,32 +254,39 @@
             cursor: pointer;
         }
 
-        .set-switcher-row {
-            display: flex;
-            flex-wrap: wrap; 
-            gap: 8px;
-            margin-top: 20px;
+        .playlist-grid-container-switcher {
             background: rgba(0,0,0,0.2);
-            padding: 8px;
-            border-radius: 8px;
             border: 1px dashed var(--panel-border);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 20px;
+        }
+        .set-switcher-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 10px;
         }
         .btn-set-switch {
-            flex: 1;
-            min-width: 100px;
-            padding: 12px 6px;
+            width: 100%;
+            padding: 14px 4px;
             border: 1px solid var(--panel-border);
             background: #1e293b;
             color: var(--text-dim);
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: bold;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
+            white-space: normal;
+            word-break: break-word;
+            line-height: 1.2;
+            box-sizing: border-box;
         }
         .btn-set-switch.active {
             background: var(--active-blue);
             color: var(--bg-dark);
             border-color: var(--text-bright);
+            font-weight: 900;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
         }
 
         .ceremonial-footer {
@@ -289,7 +303,6 @@
             margin-right: -10px;
         }
 
-        /* Keyframe Engines */
         @keyframes playPulse {
             0% { box-shadow: 0 0 15px 2px var(--play-green); }
             50% { box-shadow: 0 0 30px 8px var(--play-green); filter: brightness(1.15); }
@@ -316,21 +329,28 @@
             <span class="running-time" id="trackTime">0:00 / 0:00</span>
         </div>
         
-        <input type="range" class="timeline-slider" id="timeline" value="0" min="0" max="100" oninput="scrubAudio(this.value)">
+        <div class="timeline-container">
+            <div class="timeline-progress" id="timelineProgress"></div>
+        </div>
 
         <div class="action-grid">
             <button class="btn-tactical btn-tactical-play" id="playBtn" onclick="playCurrentTrack()" disabled>▶ PLAY</button>
             <button class="btn-tactical btn-tactical-fade" id="fadeBtn" onclick="fadeCurrentTrack()" disabled>■ STOP</button>
         </div>
+
+        <div class="memory-status-row">
+            <span class="memory-label">Active Set Payload Tracker</span>
+            <span class="memory-value" id="memoryValue" style="color: var(--text-dim);">0.00 MB (Initializing)</span>
+        </div>
     </div>
 
     <div class="cue-banner">
         <span class="cue-label">When to Press Play</span>
-        <span class="cue-text" id="cueText">Loading ceremony layouts...</span>
+        <span class="cue-text" id="cueText">Loading core assets...</span>
     </div>
 
     <div class="lyrics-panel" id="lyricsPanel">
-        <div class="lyric-line">Awaiting selection...</div>
+        <div class="lyric-line">Awaiting system initialization...</div>
     </div>
 
     <div class="volume-pad">
@@ -344,26 +364,32 @@
         </div>
     </div>
 
-    <div class="set-switcher-row" id="setSwitcherRow"></div>
+    <div class="playlist-grid-container-switcher">
+        <div class="set-switcher-grid" id="setSwitcherRow"></div>
+    </div>
 </div>
 
 <div class="ceremonial-footer">
     WBro. Robert Billing PGSwdB GLHer
 </div>
 
-<audio id="mainAudioEngine" preload="auto"></audio>
-
 <script>
     let tracks = [];
     let dynamicSets = [];
     let currentTrackIndex = 0;
+    
+    let audioCtx = null;
+    let audioCache = {}; 
+    let currentSource = null;
+    let gainNode = null;
+    
+    let isPlaying = false;
+    let startTime = 0;
+    let pausedTime = 0;
+    let trackDuration = 0;
+    let timeUpdateInterval = null;
+    let currentVolume = 1.0;
     let fadeInterval = null;
-    let isUserScrubbing = false;
-
-    const audioEngine = document.getElementById('mainAudioEngine');
-    const playBtn = document.getElementById('playBtn');
-    const fadeBtn = document.getElementById('fadeBtn');
-    const timeline = document.getElementById('timeline');
 
     async function initConsole() {
         try {
@@ -373,18 +399,15 @@
             if (dynamicSets.length > 0) {
                 buildSetSwitcherUI();
                 await switchCeremonialSet(dynamicSets[0].file, dynamicSets[0].id);
-            } else {
-                document.getElementById('cueText').innerText = "sets.json configuration array is empty.";
             }
         } catch (err) {
-            document.getElementById('cueText').innerText = "Error tracking sets.json configuration template file.";
+            document.getElementById('cueText').innerText = "Error tracking sets.json master profile.";
         }
     }
 
     function buildSetSwitcherUI() {
         const switcherRow = document.getElementById('setSwitcherRow');
         switcherRow.innerHTML = '';
-        
         dynamicSets.forEach((set) => {
             const btn = document.createElement('button');
             btn.className = 'btn-set-switch';
@@ -396,14 +419,17 @@
     }
 
     async function switchCeremonialSet(jsonPath, setId) {
-        if (!audioEngine.paused) {
-            audioEngine.pause();
-            audioEngine.currentTime = 0;
-        }
+        stopAudioEngine();
         
         document.querySelectorAll('.btn-set-switch').forEach(b => b.classList.remove('active'));
         const targetBtn = document.getElementById(`setBtn-${setId}`);
         if (targetBtn) targetBtn.classList.add('active');
+
+        document.getElementById('cueText').innerText = "Pre-warming ceremonial files to RAM... Please standby.";
+        document.getElementById('memoryValue').innerText = "0.00 MB (Clearing Cache...)";
+        document.getElementById('memoryValue').style.color = 'var(--text-dim)';
+        playBtn.disabled = true;
+        fadeBtn.disabled = true;
 
         try {
             const response = await fetch(jsonPath);
@@ -411,10 +437,11 @@
             
             if (tracks.length > 0) {
                 buildPlaylistGrid();
+                await cacheAllAudioToRAM();
                 loadTrack(0);
             }
         } catch (err) {
-            document.getElementById('cueText').innerText = `Failed to find playlist map data file target: ${jsonPath}`;
+            document.getElementById('cueText').innerText = `Failed to find layout map: ${jsonPath}`;
         }
     }
 
@@ -432,15 +459,67 @@
         });
     }
 
+    async function cacheAllAudioToRAM() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        
+        for (let key in audioCache) {
+            delete audioCache[key];
+        }
+        audioCache = {}; 
+        
+        let loadedCount = 0;
+        let totalBytesDownloaded = 0; // Tracks network content payload metrics directly
+
+        for (let track of tracks) {
+            try {
+                const res = await fetch(track.file);
+                const arrayBuffer = await res.arrayBuffer();
+                
+                // Track physical array byte allocations before browser audio uncompression processes
+                totalBytesDownloaded += arrayBuffer.byteLength;
+                updateMemoryDisplayMetric(totalBytesDownloaded);
+
+                const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+                audioCache[track.file] = audioBuffer;
+                loadedCount++;
+                document.getElementById('cueText').innerText = `Buffering active array into RAM: (${loadedCount}/${tracks.length})`;
+            } catch (e) {
+                console.error("RAM allocation failure for reference point link target:", track.file);
+            }
+        }
+    }
+
+    // NEW: Handles dynamic style color adjustments based on real-time byte allocations
+    function updateMemoryDisplayMetric(totalBytes) {
+        const totalMB = totalBytes / (1024 * 1024);
+        const displayEl = document.getElementById('memoryValue');
+        
+        let baselineStatus = "Safe";
+        let trackingColor = 'var(--play-green)'; // Safe standard configuration lighting color token
+
+        if (totalMB >= 50 && totalMB < 150) {
+            baselineStatus = "Moderate";
+            trackingColor = 'var(--cue-gold)';
+        } else if (totalMB >= 150) {
+            baselineStatus = "Heavy Load";
+            trackingColor = 'var(--stop-red)';
+        }
+
+        displayEl.innerText = `${totalMB.toFixed(2)} MB (${baselineStatus})`;
+        displayEl.style.color = trackingColor;
+    }
+
     function handleTrackSelection(index) {
         if (currentTrackIndex === index) {
-            if (!audioEngine.paused && !fadeInterval) {
+            if (isPlaying && !fadeInterval) {
                 fadeCurrentTrack();
             } else {
                 playCurrentTrack();
             }
         } else {
-            if (audioEngine.paused) { 
+            if (!isPlaying) { 
                 loadTrack(index); 
             } else { 
                 fadeAndSwitch(index); 
@@ -450,6 +529,7 @@
 
     function loadTrack(index) {
         if (fadeInterval) clearInterval(fadeInterval);
+        stopAudioEngine();
         
         document.querySelectorAll('.nav-chip').forEach(c => {
             c.className = c.className.replace(/\b(active|playing-now|fading-now)\b/g, '').trim();
@@ -461,8 +541,9 @@
         currentTrackIndex = index;
         const track = tracks[index];
 
-        audioEngine.src = track.file;
-        audioEngine.load();
+        const cachedBuffer = audioCache[track.file];
+        trackDuration = cachedBuffer ? cachedBuffer.duration : 0;
+        pausedTime = 0;
 
         document.getElementById('trackTitle').innerText = track.title;
         document.getElementById('cueText').innerText = track.cue || "No special cues assigned.";
@@ -471,8 +552,8 @@
         playBtn.disabled = false;
         playBtn.innerText = "▶ PLAY";
         fadeBtn.disabled = true;
-        timeline.value = 0;
-        document.getElementById('trackTime').innerText = `0:00 / 0:00`;
+        document.getElementById('timelineProgress').style.width = '0%';
+        document.getElementById('trackTime').innerText = `0:00 / ${formatTime(trackDuration)}`;
     }
 
     function buildStaticTextPanel(lines) {
@@ -490,90 +571,105 @@
         });
     }
 
-    function changeVolume(amount) {
-        let newVol = audioEngine.volume + amount;
-        if (newVol > 1) newVol = 1;
-        if (newVol < 0) newVol = 0;
-        audioEngine.volume = newVol;
-        document.getElementById('volumePct').innerText = `${Math.round(newVol * 100)}%`;
-    }
-
-    audioEngine.addEventListener('timeupdate', () => {
-        if (!isUserScrubbing) {
-            const pct = (audioEngine.currentTime / audioEngine.duration) * 100;
-            timeline.value = pct || 0;
-            document.getElementById('trackTime').innerText = `${formatTime(audioEngine.currentTime)} / ${formatTime(audioEngine.duration)}`;
-        }
-    });
-
-    audioEngine.addEventListener('ended', () => {
-        const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
-        if (activeChip) activeChip.classList.remove('playing-now');
-
-        playBtn.disabled = false;
-        playBtn.innerText = "▶ PLAY";
-        fadeBtn.disabled = true;
-        if (currentTrackIndex + 1 < tracks.length) {
-            loadTrack(currentTrackIndex + 1);
-        }
-    });
-
-    function formatTime(secs) {
-        if (isNaN(secs)) return "0:00";
-        const m = Math.floor(secs / 60);
-        const s = Math.floor(secs % 60);
-        return `${m}:${s < 10 ? '0' : ''}${s}`;
-    }
-
     function playCurrentTrack() {
         if (fadeInterval) clearInterval(fadeInterval);
-        audioEngine.play();
-        
+        if (isPlaying) return;
+
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+
+        const track = tracks[currentTrackIndex];
+        const cachedBuffer = audioCache[track.file];
+        if (!cachedBuffer) return;
+
+        currentSource = audioCtx.createBufferSource();
+        currentSource.buffer = cachedBuffer;
+
+        gainNode = audioCtx.createGain();
+        gainNode.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
+
+        currentSource.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        currentSource.start(0, pausedTime);
+        startTime = audioCtx.currentTime - pausedTime;
+        isPlaying = true;
+
         playBtn.disabled = true;
         playBtn.innerText = "▶ PLAYING";
         fadeBtn.disabled = false;
 
         const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
         if (activeChip) {
-            activeChip.classList.remove('active');
-            activeChip.classList.remove('fading-now');
+            activeChip.classList.remove('active', 'fading-now');
             activeChip.classList.add('playing-now');
+        }
+
+        clearInterval(timeUpdateInterval);
+        timeUpdateInterval = setInterval(updateTimelineProgress, 100);
+    }
+
+    function updateTimelineProgress() {
+        if (!isPlaying) return;
+        const currentElapsed = audioCtx.currentTime - startTime;
+        
+        if (currentElapsed >= trackDuration) {
+            handleTrackPlaybackCompletion();
+            return;
+        }
+
+        const pct = (currentElapsed / trackDuration) * 100;
+        document.getElementById('timelineProgress').style.width = `${pct}%`;
+        document.getElementById('trackTime').innerText = `${formatTime(currentElapsed)} / ${formatTime(trackDuration)}`;
+    }
+
+    function handleTrackPlaybackCompletion() {
+        stopAudioEngine();
+        if (currentTrackIndex + 1 < tracks.length) {
+            loadTrack(currentTrackIndex + 1);
         }
     }
 
+    function stopAudioEngine() {
+        isPlaying = false;
+        clearInterval(timeUpdateInterval);
+        if (currentSource) {
+            try { currentSource.stop(); } catch(e){}
+            currentSource = null;
+        }
+        const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
+        if (activeChip) activeChip.className = activeChip.className.replace(/\b(playing-now|fading-now)\b/g, '').trim();
+    }
+
     function fadeCurrentTrack() {
-        if (audioEngine.paused || fadeInterval) return;
+        if (!isPlaying || fadeInterval) return;
 
         fadeBtn.disabled = true;
-        
-        // NEW: Instantly shift the visual style of the active button to a heavy, fast-pulsing crimson halo
         const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
         if (activeChip) {
             activeChip.classList.remove('playing-now');
             activeChip.classList.add('fading-now');
         }
 
-        const fadeDuration = 1500; 
-        const stepTime = 50;
-        const startVolume = audioEngine.volume;
-        const steps = fadeDuration / stepTime;
-        const volStep = startVolume / steps;
+        const fadeDuration = 1.5; 
+        const stepTime = 50; 
+        const steps = (fadeDuration * 1000) / stepTime;
+        const volStep = currentVolume / steps;
+        let runningVol = currentVolume;
 
         fadeInterval = setInterval(() => {
-            if (audioEngine.volume > volStep) {
-                audioEngine.volume -= volStep;
+            if (runningVol > volStep) {
+                runningVol -= volStep;
+                if (gainNode) gainNode.gain.setValueAtTime(runningVol, audioCtx.currentTime);
             } else {
                 clearInterval(fadeInterval);
                 fadeInterval = null;
-                audioEngine.pause();
-                audioEngine.currentTime = 0;
-                audioEngine.volume = startVolume; 
+                stopAudioEngine();
                 
                 playBtn.disabled = false;
                 playBtn.innerText = "▶ PLAY";
                 
-                if (activeChip) activeChip.classList.remove('fading-now');
-
                 if (currentTrackIndex + 1 < tracks.length) {
                     loadTrack(currentTrackIndex + 1);
                 }
@@ -586,11 +682,22 @@
         setTimeout(() => { loadTrack(nextIndex); }, 1600);
     }
 
-    function scrubAudio(value) {
-        isUserScrubbing = true;
-        audioEngine.currentTime = (value / 100) * audioEngine.duration;
-        document.getElementById('trackTime').innerText = `${formatTime(audioEngine.currentTime)} / ${formatTime(audioEngine.duration)}`;
-        isUserScrubbing = false;
+    function changeVolume(amount) {
+        currentVolume += amount;
+        if (currentVolume > 1.0) currentVolume = 1.0;
+        if (currentVolume < 0.0) currentVolume = 0.0;
+        
+        if (gainNode && isPlaying && !fadeInterval) {
+            gainNode.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
+        }
+        document.getElementById('volumePct').innerText = `${Math.round(currentVolume * 100)}%`;
+    }
+
+    function formatTime(secs) {
+        if (isNaN(secs) || secs === 0) return "0:00";
+        const m = Math.floor(secs / 60);
+        const s = Math.floor(secs % 60);
+        return `${m}:${s < 10 ? '0' : ''}${s}`;
     }
 
     window.onload = initConsole;
