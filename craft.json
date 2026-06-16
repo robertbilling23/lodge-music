@@ -31,7 +31,7 @@
     "id": "track1",
     "title": "Minutes",
     "color": "purple",
-    "file": "audio/1-Open-1st-SMIB-Faster.mp3",
+    "file": "audio/Minutes_William Tell.mp3",
     "cue": "After the WM knocks to carry the motion",
     "lyrics": [
       "This is some nice music, known as William Tell, to play when the Senior Deacon takes the minutes up to be signed."
@@ -52,7 +52,7 @@
     "id": "track1",
     "title": "Past Masters",
     "color": "green",
-    "file": "audio/1-Open-1st-SMIB-Faster.mp3",
+    "file": "audio/PMEntry_marchscipio.wav",
     "cue": "When the DC heads west to escort the visitors",
     "lyrics": [
       "This is also fine for WM entry.",
@@ -64,7 +64,7 @@
     "id": "track_1781590794449",
     "title": "WM Entry Star Wars",
     "color": "blue",
-    "file": "audio/filename.mp3",
+    "file": "audio/WMEntry_Star Wars.mp3",
     "cue": "When the door is opened to admit the WM",
     "lyrics": [
       "Note: This is a fun track and may not always be appropriate"
@@ -74,7 +74,7 @@
     "id": "track_1781590846184",
     "title": "Close First TB",
     "color": "blue",
-    "file": "audio/filename.mp3",
+    "file": "audio/68 Close 1st TB.mp3",
     "cue": "After the IG knocks three times",
     "lyrics": [
       "Abide with me, fast falls the eventide;",
@@ -87,7 +87,7 @@
     "id": "track_1781591259190",
     "title": "Fidelity Fidelity",
     "color": "blue",
-    "file": "audio/filename.mp3",
+    "file": "audio/fi69 Close 1st Fidelity f.mp3",
     "cue": "When the IPM is saying - the act",
     "lyrics": [
       "Brethren, nothing now remains but, according to Antient custom, to lock up our s . . . ts in a safe and sacred repository, uniting in the act"
@@ -97,7 +97,7 @@
     "id": "track_1781591161781",
     "title": "Wardens and Deacons",
     "color": "blue",
-    "file": "audio/filename.mp3",
+    "file": "audio/70.2 Close 1st Exit.mp3",
     "cue": "After the DC says - Brother Deacons",
     "lyrics": [
       "Ode 70.2",
