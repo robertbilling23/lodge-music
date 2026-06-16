@@ -2,16 +2,29 @@
   {
     "id": "track1",
     "title": "So Mote It Be",
-    "color": "green",
+    "color": "yellow",
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "When the Chaplain says HARMONY",
     "lyrics": [
-      "The Lodge being duly formed",
-      "Before it is declared open",
-      "Let us invoke a blessing from the GAOTU on all our undertakings",
-      "may our Labours thus begun in peace",
-      "Be closed in HARMONY",
+      "The Lodge being duly formed,",
+      "before it is declared open,",
+      "let us invoke a blessing from the GAOTU",
+      "on all our undertakings.",
+      "May our Labours, thus begun in Order,",
+      "be conducted in Peace",
+      "and closed in HARMONY.",
       "SO MOTE IT BE"
+    ]
+  },
+  {
+    "id": "track2",
+    "title": "Open First Degree TB",
+    "file": "audio/2-Open-1st-TB.mp3",
+    "cue": "Wait for the IG to knock three times",
+    "lyrics": [
+      "Hail Eternal by whose aid",
+      "All created things were made.",
+      "And more words"
     ]
   },
   {
@@ -31,53 +44,33 @@
   },
   {
     "id": "track1",
-    "title": "So Mote It Be 3",
-    "color": "red",
-    "file": "audio/1-Open-1st-SMIB-Faster.mp3",
-    "cue": "When the Chaplain says HARMONY",
-    "lyrics": [
-      "The Lodge being duly formed",
-      "Before it is declared open",
-      "Let us invoke a blessing from the GAOTU on all our undertakings",
-      "may our Labours thus begun in peace",
-      "Be closed in HARMONY",
-      "SO MOTE IT BE"
-    ]
-  },
-  {
-    "id": "track2",
-    "title": "Open First Degree TB",
-    "file": "audio/2-Open-1st-TB.mp3",
-    "cue": "Wait for the IG to knock three times",
-    "lyrics": [
-      "Hail Eternal by whose aid",
-      "All created things were made.",
-      "And more words"
-    ]
-  },
-  {
-    "id": "track1",
-    "title": "So Mote It Be bb",
-    "color": "orange",
-    "file": "audio/1-Open-1st-SMIB-Faster.mp3",
-    "cue": "When the Chaplain says HARMONY",
-    "lyrics": [
-      "More words"
-    ]
-  },
-  {
-    "id": "track1",
-    "title": "So Mote It Be aa",
+    "title": "Minutes",
     "color": "purple",
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
-    "cue": "When the Chaplain says HARMONY",
+    "cue": "After the WM knocks to carry the motion",
     "lyrics": [
-      "The Lodge being duly formed",
-      "Before it is declared open",
-      "Let us invoke a blessing from the GAOTU on all our undertakings",
-      "may our Labours thus begun in peace",
-      "Be closed in HARMONY",
-      "SO MOTE IT BE"
+      "This is some nice music, known as William Tell, to play when the Senior Deacon takes the minutes up to be signed."
+    ]
+  },
+  {
+    "id": "track1",
+    "title": "Visitor Entry",
+    "color": "green",
+    "file": "audio/1-Open-1st-SMIB-Faster.mp3",
+    "cue": "When the IG opens the door",
+    "lyrics": [
+      "This can be played earlier if the DC is walking around the lodge to escort the visitors"
+    ]
+  },
+  {
+    "id": "track1",
+    "title": "Past Masters",
+    "color": "green",
+    "file": "audio/1-Open-1st-SMIB-Faster.mp3",
+    "cue": "When the DC heads west to escort the visitors",
+    "lyrics": [
+      "This is also fine for WM entry.",
+      "When the DC is announcing the visitors, lower the volume to barely audible, but keep it playing."
     ]
   }
 ]
