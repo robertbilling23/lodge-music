@@ -1,13 +1,13 @@
 [
   {
     "id": "track1",
-    "title": "So Mote It Be",
+    "title": "1. So Mote It Be",
     "color": "yellow",
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "As the Chaplain says - in harmony",
     "lyrics": [
       "The lodge being duly formed, before it is declared open let us invoke a blessing from the GAOTU on all our undertakings. May our labours, thus begun in order, be conducted in peace, and closed in harmony.",
-      "Ode 2",
+      "Ode 1",
       "So mote it be"
     ]
   },
@@ -58,7 +58,7 @@
   {
     "id": "track_1781590794449",
     "title": "WM Entry Star Wars",
-    "color": "blue",
+    "color": "green",
     "file": "audio/WMEntry_Star Wars.mp3",
     "cue": "When the door is opened to admit the WM",
     "lyrics": [
@@ -67,7 +67,7 @@
   },
   {
     "id": "track1",
-    "title": "So Mote It Be",
+    "title": "66. So Mote It Be",
     "color": "yellow",
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "As the Chaplain says - social virtue",
@@ -90,7 +90,7 @@
   },
   {
     "id": "track_1781591259190",
-    "title": "69 Fidelity",
+    "title": "69. Fidelity",
     "color": "blue",
     "file": "audio/69 Close 1st Fidelity f.mp3",
     "cue": "When the IPM is saying - the act",
@@ -102,7 +102,7 @@
   },
   {
     "id": "track_1781591161781",
-    "title": "70.2 Retirement Procession",
+    "title": "70.2. Retirement Procession",
     "color": "blue",
     "file": "audio/70.2 Close 1st Exit.mp3",
     "cue": "After the DC says - Brother Deacons",
