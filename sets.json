@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "label": "First Degree",
+    "file": "playlist.json"
+  },
+  {
+    "id": 2,
+    "label": "Second Degree",
+    "file": "playlist2.json"
+  },
+  {
+    "id": 3,
+    "label": "Third Degree",
+    "file": "playlist3.json"
+  },
+  {
+    "id": 4,
+    "label": "Installation",
+    "file": "installation.json"
+  }
+]

@@ -18,7 +18,7 @@
             --disabled: #2d3d52;
             --footer-blue: #0f2c59;
 
-            /* Button Color Variants Mapping */
+            /* Button Color Variants */
             --btn-blue: #1e293b;
             --btn-yellow: #b58900;
             --btn-green: #27ae60;
@@ -37,7 +37,6 @@
             -webkit-user-select: none;
             user-select: none;
             touch-action: manipulation;
-            /* Re-enabled native scrolling cleanly across the full viewport scope */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -51,7 +50,6 @@
             flex: 1;
         }
 
-        /* Playlist Grid Section */
         .playlist-grid-container {
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
@@ -83,7 +81,6 @@
             transition: transform 0.1s ease, border-color 0.2s ease;
         }
 
-        /* Dynamic Class Injectors matching JSON strings */
         .nav-chip.color-blue { background-color: var(--btn-blue); }
         .nav-chip.color-yellow { background-color: var(--btn-yellow); border-color: #f1c40f; }
         .nav-chip.color-green { background-color: var(--btn-green); border-color: #2ecc71; }
@@ -91,13 +88,20 @@
         .nav-chip.color-orange { background-color: var(--btn-orange); border-color: #e67e22; }
         .nav-chip.color-purple { background-color: var(--btn-purple); border-color: #9b59b6; }
         
+        /* Armed state selection highlight */
         .nav-chip.active {
             border-color: var(--text-bright) !important;
             box-shadow: 0 0 12px var(--text-bright);
             transform: scale(0.98);
         }
 
-        /* Fixed Center Control Deck */
+        /* NEW: Flashing highlight specifically when audio is actively playing */
+        .nav-chip.playing-now {
+            border-color: var(--play-green) !important;
+            box-shadow: 0 0 15px var(--play-green);
+            animation: chipPulse 1.2s infinite ease-in-out;
+        }
+
         .control-deck {
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
@@ -159,7 +163,6 @@
         .btn-tactical-play { background-color: var(--play-green); }
         .btn-tactical-fade { background-color: var(--stop-red); }
 
-        /* Directive Banner Box */
         .cue-banner {
             background: rgba(243, 156, 18, 0.12);
             border: 2px solid var(--cue-gold); 
@@ -180,7 +183,6 @@
             line-height: 1.3;
         }
 
-        /* Lyrics Panel: Allowed to grow naturally to completely prevent text cut-off */
         .lyrics-panel {
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
@@ -199,14 +201,33 @@
             line-height: 1.4;
         }
 
-        /* Volume Adjustment Pad - Positioned directly below lyrics */
+        /* Volume Layout Panel */
         .volume-pad {
             display: flex;
-            gap: 12px;
+            flex-direction: column;
+            gap: 8px;
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
+        }
+        .volume-status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 4px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: var(--text-dim);
+        }
+        .volume-pct-display {
+            color: var(--active-blue);
+            font-family: monospace;
+            font-size: 1.15rem;
+        }
+        .volume-btn-grid {
+            display: flex;
+            gap: 12px;
         }
         .btn-vol {
             flex: 1;
@@ -219,11 +240,10 @@
             background-color: #34495e;
             cursor: pointer;
         }
-        .btn-vol:active { background-color: #2c3e50; }
 
-        /* Set Switcher Control Array */
         .set-switcher-row {
             display: flex;
+            flex-wrap: wrap; 
             gap: 8px;
             margin-top: 20px;
             background: rgba(0,0,0,0.2);
@@ -233,7 +253,8 @@
         }
         .btn-set-switch {
             flex: 1;
-            padding: 12px 4px;
+            min-width: 100px;
+            padding: 12px 6px;
             border: 1px solid var(--panel-border);
             background: #1e293b;
             color: var(--text-dim);
@@ -248,7 +269,6 @@
             border-color: var(--text-bright);
         }
 
-        /* Dedicated Bottom Badge Footer */
         .ceremonial-footer {
             background-color: var(--footer-blue);
             color: var(--text-bright);
@@ -261,6 +281,12 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             margin-left: -10px;
             margin-right: -10px;
+        }
+
+        @keyframes chipPulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; filter: brightness(1.2); }
+            100% { opacity: 0.8; }
         }
     </style>
 </head>
@@ -281,29 +307,32 @@
 
         <div class="action-grid">
             <button class="btn-tactical btn-tactical-play" id="playBtn" onclick="playCurrentTrack()" disabled>▶ PLAY</button>
-            <button class="btn-tactical btn-tactical-fade" id="fadeBtn" onclick="fadeCurrentTrack()" disabled>■ FADE OUT</button>
+            <button class="btn-tactical btn-tactical-fade" id="fadeBtn" onclick="fadeCurrentTrack()" disabled>■ STOP</button>
         </div>
     </div>
 
     <div class="cue-banner">
         <span class="cue-label">When to Press Play</span>
-        <span class="cue-text" id="cueText">Select a track above to stand by...</span>
+        <span class="cue-text" id="cueText">Loading ceremony layouts...</span>
     </div>
 
     <div class="lyrics-panel" id="lyricsPanel">
         <div class="lyric-line">Awaiting selection...</div>
     </div>
 
+    <!-- NEW: Volume Pad with Visual Metric String Row -->
     <div class="volume-pad">
-        <button class="btn-vol" onclick="changeVolume(-0.1)">🔉 Quieter</button>
-        <button class="btn-vol" onclick="changeVolume(0.1)">🔊 LOUDER</button>
+        <div class="volume-status-row">
+            <span>Output Level Baseline</span>
+            <span class="volume-pct-display" id="volumePct">100%</span>
+        </div>
+        <div class="volume-btn-grid">
+            <button class="btn-vol" onclick="changeVolume(-0.1)">🔉 Quieter</button>
+            <button class="btn-vol" onclick="changeVolume(0.1)">🔊 LOUDER</button>
+        </div>
     </div>
 
-    <div class="set-switcher-row">
-        <button class="btn-set-switch active" id="setBtn-1" onclick="switchCeremonialSet('playlist.json', 1)">Set 1</button>
-        <button class="btn-set-switch" id="setBtn-2" onclick="switchCeremonialSet('playlist2.json', 2)">Set 2</button>
-        <button class="btn-set-switch" id="setBtn-3" onclick="switchCeremonialSet('playlist3.json', 3)">Set 3</button>
-    </div>
+    <div class="set-switcher-row" id="setSwitcherRow"></div>
 </div>
 
 <div class="ceremonial-footer">
@@ -314,6 +343,7 @@
 
 <script>
     let tracks = [];
+    let dynamicSets = [];
     let currentTrackIndex = 0;
     let fadeInterval = null;
     let isUserScrubbing = false;
@@ -323,14 +353,45 @@
     const fadeBtn = document.getElementById('fadeBtn');
     const timeline = document.getElementById('timeline');
 
-    async function switchCeremonialSet(jsonPath, setNum) {
+    async function initConsole() {
+        try {
+            const response = await fetch('sets.json');
+            dynamicSets = await response.json();
+            
+            if (dynamicSets.length > 0) {
+                buildSetSwitcherUI();
+                await switchCeremonialSet(dynamicSets[0].file, dynamicSets[0].id);
+            } else {
+                document.getElementById('cueText').innerText = "sets.json configuration array is empty.";
+            }
+        } catch (err) {
+            document.getElementById('cueText').innerText = "Error tracking sets.json configuration template file.";
+        }
+    }
+
+    function buildSetSwitcherUI() {
+        const switcherRow = document.getElementById('setSwitcherRow');
+        switcherRow.innerHTML = '';
+        
+        dynamicSets.forEach((set) => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-set-switch';
+            btn.id = `setBtn-${set.id}`;
+            btn.innerText = set.label;
+            btn.onclick = () => { switchCeremonialSet(set.file, set.id); };
+            switcherRow.appendChild(btn);
+        });
+    }
+
+    async function switchCeremonialSet(jsonPath, setId) {
         if (!audioEngine.paused) {
             audioEngine.pause();
             audioEngine.currentTime = 0;
         }
         
         document.querySelectorAll('.btn-set-switch').forEach(b => b.classList.remove('active'));
-        document.getElementById(`setBtn-${setNum}`).classList.add('active');
+        const targetBtn = document.getElementById(`setBtn-${setId}`);
+        if (targetBtn) targetBtn.classList.add('active');
 
         try {
             const response = await fetch(jsonPath);
@@ -341,7 +402,7 @@
                 loadTrack(0);
             }
         } catch (err) {
-            document.getElementById('cueText').innerText = `Failed to load ${jsonPath}. Ensure the file exists.`;
+            document.getElementById('cueText').innerText = `Failed to find playlist map data file target: ${jsonPath}`;
         }
     }
 
@@ -350,13 +411,10 @@
         grid.innerHTML = '';
         tracks.forEach((track, index) => {
             const chip = document.createElement('div');
-            
-            // Evaluates customized JSON color string tokens or defaults to blue
             const chosenColor = track.color ? track.color.toLowerCase() : 'blue';
             chip.className = `nav-chip color-${chosenColor} ${index === 0 ? 'active' : ''}`;
             chip.id = `chip-${index}`;
             chip.innerText = track.title; 
-            
             chip.onclick = () => { handleTrackSelection(index); };
             grid.appendChild(chip);
         });
@@ -364,7 +422,12 @@
 
     function handleTrackSelection(index) {
         if (currentTrackIndex === index) {
-            playCurrentTrack();
+            // NEW: If already playing, tapping the button again executes a safe fade out stop
+            if (!audioEngine.paused && !fadeInterval) {
+                fadeCurrentTrack();
+            } else {
+                playCurrentTrack();
+            }
         } else {
             if (audioEngine.paused) { 
                 loadTrack(index); 
@@ -377,7 +440,12 @@
     function loadTrack(index) {
         if (fadeInterval) clearInterval(fadeInterval);
         
-        document.querySelectorAll('.nav-chip').forEach(c => c.classList.remove('active'));
+        // Clear down all custom lighting states across old grid chips
+        document.querySelectorAll('.nav-chip').forEach(c => {
+            c.classList.remove('active');
+            c.classList.remove('playing-now');
+        });
+        
         const activeChip = document.getElementById(`chip-${index}`);
         if (activeChip) activeChip.classList.add('active');
 
@@ -389,7 +457,6 @@
 
         document.getElementById('trackTitle').innerText = track.title;
         document.getElementById('cueText').innerText = track.cue || "No special cues assigned.";
-        
         buildStaticTextPanel(track.lyrics || []);
         
         playBtn.disabled = false;
@@ -419,6 +486,9 @@
         if (newVol > 1) newVol = 1;
         if (newVol < 0) newVol = 0;
         audioEngine.volume = newVol;
+        
+        // NEW: Updates text interface dynamically to reflect clear percentage metrics
+        document.getElementById('volumePct').innerText = `${Math.round(newVol * 100)}%`;
     }
 
     audioEngine.addEventListener('timeupdate', () => {
@@ -430,6 +500,9 @@
     });
 
     audioEngine.addEventListener('ended', () => {
+        const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
+        if (activeChip) activeChip.classList.remove('playing-now');
+
         playBtn.disabled = false;
         playBtn.innerText = "▶ PLAY";
         fadeBtn.disabled = true;
@@ -448,9 +521,17 @@
     function playCurrentTrack() {
         if (fadeInterval) clearInterval(fadeInterval);
         audioEngine.play();
+        
         playBtn.disabled = true;
         playBtn.innerText = "▶ PLAYING";
         fadeBtn.disabled = false;
+
+        // NEW: Injects pulsating green light boundaries straight to the active chip row asset
+        const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
+        if (activeChip) {
+            activeChip.classList.remove('active');
+            activeChip.classList.add('playing-now');
+        }
     }
 
     function fadeCurrentTrack() {
@@ -471,11 +552,14 @@
                 fadeInterval = null;
                 audioEngine.pause();
                 audioEngine.currentTime = 0;
-                audioEngine.volume = startVolume; // Resets hardware volume baseline back to before fade
+                audioEngine.volume = startVolume; 
                 
                 playBtn.disabled = false;
                 playBtn.innerText = "▶ PLAY";
                 
+                const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
+                if (activeChip) activeChip.classList.remove('playing-now');
+
                 if (currentTrackIndex + 1 < tracks.length) {
                     loadTrack(currentTrackIndex + 1);
                 }
@@ -495,8 +579,7 @@
         isUserScrubbing = false;
     }
 
-    // Default initialization loads playlist.json first
-    window.onload = () => { switchCeremonialSet('playlist.json', 1); };
+    window.onload = initConsole;
 </script>
 </body>
 </html>
