@@ -81,13 +81,15 @@
             transition: transform 0.1s ease, border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .nav-chip.color-blue { background-color: var(--btn-blue); }
-        .nav-chip.color-yellow { background-color: var(--btn-yellow); border-color: #f1c40f; }
-        .nav-chip.color-green { background-color: var(--btn-green); border-color: #2ecc71; }
-        .nav-chip.color-red { background-color: var(--btn-red); border-color: #e74c3c; }
-        .nav-chip.color-orange { background-color: var(--btn-orange); border-color: #e67e22; }
-        .nav-chip.color-purple { background-color: var(--btn-purple); border-color: #9b59b6; }
-        
+        /* Unified resting borders matching the dark console aesthetic */
+        .nav-chip.color-blue   { background-color: var(--btn-blue);   border-color: var(--panel-border); }
+        .nav-chip.color-yellow { background-color: var(--btn-yellow); border-color: var(--panel-border); }
+        .nav-chip.color-green  { background-color: var(--btn-green);  border-color: var(--panel-border); }
+        .nav-chip.color-red    { background-color: var(--btn-red);    border-color: var(--panel-border); }
+        .nav-chip.color-orange { background-color: var(--btn-orange); border-color: var(--panel-border); }
+        .nav-chip.color-purple { background-color: var(--btn-purple); border-color: var(--panel-border); }
+
+                
         .nav-chip.active {
             border-color: var(--text-bright) !important;
             box-shadow: 0 0 12px var(--text-bright);
