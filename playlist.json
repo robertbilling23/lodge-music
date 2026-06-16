@@ -3,21 +3,24 @@
     "id": "track1",
     "title": "So Mote It Be",
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
-    "cue": "Wait for the gavel to strike, then trigger immediately.",
+    "cue": "When the Chaplain says HARMONY",
     "lyrics": [
-      "Behold how good and how pleasant it is",
-      "For brethren to dwell together in unity",
-      "So mote it be."
+      "The Lodge being duly formed",
+      "Before it is declared open",
+      "Let us invoke a blessing from the GAOTU on all our undertakings",
+      "may our Labours thus begun in peace",
+      "Be closed in HARMONY",
+      "SO MOTE IT BE"
     ]
   },
   {
     "id": "track2",
     "title": "Open First Degree TB",
     "file": "audio/2-Open-1st-TB.mp3",
-    "cue": "Wait for the handshake to completely drop.",
+    "cue": "Wait for the IG to knock three times",
     "lyrics": [
-      "The tracing board displays the light",
-      "Guided safely through the night..."
+      "Hail Eternal by whose aid",
+      "All created things were made."
     ]
   }
 ]
