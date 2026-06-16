@@ -6,14 +6,8 @@
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "When the Chaplain says HARMONY",
     "lyrics": [
-      "The Lodge being duly formed,",
-      "before it is declared open,",
-      "let us invoke a blessing from the GAOTU",
-      "on all our undertakings.",
-      "May our Labours, thus begun in Order,",
-      "be conducted in Peace",
-      "and closed in HARMONY.",
-      "SO MOTE IT BE"
+      "The lodge being duly formed, before it is declared",
+      "open let us invoke a blessing from the GAOTU on all our undertakings. May our labours, thus begun in order, be conducted in peace, and closed in harmony."
     ]
   },
   {
@@ -22,24 +16,15 @@
     "file": "audio/2-Open-1st-TB.mp3",
     "cue": "Wait for the IG to knock three times",
     "lyrics": [
-      "Hail Eternal by whose aid",
-      "All created things were made.",
-      "And more words"
-    ]
-  },
-  {
-    "id": "track1",
-    "title": "So Mote It Be 2",
-    "color": "green",
-    "file": "audio/1-Open-1st-SMIB-Faster.mp3",
-    "cue": "When the Chaplain says HARMONY",
-    "lyrics": [
-      "The Lodge being duly formed",
-      "Before it is declared open",
-      "Let us invoke a blessing from the GAOTU on all our undertakings",
-      "may our Labours thus begun in peace",
-      "Be closed in HARMONY",
-      "SO MOTE IT BE"
+      "Hail, Eternal, by Whose aid,",
+      "All created things were made;",
+      "Heav'n and earth,",
+      "Thy vast design;",
+      "Hear us, Architect divine.",
+      "May our work, begun in Thee,",
+      "Ever blest with order be,",
+      "And may we, when labours cease,",
+      "Part in harmony and peace."
     ]
   },
   {
@@ -59,7 +44,8 @@
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "When the IG opens the door",
     "lyrics": [
-      "This can be played earlier if the DC is walking around the lodge to escort the visitors"
+      "This can be played earlier if the DC is walking around the lodge to escort the visitors.  It is mainly intended for non PMs.",
+      "This tune is known as the March of the Angry Men."
     ]
   },
   {
@@ -70,7 +56,55 @@
     "cue": "When the DC heads west to escort the visitors",
     "lyrics": [
       "This is also fine for WM entry.",
-      "When the DC is announcing the visitors, lower the volume to barely audible, but keep it playing."
+      "When the DC is announcing the visitors, lower the volume to barely audible, but keep it playing.",
+      "The tune is called Scipio."
+    ]
+  },
+  {
+    "id": "track_1781590794449",
+    "title": "WM Entry Star Wars",
+    "color": "blue",
+    "file": "audio/filename.mp3",
+    "cue": "When the door is opened to admit the WM",
+    "lyrics": [
+      "Note: This is a fun track and may not always be appropriate"
+    ]
+  },
+  {
+    "id": "track_1781590846184",
+    "title": "Close First TB",
+    "color": "blue",
+    "file": "audio/filename.mp3",
+    "cue": "After the IG knocks three times",
+    "lyrics": [
+      "Abide with me, fast falls the eventide;",
+      "The darkness deepens, Lord, with me abide;",
+      "When other helpers fail, and comforts flee,",
+      "Help of the helpless, O abide with me."
+    ]
+  },
+  {
+    "id": "track_1781591259190",
+    "title": "Fidelity Fidelity",
+    "color": "blue",
+    "file": "audio/filename.mp3",
+    "cue": "When the IPM is saying - the act",
+    "lyrics": [
+      "Brethren, nothing now remains but, according to Antient custom, to lock up our s . . . ts in a safe and sacred repository, uniting in the act"
+    ]
+  },
+  {
+    "id": "track_1781591161781",
+    "title": "Wardens and Deacons",
+    "color": "blue",
+    "file": "audio/filename.mp3",
+    "cue": "After the DC says - Brother Deacons",
+    "lyrics": [
+      "Ode 70.2",
+      "The day Thou gavest, Lord, is ended,",
+      "The darkness falls at Thy behest;",
+      "To Thee our morning hymns ascended,",
+      "Thy praise shall sanctify our rest."
     ]
   }
 ]
