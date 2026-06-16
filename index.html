@@ -16,6 +16,7 @@
             --stop-red: #e74c3c;
             --active-blue: #00bcd4;
             --disabled: #2d3d52;
+            --footer-blue: #0f2c59;
         }
 
         body {
@@ -23,12 +24,11 @@
             background-color: var(--bg-dark);
             color: var(--text-bright);
             margin: 0;
-            padding: 10px;
+            padding: 10px 10px 0 10px;
             box-sizing: border-box;
             -webkit-user-select: none;
             user-select: none;
             touch-action: manipulation;
-            /* Force the app to exactly fit the mobile screen without overflow */
             height: 100vh;
             height: -webkit-fill-available;
             display: flex;
@@ -36,20 +36,28 @@
             overflow: hidden;
         }
 
-        /* Compact, multi-row grid for seeing heaps of tracks at once */
+        .console-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+            min-height: 0; 
+        }
+
+        /* Top Grid Container: Hard locked to 35% to give up to 21 tracks a persistent home */
         .playlist-grid-container {
-            flex: 0 0 35%; /* Allocates a solid third of the screen to track selection */
+            flex: 0 0 35%; 
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
             border-radius: 8px;
             padding: 8px;
-            overflow-y: auto; /* Scroll vertically through the grid if more than 12 tracks */
+            overflow-y: auto; 
             min-height: 0;
         }
 
         .playlist-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 clean columns side-by-side */
+            grid-template-columns: repeat(3, 1fr); 
             gap: 8px;
         }
 
@@ -57,13 +65,13 @@
             background: #1e293b;
             border: 1px solid var(--panel-border);
             color: var(--text-dim);
-            padding: 12px 6px;
+            padding: 14px 6px; /* Enhanced padding for an easier tap area */
             border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: bold;
+            font-size: 1.15rem; /* Scaled up font for ultra-fast reading */
+            font-weight: 800;
             text-align: center;
             cursor: pointer;
-            white-space: normal; /* Wrap text neatly inside the block */
+            white-space: normal; 
             word-break: break-word;
             display: flex;
             align-items: center;
@@ -78,58 +86,7 @@
             box-shadow: 0 0 8px rgba(0, 188, 212, 0.3);
         }
 
-        /* Simplified Instruction Cue Box */
-        .cue-banner {
-            flex: 0 0 auto;
-            background: rgba(243, 156, 18, 0.12);
-            border: 2px solid var(--cue-gold); /* Thicker border for clear visibility */
-            border-radius: 8px;
-            padding: 10px 12px;
-            margin: 4px 0;
-        }
-        .cue-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--cue-gold);
-            font-weight: 800;
-            margin-bottom: 2px;
-            display: block;
-        }
-        .cue-text {
-            font-size: 1rem;
-            font-weight: bold;
-            line-height: 1.3;
-        }
-
-        /* Teleprompter Display Screen */
-        .lyrics-panel {
-            flex: 1; /* Automatically takes up whatever space is left in the middle */
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-radius: 8px;
-            padding: 10px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            min-height: 0;
-        }
-
-        .lyric-line {
-            font-size: 1.1rem;
-            color: #3d4f68;
-            text-align: center;
-            transition: all 0.2s ease;
-            font-weight: 500;
-        }
-        .lyric-line.active {
-            color: var(--text-bright);
-            font-size: 1.25rem;
-            font-weight: bold;
-        }
-
-        /* Locked Bottom Control Panel */
+        /* Middle Control Panel: Anchored immediately under track grid selection targets */
         .control-deck {
             flex: 0 0 auto;
             background: var(--panel-bg);
@@ -139,7 +96,6 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            margin-top: auto; /* Anchors it completely to the screen bottom */
         }
 
         .track-info-row {
@@ -147,8 +103,8 @@
             justify-content: space-between;
             align-items: center;
         }
-        .current-track-title { font-weight: 800; font-size: 1.1rem; color: var(--active-blue); }
-        .running-time { font-family: monospace; color: var(--text-dim); font-size: 0.9rem; font-weight: bold; }
+        .current-track-title { font-weight: 900; font-size: 1.25rem; color: var(--active-blue); }
+        .running-time { font-family: monospace; color: var(--text-dim); font-size: 1rem; font-weight: bold; }
 
         .timeline-slider {
             -webkit-appearance: none;
@@ -163,8 +119,8 @@
         .timeline-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 20px; /* Larger hit area for easier finger tracking */
-            height: 20px;
+            width: 22px; 
+            height: 22px;
             border-radius: 50%;
             background: var(--active-blue);
             cursor: pointer;
@@ -177,10 +133,10 @@
 
         .btn-tactical {
             flex: 1;
-            padding: 16px; /* Massive, friendly touch button targets */
+            padding: 16px; 
             border: none;
             border-radius: 8px;
-            font-size: 1.2rem;
+            font-size: 1.3rem; /* Scaled up text sizing */
             font-weight: 900;
             color: white;
             display: flex;
@@ -198,32 +154,81 @@
 
         .btn-tactical-play { background-color: var(--play-green); }
         .btn-tactical-fade { background-color: var(--stop-red); }
+
+        /* "When to Press Play" Box: Sits right below control triggers */
+        .cue-banner {
+            flex: 0 0 auto;
+            background: rgba(243, 156, 18, 0.12);
+            border: 2px solid var(--cue-gold); 
+            border-radius: 8px;
+            padding: 10px 12px;
+        }
+        .cue-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--cue-gold);
+            font-weight: 900;
+            margin-bottom: 2px;
+            display: block;
+        }
+        .cue-text {
+            font-size: 1.1rem; /* Slightly larger instructions text */
+            font-weight: bold;
+            line-height: 1.3;
+        }
+
+        /* Lyrics Panel: Flexible buffer area. Safely shrinks down to 0 text lines if screen limits require it */
+        .lyrics-panel {
+            flex: 1; 
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 0; 
+        }
+
+        .lyric-line {
+            font-size: 1.15rem;
+            color: var(--text-bright);
+            text-align: center;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        /* Centered Bottom Custom Badge Bar */
+        .ceremonial-footer {
+            flex: 0 0 auto;
+            background-color: var(--footer-blue);
+            color: var(--text-bright);
+            text-align: center;
+            padding: 8px 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin-top: 5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-left: -10px;
+            margin-right: -10px;
+        }
     </style>
 </head>
 <body>
 
 <div class="console-grid">
-    <!-- Top Grid Section: Keeps up to 12-15 tracks visible simultaneously without scrolling -->
+    <!-- 1. Track Picker Matrix Array -->
     <div class="playlist-grid-container">
         <div class="playlist-grid" id="playlistGrid"></div>
     </div>
 
-    <!-- Intuitive Operational Instructions Box -->
-    <div class="cue-banner">
-        <span class="cue-label">When to Press Play</span>
-        <span class="cue-text" id="cueText">Select a track above to stand by...</span>
-    </div>
-
-    <!-- Teleprompter Screen -->
-    <div class="lyrics-panel" id="lyricsPanel">
-        <div class="lyric-line active">Awaiting selection...</div>
-    </div>
-
-    <!-- Fixed Bottom Controls Target -->
+    <!-- 2. Primary Control Interface (Safely positioned near center-screen) -->
     <div class="control-deck">
         <div class="track-info-row">
             <span class="current-track-title" id="trackTitle">---</span>
-            <button onclick="window.location.reload(true)" style="background: #1e293b; border: 1px solid var(--panel-border); color: var(--text-dim); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; cursor: pointer; -webkit-user-select: none; user-select: none;">🔄 Refresh App</button>
             <span class="running-time" id="trackTime">0:00 / 0:00</span>
         </div>
         
@@ -234,6 +239,22 @@
             <button class="btn-tactical btn-tactical-fade" id="fadeBtn" onclick="fadeCurrentTrack()" disabled>■ FADE OUT</button>
         </div>
     </div>
+
+    <!-- 3. Operational Timing Directives -->
+    <div class="cue-banner">
+        <span class="cue-label">When to Press Play</span>
+        <span class="cue-text" id="cueText">Select a track above to stand by...</span>
+    </div>
+
+    <!-- 4. Text Display Window (Shrinks dynamically when space is minimal) -->
+    <div class="lyrics-panel" id="lyricsPanel">
+        <div class="lyric-line">Awaiting selection...</div>
+    </div>
+</div>
+
+<!-- Dedicated Traditional Footer -->
+<div class="ceremonial-footer">
+    WBro. Robert Billing PGSwdB GLHer
 </div>
 
 <audio id="mainAudioEngine" preload="auto"></audio>
@@ -259,22 +280,38 @@
                 loadTrack(0);
             }
         } catch (err) {
-            document.getElementById('cueText').innerText = "Error reading playlist.json layout.";
+            document.getElementById('cueText').innerText = "Error reading playlist.json layout file assets.";
         }
     }
 
-    // Generates a 3-column button matrix from your playlist.json arrays
     function buildPlaylistGrid() {
         const grid = document.getElementById('playlistGrid');
         grid.innerHTML = '';
         tracks.forEach((track, index) => {
             const chip = document.createElement('div');
+            // Grabs clean title without prefixes
             chip.className = `nav-chip ${index === 0 ? 'active' : ''}`;
             chip.id = `chip-${index}`;
-            chip.innerText = `${index + 1}. ${track.title}`;
-            chip.onclick = () => { if (audioEngine.paused) { loadTrack(index); } else { fadeAndSwitch(index); } };
+            chip.innerText = track.title; 
+            
+            // Handles both activation loading and instant play on repetitive triggers
+            chip.onclick = () => { handleTrackSelection(index); };
             grid.appendChild(chip);
         });
+    }
+
+    function handleTrackSelection(index) {
+        if (currentTrackIndex === index) {
+            // Re-trigger playback directly if clicked while already selected
+            playCurrentTrack();
+        } else {
+            // Standard loading path transition
+            if (audioEngine.paused) { 
+                loadTrack(index); 
+            } else { 
+                fadeAndSwitch(index); 
+            }
+        }
     }
 
     function loadTrack(index) {
@@ -297,7 +334,7 @@
         document.getElementById('trackTitle').innerText = track.title;
         document.getElementById('cueText').innerText = track.cue || "No special cues assigned.";
         
-        buildTeleprompter(track.lyrics || []);
+        buildStaticTextPanel(track.lyrics || []);
         
         playBtn.disabled = false;
         playBtn.innerText = "▶ PLAY";
@@ -306,39 +343,27 @@
         document.getElementById('trackTime').innerText = `0:00 / 0:00`;
     }
 
-    // 4. Construct static, highly legible lyric screen layout
-    function buildTeleprompter(lines) {
+    function buildStaticTextPanel(lines) {
         const panel = document.getElementById('lyricsPanel');
         panel.innerHTML = '';
-        
         if (lines.length === 0) {
-            panel.innerHTML = '<div class="lyric-line">(Instrumental / No Words)</div>';
+            panel.innerHTML = '<div class="lyric-line" style="color:var(--text-dim)">(Instrumental / No Words)</div>';
             return;
         }
-        
-        // Prints every single line immediately at full brightness
         lines.forEach((line) => {
             const div = document.createElement('div');
             div.className = 'lyric-line';
-            div.style.color = 'var(--text-bright)'; /* Forces 100% full brightness */
             div.innerText = line;
             panel.appendChild(div);
         });
-        
         panel.scrollTop = 0;
-    }
-
-    // 6. Disabled tracking engine to keep lyrics perfectly static
-    function syncTeleprompterProgress() {
-        // Left intentionally blank so the text never shifts or fades during playback
     }
 
     audioEngine.addEventListener('timeupdate', () => {
         if (!isUserScrubbing) {
             const pct = (audioEngine.currentTime / audioEngine.duration) * 100;
             timeline.value = pct || 0;
-            updateTimeDisplay();
-            syncTeleprompterProgress();
+            document.getElementById('trackTime').innerText = `${formatTime(audioEngine.currentTime)} / ${formatTime(audioEngine.duration)}`;
         }
     });
 
@@ -351,17 +376,12 @@
         }
     });
 
-    function updateTimeDisplay() {
-        document.getElementById('trackTime').innerText = `${formatTime(audioEngine.currentTime)} / ${formatTime(audioEngine.duration)}`;
-    }
-
     function formatTime(secs) {
         if (isNaN(secs)) return "0:00";
         const m = Math.floor(secs / 60);
         const s = Math.floor(secs % 60);
         return `${m}:${s < 10 ? '0' : ''}${s}`;
     }
-
 
     function playCurrentTrack() {
         if (fadeInterval) clearInterval(fadeInterval);
@@ -411,8 +431,7 @@
     function scrubAudio(value) {
         isUserScrubbing = true;
         audioEngine.currentTime = (value / 100) * audioEngine.duration;
-        updateTimeDisplay();
-        syncTeleprompterProgress();
+        document.getElementById('trackTime').innerText = `${formatTime(audioEngine.currentTime)} / ${formatTime(audioEngine.duration)}`;
         isUserScrubbing = false;
     }
 
