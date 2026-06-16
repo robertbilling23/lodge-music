@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ceremonial Configuration Console</title>
+    <style>
+        :root {
+            --bg-dark: #0f141c;
+            --panel-bg: #161f2b;
+            --panel-border: #233145;
+            --text-bright: #ffffff;
+            --text-dim: #9ab0c7;
+            --active-blue: #00bcd4;
+            --play-green: #2ecc71;
+            --stop-red: #e74c3c;
+            --cue-gold: #f39c12;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-bright);
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .editor-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 { margin: 0; font-size: 1.5rem; color: var(--active-blue); }
+
+        .select-style {
+            background: #1e293b;
+            color: var(--text-bright);
+            border: 1px solid var(--panel-border);
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .main-workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media(max-width: 768px) {
+            .main-workspace { grid-template-columns: 1fr; }
+        }
+
+        .workspace-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-bottom: 1px dashed var(--panel-border);
+            padding-bottom: 8px;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Track List Item Bars */
+        .track-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .track-item {
+            background: #1e293b;
+            border: 1px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .track-item:hover, .track-item.selected {
+            border-color: var(--active-blue);
+            background: rgba(0, 188, 212, 0.05);
+        }
+
+        .track-meta { display: flex; flex-direction: column; gap: 4px; }
+        .track-title-text { font-weight: bold; font-size: 1.1rem; }
+        .track-file-subtext { font-size: 0.8rem; color: var(--text-dim); font-family: monospace; }
+
+        .track-order-actions { display: flex; gap: 5px; }
+
+        /* General Form Layouts */
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        label { font-size: 0.9rem; font-weight: bold; color: var(--text-dim); }
+        
+        input[type="text"], textarea, select {
+            background: #1e293b;
+            color: var(--text-bright);
+            border: 1px solid var(--panel-border);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+        }
+        input[type="text"]:focus, textarea:focus, select:focus {
+            border-color: var(--active-blue);
+        }
+
+        textarea { resize: vertical; min-height: 120px; font-weight: bold; }
+
+        /* Tactical Control Buttons */
+        .btn-utility {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-add { background-color: var(--play-green); }
+        .btn-delete { background-color: var(--stop-red); }
+        .btn-blue { background-color: #34495e; }
+        .btn-copy { background-color: var(--active-blue); color: var(--bg-dark); font-size: 1.1rem; padding: 14px; width: 100%; justify-content: center;}
+
+        /* Output Box Layout */
+        .output-box {
+            background: #090d14;
+            color: #a5b4fc;
+            font-family: monospace;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid var(--panel-border);
+            white-space: pre-wrap;
+            max-height: 250px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="editor-container">
+    <div class="header-panel">
+        <div>
+            <h1>Ceremonial Data Management Portal</h1>
+            <div style="color: var(--text-dim); font-size: 0.85rem; margin-top: 4px;">Configure on-screen track properties dynamically</div>
+        </div>
+        <div>
+            <select class="select-style" id="setSelect" onchange="loadChosenPlaylist(this.value)">
+                <option value="">-- Select a Set --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="main-workspace">
+        <div class="workspace-panel">
+            <div class="panel-title">
+                <span>Ceremonial Sequence Tracklist</span>
+                <button class="btn-utility btn-add" onclick="addNewBlankTrack()">➕ Add Track</button>
+            </div>
+            <div class="track-list" id="trackListContainer">
+                <div style="color: var(--text-dim); text-align: center; padding: 4px;">Select a ceremonial workspace set from the top dropdown to map files...</div>
+            </div>
+        </div>
+
+        <div class="workspace-panel" id="propertiesPanel" style="opacity: 0.5; pointer-events: none;">
+            <div class="panel-title">
+                <span>Property Editor Form</span>
+                <button class="btn-utility btn-delete" onclick="deleteSelectedTrack()">🗑 Delete Track</button>
+            </div>
+            
+            <div class="form-group">
+                <label>Track Display Name (Clear text, numbers prefix hidden automatically)</label>
+                <input type="text" id="editTitle" oninput="updateTrackProperty('title', this.value)">
+            </div>
+
+            <div class="form-group">
+                <label>Audio File Location Path (e.g., audio/opening-ode.mp3)</label>
+                <input type="text" id="editFile" oninput="updateTrackProperty('file', this.value)">
+            </div>
+
+            <div class="form-group">
+                <label>Button Background Base Color Variant</label>
+                <select id="editColor" onchange="updateTrackProperty('color', this.value)">
+                    <option value="blue">Blue (Standard)</option>
+                    <option value="yellow">Yellow</option>
+                    <option value="green">Green</option>
+                    <option value="red">Red</option>
+                    <option value="orange">Orange</option>
+                    <option value="purple">Purple</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>When to Press Play (Visual Directives Banner Cue Text)</label>
+                <input type="text" id="editCue" oninput="updateTrackProperty('cue', this.value)">
+            </div>
+
+            <div class="form-group">
+                <label>On-Screen Display Lyrics / Text Lines (One line per row split)</label>
+                <textarea id="editLyrics" oninput="updateTrackLyricsSplit(this.value)" placeholder="Enter lyric lines here..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="workspace-panel">
+        <div class="panel-title">Export Dynamic Code Matrix Target</div>
+        <div class="output-box" id="jsonOutput">Select or build assets to monitor raw script streams...</div>
+        <button class="btn-utility btn-copy" onclick="copyFormattedJSONToClipboard()">📋 Copy Formatted JSON Code</button>
+    </div>
+</div>
+
+<script>
+    let tracksArray = [];
+    let activeTrackIndex = null;
+
+    // 1. Core initialization configuration loading map values instantly
+    async function initEditor() {
+        try {
+            const response = await fetch('sets.json');
+            const sets = await response.json();
+            const selector = document.getElementById('setSelect');
+            
+            sets.forEach(set => {
+                const opt = document.createElement('option');
+                opt.value = set.file;
+                opt.innerText = set.label;
+                selector.appendChild(opt);
+            });
+        } catch (err) {
+            alert("Error running init routines. Ensure sets.json exists at the root folder level location.");
+        }
+    }
+
+    // 2. Fetch chosen data mapping arrays from root path profiles
+    async function loadChosenPlaylist(filename) {
+        if (!filename) {
+            document.getElementById('trackListContainer').innerHTML = `<div style="color: var(--text-dim); text-align: center;">Select a ceremonial workspace set...</div>`;
+            disablePropertiesPanel();
+            return;
+        }
+        
+        try {
+            const response = await fetch(filename);
+            tracksArray = await response.json();
+            activeTrackIndex = null;
+            disablePropertiesPanel();
+            renderTrackListUi();
+            updateJsonExportPreview();
+        } catch (err) {
+            // Setup blank framework array context fallback if targeted layout doesn't exist yet
+            tracksArray = [];
+            activeTrackIndex = null;
+            disablePropertiesPanel();
+            renderTrackListUi();
+            updateJsonExportPreview();
+        }
+    }
+
+    // 3. Render left panel tracking rows
+    function renderTrackListUi() {
+        const container = document.getElementById('trackListContainer');
+        container.innerHTML = '';
+
+        if (tracksArray.length === 0) {
+            container.innerHTML = `<div style="color: var(--text-dim); text-align: center; padding: 10px;">No tracks in this file. Click "Add Track" to start.</div>`;
+            return;
+        }
+
+        tracksArray.forEach((track, idx) => {
+            const div = document.createElement('div');
+            div.className = `track-item ${activeTrackIndex === idx ? 'selected' : ''}`;
+            div.onclick = (e) => {
+                if (e.target.tagName !== 'BUTTON') { loadTrackPropertiesToForm(idx); }
+            };
+
+            div.innerHTML = `
+                <div class="track-meta">
+                    <span class="track-title-text">${track.title || '(Untitled Track)'}</span>
+                    <span class="track-file-subtext">${track.file || 'no-file-mapped.mp3'}</span>
+                </div>
+                <div class="track-order-actions">
+                    <button class="btn-utility btn-blue" style="padding: 6px 10px;" onclick="moveTrackOrder(${idx}, -1)">▲</button>
+                    <button class="btn-utility btn-blue" style="padding: 6px 10px;" onclick="moveTrackOrder(${idx}, 1)">▼</button>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    // 4. Mount selected dataset targets right inside form parameters
+    function loadTrackPropertiesToForm(index) {
+        activeTrackIndex = index;
+        
+        // Highlights the clicked tracker row inside UI mapping sheets
+        document.querySelectorAll('.track-item').forEach((item, idx) => {
+            item.classList.toggle('selected', idx === index);
+        });
+
+        const track = tracksArray[index];
+        const panel = document.getElementById('propertiesPanel');
+        panel.style.opacity = "1";
+        panel.style.pointerEvents = "auto";
+
+        document.getElementById('editTitle').value = track.title || '';
+        document.getElementById('editFile').value = track.file || '';
+        document.getElementById('editColor').value = track.color || 'blue';
+        document.getElementById('editCue').value = track.cue || '';
+        document.getElementById('editLyrics').value = track.lyrics ? track.lyrics.join('\n') : '';
+    }
+
+    function disablePropertiesPanel() {
+        const panel = document.getElementById('propertiesPanel');
+        panel.style.opacity = "0.5";
+        panel.style.pointerEvents = "none";
+        document.getElementById('editTitle').value = '';
+        document.getElementById('editFile').value = '';
+        document.getElementById('editCue').value = '';
+        document.getElementById('editLyrics').value = '';
+    }
+
+    // 5. Live update event logic routines
+    function updateTrackProperty(property, value) {
+        if (activeTrackIndex === null) return;
+        tracksArray[activeTrackIndex][property] = value;
+        
+        // Re-render subtext changes dynamically without blowing away active form selections
+        const item = document.querySelectorAll('.track-item')[activeTrackIndex];
+        if (item) {
+            if (property === 'title') item.querySelector('.track-title-text').innerText = value || '(Untitled Track)';
+            if (property === 'file') item.querySelector('.track-file-subtext').innerText = value || 'no-file-mapped.mp3';
+        }
+        updateJsonExportPreview();
+    }
+
+    function updateTrackLyricsSplit(textValue) {
+        if (activeTrackIndex === null) return;
+        // Splits rows cleanly based on standard text return string spacing inputs
+        tracksArray[activeTrackIndex].lyrics = textValue.split('\n').filter(line => line.trim() !== '');
+        updateJsonExportPreview();
+    }
+
+    // 6. Append structural actions blocks
+    function addNewBlankTrack() {
+        const blankTrack = {
+            "id": "track_" + Date.now(),
+            "title": "New Music Entry",
+            "color": "blue",
+            "file": "audio/filename.mp3",
+            "cue": "Enter timing directive guidelines here...",
+            "lyrics": ["First line of text words..."]
+        };
+        tracksArray.push(blankTrack);
+        renderTrackListUi();
+        loadTrackPropertiesToForm(tracksArray.length - 1);
+        updateJsonExportPreview();
+    }
+
+    function deleteSelectedTrack() {
+        if (activeTrackIndex === null) return;
+        tracksArray.splice(activeTrackIndex, 1);
+        activeTrackIndex = null;
+        disablePropertiesPanel();
+        renderTrackListUi();
+        updateJsonExportPreview();
+    }
+
+    function moveTrackOrder(index, direction) {
+        const targetIndex = index + direction;
+        if (targetIndex < 0 || targetIndex >= tracksArray.length) return;
+
+        // Perform safe array item value position swaps
+        const temp = tracksArray[index];
+        tracksArray[index] = tracksArray[targetIndex];
+        tracksArray[targetIndex] = temp;
+
+        activeTrackIndex = targetIndex;
+        renderTrackListUi();
+        loadTrackPropertiesToForm(targetIndex);
+        updateJsonExportPreview();
+    }
+
+    // 7. Render serialization previews
+    function updateJsonExportPreview() {
+        const output = document.getElementById('jsonOutput');
+        output.innerText = JSON.stringify(tracksArray, null, 2);
+    }
+
+    function copyFormattedJSONToClipboard() {
+        const text = document.getElementById('jsonOutput').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert("JSON code array matrix copied directly to memory clipboard! Open your target file in GitHub, select everything, and paste this directly over it to overwrite the changes.");
+        }).catch(() => {
+            alert("Clipboard copy actions restricted by browser engine workflows.");
+        });
+    }
+
+    window.onload = initEditor;
+</script>
+</body>
+</html>
