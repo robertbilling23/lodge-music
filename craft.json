@@ -4,10 +4,9 @@
     "title": "So Mote It Be",
     "color": "yellow",
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
-    "cue": "When the Chaplain says HARMONY",
+    "cue": "As the Chaplain says - in harmony",
     "lyrics": [
-      "The lodge being duly formed, before it is declared",
-      "open let us invoke a blessing from the GAOTU on all our undertakings. May our labours, thus begun in order, be conducted in peace, and closed in harmony."
+      "The lodge being duly formed, before it is declared open let us invoke a blessing from the GAOTU on all our undertakings. May our labours, thus begun in order, be conducted in peace, and closed in harmony."
     ]
   },
   {
@@ -16,15 +15,7 @@
     "file": "audio/2-Open-1st-TB.mp3",
     "cue": "Wait for the IG to knock three times",
     "lyrics": [
-      "Hail, Eternal, by Whose aid,",
-      "All created things were made;",
-      "Heav'n and earth,",
-      "Thy vast design;",
-      "Hear us, Architect divine.",
-      "May our work, begun in Thee,",
-      "Ever blest with order be,",
-      "And may we, when labours cease,",
-      "Part in harmony and peace."
+      "Hail, Eternal, by Whose aid, All created things were made; Heav'n and earth, Thy vast design; Hear us, Architect divine. May our work, begun in Thee, Ever blest with order be, And may we, when labours cease, Part in harmony and peace."
     ]
   },
   {
@@ -77,10 +68,7 @@
     "file": "audio/68 Close 1st TB.mp3",
     "cue": "After the IG knocks three times",
     "lyrics": [
-      "Abide with me, fast falls the eventide;",
-      "The darkness deepens, Lord, with me abide;",
-      "When other helpers fail, and comforts flee,",
-      "Help of the helpless, O abide with me."
+      "Abide with me, fast falls the eventide; The darkness deepens, Lord, with me abide; When other helpers fail, and comforts flee, Help of the helpless, O abide with me."
     ]
   },
   {
@@ -101,10 +89,7 @@
     "cue": "After the DC says - Brother Deacons",
     "lyrics": [
       "Ode 70.2",
-      "The day Thou gavest, Lord, is ended,",
-      "The darkness falls at Thy behest;",
-      "To Thee our morning hymns ascended,",
-      "Thy praise shall sanctify our rest."
+      "The day Thou gavest, Lord, is ended, The darkness falls at Thy behest; To Thee our morning hymns ascended, Thy praise shall sanctify our rest."
     ]
   },
   {
