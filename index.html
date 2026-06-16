@@ -564,12 +564,19 @@
         }
     }
 
-    // NEW: Hot-swaps disabled styling tags out for full operation parameters
     function activateLoadedButtonChip(index, track) {
         const chip = document.getElementById(`chip-${index}`);
         if (chip) {
             const chosenColor = track.color ? track.color.toLowerCase() : 'blue';
             chip.className = `nav-chip color-${chosenColor} ${index === currentTrackIndex ? 'active' : ''}`;
+            
+            // NEW: Scans the title for any long words and shrinks the font size dynamically
+            const words = track.title.split(' ');
+            const hasLongWord = words.some(word => word.length > 9);
+            if (hasLongWord) {
+                chip.style.fontSize = '1.05rem'; // Gracefully scales down from 1.25rem to prevent character splitting
+            }
+
             chip.onclick = () => { handleTrackSelection(index); };
         }
     }
