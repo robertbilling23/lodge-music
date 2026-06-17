@@ -24,7 +24,7 @@
   {
     "id": "track1",
     "title": "Minutes",
-    "color": "purple",
+    "color": "green",
     "file": "audio/Minutes_William Tell.mp3",
     "cue": "After the WM knocks to carry the motion",
     "lyrics": [
@@ -34,7 +34,7 @@
   {
     "id": "track1",
     "title": "Visitor Entry",
-    "color": "green",
+    "color": "darkblue",
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "When the IG opens the door",
     "lyrics": [
@@ -46,7 +46,7 @@
   {
     "id": "track1",
     "title": "Past Masters",
-    "color": "green",
+    "color": "darkblue",
     "file": "audio/PMEntry_marchscipio.wav",
     "cue": "When the DC heads west to escort the visitors",
     "lyrics": [
@@ -58,7 +58,7 @@
   {
     "id": "track_1781590794449",
     "title": "WM Entry Star Wars",
-    "color": "green",
+    "color": "darkblue",
     "file": "audio/WMEntry_Star Wars.mp3",
     "cue": "When the door is opened to admit the WM",
     "lyrics": [
