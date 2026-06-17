@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Lodge Music</title>
     
-    <!-- PWA Registration Assets Links -->
     <link rel="manifest" href="manifest.json">
     <script>
         if ('serviceWorker' in navigator) {
@@ -93,8 +92,6 @@
             justify-content: center;
             line-height: 1.1;
             transition: transform 0.1s ease, border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
-            
-            /* FIXED HEIGHT IMPLEMENTATION: Standardised base limits with tight vertical padding overflow guards */
             height: 72px;
             padding: 4px 6px;
         }
@@ -118,12 +115,10 @@
 
         .nav-chip.active {
             border-color: #ffffff !important;
-            /* Enhanced brilliant white neon aura for instant visual tracking */
             box-shadow: 0 0 20px 6px rgba(255, 255, 255, 0.85);
             filter: brightness(1.2);
             transform: scale(0.97);
         }
-
 
         .nav-chip.playing-now {
             border: 4px solid var(--play-green) !important;
@@ -138,7 +133,6 @@
             pointer-events: none; 
         }
 
-        /* HIDDEN DECK STRUCTURE: Suppressed out from main visual layout tree by default settings */
         .control-deck {
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
@@ -147,7 +141,6 @@
             display: none; 
             flex-direction: column;
             gap: 12px;
-            margin-top: -4px;
         }
 
         .track-info-row {
@@ -240,7 +233,7 @@
             font-size: 1.15rem;
             font-weight: bold;
             line-height: 1.3;
-            padding-right: 35px; /* Leave space for tactical toggle icon hit zone */
+            padding-right: 35px; 
         }
         
         .btn-deck-toggle {
@@ -351,8 +344,6 @@
             word-break: break-word;
             line-height: 1.2;
             box-sizing: border-box;
-            
-            /* FIXED HEIGHT SET SWITCHER SETTINGS: Restricts profile jumps to uniform targets */
             height: 54px;
             padding: 4px;
             display: flex;
@@ -367,7 +358,6 @@
             box-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
         }
 
-        /* HARD FOOTER ALIGNMENTS ROW: Fixes sharing wrapping limits entirely */
         .system-metric-row {
             display: flex;
             justify-content: space-between;
@@ -406,7 +396,6 @@
             background: rgba(0, 188, 212, 0.25);
         }
 
-        /* UPDATED: Clearer expanded two-line presentation banner rules */
         .ceremonial-footer {
             background-color: var(--footer-blue);
             color: var(--text-bright);
@@ -443,31 +432,10 @@
 <body>
 
 <div class="console-grid">
-    <!-- Playlists Selection Block Wrapper -->
     <div class="playlist-grid-container">
         <div class="playlist-grid" id="playlistGrid"></div>
     </div>
 
-    <!-- Switcher Deck Container Intercepted Directly Above Content Banner -->
-    <div class="playlist-grid-container-switcher">
-        <div class="set-switcher-grid" id="setSwitcherRow"></div>
-    </div>
-
-    <!-- RE-POSITIONED REMODELED BIO BANNER -->
-    <div class="ceremonial-footer">
-        I hope you find my app handy. Please share any requests or feedback.
-        <span class="footer-sub-note">WBro. Robert Billing PGSwdB GLHer</span>
-    </div>
-
-    <!-- Active Cue Display Line Panel -->
-    <div class="cue-banner">
-        <span class="cue-label">When to Press Play</span>
-        <span class="cue-text" id="cueText">Loading core assets...</span>
-        <!-- Tactical diagnostic deck toggle shortcut layout anchor point -->
-        <button class="btn-deck-toggle" onclick="toggleDiagnosticsPanel()">⚙️</button>
-    </div>
-
-    <!-- SECURED INLINE COLLAPSIBLE DIAGNOSTIC PANEL OVERLAY -->
     <div class="control-deck" id="diagnosticDeck">
         <div class="track-info-row">
             <span class="current-track-title" id="trackTitle">---</span>
@@ -482,12 +450,25 @@
         </div>
     </div>
 
-    <!-- Visual Words Prompt Panel -->
+    <div class="cue-banner">
+        <span class="cue-label">When to Press Play</span>
+        <span class="cue-text" id="cueText">Loading core assets...</span>
+        <button class="btn-deck-toggle" onclick="toggleDiagnosticsPanel()">⚙️</button>
+    </div>
+
     <div class="lyrics-panel" id="lyricsPanel">
         <div class="lyric-line">Awaiting system initialization...</div>
     </div>
 
-    <!-- Volume Adjustments Pad -->
+    <div class="playlist-grid-container-switcher">
+        <div class="set-switcher-grid" id="setSwitcherRow"></div>
+    </div>
+
+    <div class="ceremonial-footer">
+        I hope you find my app handy. Please share any requests or feedback.
+        <span class="footer-sub-note">WBro. Robert Billing PGSwdB GLHer</span>
+    </div>
+
     <div class="volume-pad">
         <div class="volume-status-row">
             <span>Volume</span>
@@ -500,7 +481,6 @@
         </div>
     </div>
 
-    <!-- UNIFIED METRIC AND ACTION ROW BLOCK -->
     <div class="system-metric-row">
         <div class="memory-status-box">
             <span class="memory-label">Music Size</span>
@@ -516,8 +496,6 @@
     let currentTrackIndex = 0;
     
     let audioCtx = null;
-    
-    // PERSISTENT MEMORY ARRAYS: Keeps all audio arrays preserved over lifetime lifecycle runs
     let audioCache = {}; 
     let cachedBytesCounter = {}; 
 
@@ -636,7 +614,6 @@
         for (let i = 0; i < tracks.length; i++) {
             const track = tracks[i];
             
-            // PERSISTENT SYNC ENGINE INTENT: Bypass download entirely if link already map matches memory records
             if (audioCache[track.file]) {
                 loadedCount++;
                 activateLoadedButtonChip(i, track);
@@ -645,7 +622,7 @@
             }
 
             try {
-                document.getElementById('cueText').innerText = `Buffering fresh items into memory matrix...`;
+                document.getElementById('cueText').innerText = `Buffering items into memory...`;
                 const res = await fetch(track.file);
                 const arrayBuffer = await res.arrayBuffer();
                 
@@ -702,6 +679,7 @@
         }
     }
 
+    // Interactive Toggle Script Engine
     function toggleDiagnosticsPanel() {
         const panel = document.getElementById('diagnosticDeck');
         if (panel.style.display === "flex") {
