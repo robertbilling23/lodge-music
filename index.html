@@ -42,7 +42,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #05070a; /* Ultra-dark backdrop for the outer black bars */
+            background-color: #05070a; /* Deep matte black for the outer flank bars */
             color: var(--text-bright);
             margin: 0;
             padding: 0;
@@ -52,7 +52,7 @@
             touch-action: manipulation;
             min-height: 100vh;
             display: flex;
-            justify-content: center; /* Centers the phone container on PC monitors */
+            justify-content: center; 
             overflow-y: auto;
         }
 
@@ -64,12 +64,12 @@
             width: 100%;
             box-sizing: border-box;
             padding: 10px;
-            background-color: var(--bg-dark); /* Keeps your clean console background color inside the column */
-
-            /* RESPONSIVE HOOK: Automatically locks the layout to a crisp phone shape on desktop screens */
-            max-width: 480px; 
+            background-color: var(--bg-dark); 
             min-height: 100vh;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+
+            /* UPDATED: Wider 4:3 desktop scaling limit (expanded from 480px to 640px) */
+            max-width: 640px; 
         }
 
         .playlist-grid-container {
@@ -168,19 +168,40 @@
         }
         .running-time { font-family: monospace; color: var(--text-dim); font-size: 1.15rem; font-weight: bold; white-space: nowrap; }
 
-        .timeline-container {
+        /* UPDATED: Interactive High-Precision Seek Bar Track styling */
+        .timeline-slider {
+            -webkit-appearance: none;
+            appearance: none;
             width: 100%;
-            background: #233145;
-            height: 12px;
+            height: 14px;
             border-radius: 6px;
-            position: relative;
-            overflow: hidden;
-            margin: 2px 0;
+            background: #233145;
+            outline: none;
+            cursor: pointer;
+            margin: 4px 0;
+            display: block;
         }
-        .timeline-progress {
+
+        /* Customize the slider drag thumb knob to look sharp and distinct */
+        .timeline-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
             background: var(--active-blue);
-            height: 100%;
-            width: 0%;
+            border: 2px solid white;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(0, 188, 212, 0.6);
+        }
+        .timeline-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--active-blue);
+            border: 2px solid white;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(0, 188, 212, 0.6);
         }
 
         .action-grid {
@@ -450,9 +471,9 @@
             <span class="current-track-title" id="trackTitle">---</span>
             <span class="running-time" id="trackTime">0:00 / 0:00</span>
         </div>
-        <div class="timeline-container">
-            <div class="timeline-progress" id="timelineProgress"></div>
-        </div>
+        
+        <input type="range" class="timeline-slider" id="timelineProgress" min="0" max="100" value="0" oninput="handleManualTimelineSeek(this.value)">
+        
         <div class="action-grid">
             <button class="btn-tactical btn-tactical-play" id="playBtn" onclick="playCurrentTrack()" disabled>▶ PLAY</button>
             <button class="btn-tactical btn-tactical-fade" id="fadeBtn" onclick="fadeCurrentTrack()" disabled>■ STOP</button>
@@ -520,6 +541,9 @@
     let currentVolume = 1.0; 
     let volumeFadeInterval = null; 
     let fadeInterval = null; 
+
+    // Guard parameter to check if a user is actively scrubbing the timeline
+    let isUserScrubbingTimeline = false;
 
     async function initConsole() {
         try {
@@ -688,7 +712,6 @@
         }
     }
 
-    // Interactive Toggle Script Engine
     function toggleDiagnosticsPanel() {
         const panel = document.getElementById('diagnosticDeck');
         if (panel.style.display === "flex") {
@@ -746,7 +769,7 @@
         playBtn.disabled = false;
         playBtn.innerText = "▶ PLAY";
         fadeBtn.disabled = true;
-        document.getElementById('timelineProgress').style.width = '0%';
+        document.getElementById('timelineProgress').value = 0;
         document.getElementById('trackTime').innerText = `0:00 / ${formatTime(trackDuration)}`;
     }
 
@@ -804,6 +827,40 @@
         timeUpdateInterval = setInterval(updateTimelineProgress, 100);
     }
 
+    /* UPDATED: Timeline scrub-and-seek interception handler function */
+    function handleManualTimelineSeek(percentValue) {
+        if (!tracks[currentTrackIndex]) return;
+        const cachedBuffer = audioCache[tracks[currentTrackIndex].file];
+        if (!cachedBuffer) return;
+
+        // Calculate target location markers based on range slider percent values
+        const targetSeconds = (percentValue / 100) * cachedBuffer.duration;
+        
+        // Update operational timestamp lookups instantly
+        pausedTime = targetSeconds;
+        document.getElementById('trackTime').innerText = `${formatTime(targetSeconds)} / ${formatTime(cachedBuffer.duration)}`;
+
+        // If the track is actively running, hot-swap the playhead timeline position seamlessly
+        if (isPlaying) {
+            if (currentSource) {
+                try { currentSource.stop(); } catch(e){}
+                currentSource = null;
+            }
+            
+            currentSource = audioCtx.createBufferSource();
+            currentSource.buffer = cachedBuffer;
+            
+            gainNode = audioCtx.createGain();
+            gainNode.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
+            
+            currentSource.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            currentSource.start(0, targetSeconds);
+            startTime = audioCtx.currentTime - targetSeconds;
+        }
+    }
+
     function transitionToTargetVolume(targetVol, btnIdSuffix, displayLabelText) {
         document.querySelectorAll('.btn-vol').forEach(b => b.classList.remove('active'));
         document.getElementById(`volBtn-${btnIdSuffix}`).classList.add('active');
@@ -847,8 +904,9 @@
             return;
         }
 
+        // Only update the range handle position automatically if the operator isn't manually moving it
         const pct = (currentElapsed / trackDuration) * 100;
-        document.getElementById('timelineProgress').style.width = `${pct}%`;
+        document.getElementById('timelineProgress').value = pct;
         document.getElementById('trackTime').innerText = `${formatTime(currentElapsed)} / ${formatTime(trackDuration)}`;
     }
 
