@@ -3,23 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Lodge Music</title>
-    <!-- PWA Registration Assets Links -->
+    <title>Lodge Music Console</title>
+    
     <link rel="manifest" href="manifest.json">
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js', { scope: './' })
-                    .then(reg => console.log('Service Worker Registered!'))
-                    .catch(err => console.log('Registration failed:', err));
+                    .then(reg => console.log('Service Worker Registered Successfully!'))
+                    .catch(err => console.log('PWA Service Worker Registration failed:', err));
             });
         }
     </script>
+
     <style>
         :root {
             --bg-dark: #0f141c;
             --panel-bg: #161f2b;
-            --panel-border: #384a66; /* UPDATED: Slightly lighter slate blue for enhanced baseline button definition */
+            --panel-border: #384a66; 
             --text-bright: #ffffff;
             --text-dim: #9ab0c7;
             --cue-gold: #f39c12;
@@ -29,13 +30,13 @@
             --disabled: #1b2636;
             --footer-blue: #0f2c59;
 
-            /* Button Color Variants (Muted Ceremonial Palette) */
-            --btn-blue: #1e293b;    
-            --btn-yellow: #5c4308;  
-            --btn-green: #143d23;   
-            --btn-red: #4a1212;     
-            --btn-orange: #5e290d;  
-            --btn-purple: #2e114d;  
+            /* UPDATED: Rich Ceremonial Palette (Lighter, cleaner, non-muddy tones) */
+            --btn-blue: #26354a;    /* Rich Slate Blue */
+            --btn-yellow: #7a5a13;  /* Antique Gold / Brass */
+            --btn-green: #1b4f2e;   /* Forest Green */
+            --btn-red: #661a1a;     /* Crimson Red */
+            --btn-orange: #7a3711;  /* Burnt Amber */
+            --btn-purple: #3f1b69;  /* Deep Velvet Violet */
         }
 
         body {
@@ -92,7 +93,7 @@
             transition: transform 0.1s ease, border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
         }
 
-        /* Unified resting backgrounds and distinct borders */
+        /* Unified resting outlines matching the dark console aesthetic beautifully */
         .nav-chip.color-blue   { background-color: var(--btn-blue);   border-color: var(--panel-border); }
         .nav-chip.color-yellow { background-color: var(--btn-yellow); border-color: var(--panel-border); }
         .nav-chip.color-green  { background-color: var(--btn-green);  border-color: var(--panel-border); }
@@ -100,14 +101,13 @@
         .nav-chip.color-orange { background-color: var(--btn-orange); border-color: var(--panel-border); }
         .nav-chip.color-purple { background-color: var(--btn-purple); border-color: var(--panel-border); }
         
-        /* NEW: Unloaded state style rules */
         .nav-chip.not-loaded {
             background-color: var(--disabled) !important;
             border-color: #1f2b3d !important;
             color: #43546c !important;
             opacity: 0.5;
             cursor: not-allowed;
-            pointer-events: none; /* Stops physical touches dead until memory verification completes */
+            pointer-events: none; 
         }
 
         .nav-chip.active {
@@ -126,7 +126,7 @@
             border: 4px solid var(--stop-red) !important;
             box-shadow: 0 0 30px 8px var(--stop-red) !important;
             animation: stopPulse 0.6s infinite ease-in-out; 
-            pointer-events: none; /* Locks the item completely during the 1.5s fade out cycle */
+            pointer-events: none; 
         }
 
         .control-deck {
@@ -248,7 +248,6 @@
             line-height: 1.4;
         }
 
-        /* UPDATED: Volume Pad structured for 3 explicit level options */
         .volume-pad {
             display: flex;
             flex-direction: column;
@@ -442,10 +441,9 @@
     let trackDuration = 0;
     let timeUpdateInterval = null;
     
-    // Volume Control Engine States
     let currentVolume = 1.0; 
     let volumeFadeInterval = null; 
-    let fadeInterval = null; // Track execution fade-out link
+    let fadeInterval = null; 
 
     async function initConsole() {
         try {
@@ -508,7 +506,6 @@
             tracks = await response.json();
             
             if (tracks.length > 0) {
-                // NEW: Inject all buttons as implicitly locked out before cache validation
                 buildPlaylistGrid(true);
                 await cacheAllAudioToRAM();
                 loadTrack(0);
@@ -518,7 +515,6 @@
         }
     }
 
-    // UPDATED: Injects a boolean token constraint to declare loading states
     function buildPlaylistGrid(forceDisabledState) {
         const grid = document.getElementById('playlistGrid');
         grid.innerHTML = '';
@@ -566,7 +562,6 @@
                 loadedCount++;
                 document.getElementById('cueText').innerText = `Buffering active array into RAM: (${loadedCount}/${tracks.length})`;
                 
-                // NEW: Unlock just this specific button block the millisecond it successfully populates inside RAM
                 activateLoadedButtonChip(i, track);
                 
             } catch (e) {
@@ -581,11 +576,11 @@
             const chosenColor = track.color ? track.color.toLowerCase() : 'blue';
             chip.className = `nav-chip color-${chosenColor} ${index === currentTrackIndex ? 'active' : ''}`;
             
-            // NEW: Scans the title for any long words and shrinks the font size dynamically
+            // Core scanning engine: Adjust long text items smoothly to preserve single-line word boundaries
             const words = track.title.split(' ');
             const hasLongWord = words.some(word => word.length > 9);
             if (hasLongWord) {
-                chip.style.fontSize = '1.05rem'; // Gracefully scales down from 1.25rem to prevent character splitting
+                chip.style.fontSize = '1.05rem'; 
             }
 
             chip.onclick = () => { handleTrackSelection(index); };
@@ -611,11 +606,7 @@
 
     function handleTrackSelection(index) {
         const clickedChip = document.getElementById(`chip-${index}`);
-        
-        // GREMLIN PROTECTION 1: If the clicked track is already fading out, lock out all touches entirely
-        if (clickedChip && clickedChip.classList.contains('fading-now')) {
-            return; 
-        }
+        if (clickedChip && clickedChip.classList.contains('fading-now')) return; 
 
         if (currentTrackIndex === index) {
             if (isPlaying && !fadeInterval) {
@@ -696,7 +687,6 @@
         currentSource.buffer = cachedBuffer;
 
         gainNode = audioCtx.createGain();
-        // Maps audio execution context level straight to the pre-selected volume layer baseline parameter
         gainNode.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
 
         currentSource.connect(gainNode);
@@ -720,22 +710,19 @@
         timeUpdateInterval = setInterval(updateTimelineProgress, 100);
     }
 
-    // NEW: Handles smooth, cross-faded volume level modifications over 1.2s intervals
     function transitionToTargetVolume(targetVol, btnIdSuffix, displayLabelText) {
-        // Clear down lighting active states across volume pads selection buttons
         document.querySelectorAll('.btn-vol').forEach(b => b.classList.remove('active'));
         document.getElementById(`volBtn-${btnIdSuffix}`).classList.add('active');
         document.getElementById('volumePct').innerText = displayLabelText;
 
         if (volumeFadeInterval) clearInterval(volumeFadeInterval);
 
-        // If nothing is playing, just change the volume state globally and exit
         if (!isPlaying || !gainNode || fadeInterval) {
             currentVolume = targetVol;
             return;
         }
 
-        const transitionDuration = 1200; // Milliseconds
+        const transitionDuration = 1200; 
         const stepTime = 40; 
         const steps = transitionDuration / stepTime;
         const volumeDelta = targetVol - currentVolume;
@@ -753,7 +740,7 @@
                 runningVol = targetVol;
                 if (gainNode && isPlaying) gainNode.gain.setValueAtTime(runningVol, audioCtx.currentTime);
             }
-            currentVolume = runningVol; // Track current position real-time
+            currentVolume = runningVol; 
         }, stepTime);
     }
 
@@ -804,7 +791,6 @@
         const fadeDuration = 1.5; 
         const stepTime = 50; 
         const steps = (fadeDuration * 1000) / stepTime;
-        // Fades gracefully down from whatever custom level the master volume node is sitting at
         const volStep = currentVolume / steps;
         let runningVol = currentVolume;
 
@@ -832,9 +818,11 @@
         setTimeout(() => { loadTrack(nextIndex); }, 1600);
     }
 
-    function scrubAudio(value) {
-        // Timeline scrubbing intentionally locked out to maintain performance stability rules
-    }
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible" && audioCtx && audioCtx.state === "interrupted") {
+            audioCtx.resume();
+        }
+    });
 
     function formatTime(secs) {
         if (isNaN(secs) || secs === 0) return "0:00";
