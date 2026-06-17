@@ -42,7 +42,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #05070a; /* Deep matte black for the outer flank bars */
+            background-color: #05070a; 
             color: var(--text-bright);
             margin: 0;
             padding: 0;
@@ -67,8 +67,6 @@
             background-color: var(--bg-dark); 
             min-height: 100vh;
             box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
-
-            /* UPDATED: Wider 4:3 desktop scaling limit (expanded from 480px to 640px) */
             max-width: 640px; 
         }
 
@@ -87,11 +85,17 @@
 
         .nav-chip {
             border: 2px solid var(--panel-border);
-            color: var(--text-bright);
+            
+            /* UPDATED: Softer, highly-legible resting color token for non-active states */
+            color: #e2e8f0;
+            
             box-sizing: border-box;
             border-radius: 8px;
             font-size: 1.25rem; 
-            font-weight: 900;
+            
+            /* UPDATED: Normal standard font weight for regular resting buttons */
+            font-weight: normal;
+            
             text-align: center;
             cursor: pointer;
             white-space: normal; 
@@ -122,7 +126,10 @@
             pointer-events: none; 
         }
 
+        /* UPDATED: Max-intensity Bold target selection configuration styles */
         .nav-chip.active {
+            color: #ffffff !important;
+            font-weight: 900 !important; /* Forces bold emphasis cleanly */
             border-color: #ffffff !important;
             box-shadow: 0 0 20px 6px rgba(255, 255, 255, 0.85);
             filter: brightness(1.2);
@@ -130,12 +137,16 @@
         }
 
         .nav-chip.playing-now {
+            color: #ffffff !important;
+            font-weight: 900 !important;
             border: 4px solid var(--play-green) !important;
             box-shadow: 0 0 25px 5px var(--play-green) !important;
             animation: playPulse 1.2s infinite ease-in-out;
         }
 
         .nav-chip.fading-now {
+            color: #ffffff !important;
+            font-weight: 900 !important;
             border: 4px solid var(--stop-red) !important;
             box-shadow: 0 0 30px 8px var(--stop-red) !important;
             animation: stopPulse 0.6s infinite ease-in-out; 
@@ -168,7 +179,6 @@
         }
         .running-time { font-family: monospace; color: var(--text-dim); font-size: 1.15rem; font-weight: bold; white-space: nowrap; }
 
-        /* UPDATED: Interactive High-Precision Seek Bar Track styling */
         .timeline-slider {
             -webkit-appearance: none;
             appearance: none;
@@ -182,7 +192,6 @@
             display: block;
         }
 
-        /* Customize the slider drag thumb knob to look sharp and distinct */
         .timeline-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -471,9 +480,7 @@
             <span class="current-track-title" id="trackTitle">---</span>
             <span class="running-time" id="trackTime">0:00 / 0:00</span>
         </div>
-        
         <input type="range" class="timeline-slider" id="timelineProgress" min="0" max="100" value="0" oninput="handleManualTimelineSeek(this.value)">
-        
         <div class="action-grid">
             <button class="btn-tactical btn-tactical-play" id="playBtn" onclick="playCurrentTrack()" disabled>▶ PLAY</button>
             <button class="btn-tactical btn-tactical-fade" id="fadeBtn" onclick="fadeCurrentTrack()" disabled>■ STOP</button>
@@ -529,6 +536,9 @@
     let audioCache = {}; 
     let cachedBytesCounter = {}; 
 
+    // ADDED: Memory profile layer tracks structure patterns entirely offline
+    let structuralBlueprintProfilesCache = {};
+
     let currentSource = null;
     let gainNode = null;
     
@@ -541,9 +551,6 @@
     let currentVolume = 1.0; 
     let volumeFadeInterval = null; 
     let fadeInterval = null; 
-
-    // Guard parameter to check if a user is actively scrubbing the timeline
-    let isUserScrubbingTimeline = false;
 
     async function initConsole() {
         try {
@@ -599,9 +606,22 @@
         playBtn.disabled = true;
         fadeBtn.disabled = true;
 
+        // TIED OFFLINE SCAN OVERRIDE: Check if structural JSON file properties exist in layout RAM cache
+        if (structuralBlueprintProfilesCache[jsonPath]) {
+            console.log("Offline Blueprint Target Restored Safely:", jsonPath);
+            tracks = structuralBlueprintProfilesCache[jsonPath];
+            buildPlaylistGrid(false);
+            await cacheAllAudioToRAM();
+            loadTrack(0);
+            return;
+        }
+
         try {
             const response = await fetch(jsonPath);
             tracks = await response.json();
+            
+            // Commit blueprint tracks mapping cleanly into local RAM storage space
+            structuralBlueprintProfilesCache[jsonPath] = tracks;
             
             if (tracks.length > 0) {
                 buildPlaylistGrid(true);
@@ -609,7 +629,7 @@
                 loadTrack(0);
             }
         } catch (err) {
-            document.getElementById('cueText').innerText = `Failed to find layout map: ${jsonPath}`;
+            document.getElementById('cueText').innerText = `Failed to locate layout profile map offline.`;
         }
     }
 
@@ -827,20 +847,15 @@
         timeUpdateInterval = setInterval(updateTimelineProgress, 100);
     }
 
-    /* UPDATED: Timeline scrub-and-seek interception handler function */
     function handleManualTimelineSeek(percentValue) {
         if (!tracks[currentTrackIndex]) return;
         const cachedBuffer = audioCache[tracks[currentTrackIndex].file];
         if (!cachedBuffer) return;
 
-        // Calculate target location markers based on range slider percent values
         const targetSeconds = (percentValue / 100) * cachedBuffer.duration;
-        
-        // Update operational timestamp lookups instantly
         pausedTime = targetSeconds;
         document.getElementById('trackTime').innerText = `${formatTime(targetSeconds)} / ${formatTime(cachedBuffer.duration)}`;
 
-        // If the track is actively running, hot-swap the playhead timeline position seamlessly
         if (isPlaying) {
             if (currentSource) {
                 try { currentSource.stop(); } catch(e){}
@@ -904,7 +919,6 @@
             return;
         }
 
-        // Only update the range handle position automatically if the operator isn't manually moving it
         const pct = (currentElapsed / trackDuration) * 100;
         document.getElementById('timelineProgress').value = pct;
         document.getElementById('trackTime').innerText = `${formatTime(currentElapsed)} / ${formatTime(trackDuration)}`;
