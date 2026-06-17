@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Lodge Music Console</title>
+    <title>Lodge Music</title>
     
     <!-- PWA Registration Assets Links -->
     <link rel="manifest" href="manifest.json">
@@ -521,7 +521,7 @@
             window.history.pushState({ path: newUrl }, '', newUrl);
         }
 
-        document.getElementById('cueText').innerText = "Pre-warming ceremonial files to RAM... Please standby.";
+        document.getElementById('cueText').innerText = "Pre-warming files to RAM... Please standby.";
         document.getElementById('memoryValue').innerText = "0.00 MB (Clearing Cache...)";
         document.getElementById('memoryValue').style.color = 'var(--text-dim)';
         playBtn.disabled = true;
@@ -844,8 +844,8 @@
 
     function shareLodgeMusicApp() {
         const shareUrl = window.location.origin + window.location.pathname;
-        const shareTitle = "Lodge Music Console";
-        const shareText = "Here is the Ceremonial Audio Console app for running lodge music from your phone or tablet.";
+        const shareTitle = "Lodge Music";
+        const shareText = "Here is the Lodge Music app for running ceremonial audio straight from your phone or tablet.";
 
         if (navigator.share) {
             navigator.share({
@@ -857,7 +857,7 @@
             .catch((error) => console.log('Native sharing cancelled:', error));
         } else {
             const emailSubject = encodeURIComponent(shareTitle);
-            const emailBody = encodeURIComponent(`${shareText}\n\nAccess the console here: ${shareUrl}`);
+            const emailBody = encodeURIComponent(`${shareText}\n\nAccess the app here: ${shareUrl}`);
             window.location.href = `mailto:?subject=${emailSubject}&body=${emailBody}`;
         }
     }
