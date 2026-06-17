@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Lodge Music</title>
+    <title>Lodge Music Console</title>
     
+    <!-- PWA Registration Assets Links -->
     <link rel="manifest" href="manifest.json">
     <script>
         if ('serviceWorker' in navigator) {
@@ -30,8 +31,8 @@
             --disabled: #1b2636;
             --footer-blue: #0f2c59;
 
-            /* Button Color Variants (Rich & Masonic Ceremonial Tones) */
-            --btn-darkblue: #26354a; /* Your current deep slate navy blue */
+            /* Rich & Masonic Ceremonial Tones */
+            --btn-darkblue: #26354a; /* Deep slate navy blue */
             --btn-blue: #4a6785;     /* Masonic Apron Light Blue (Muted Garter Blue) */
             --btn-yellow: #7a5a13;   /* Antique Gold / Brass */
             --btn-green: #1b4f2e;    /* Forest Green */
@@ -95,12 +96,13 @@
         }
 
         /* Unified resting outlines matching the dark console aesthetic beautifully */
-        .nav-chip.color-blue   { background-color: var(--btn-blue);   border-color: var(--panel-border); }
-        .nav-chip.color-yellow { background-color: var(--btn-yellow); border-color: var(--panel-border); }
-        .nav-chip.color-green  { background-color: var(--btn-green);  border-color: var(--panel-border); }
-        .nav-chip.color-red    { background-color: var(--btn-red);    border-color: var(--panel-border); }
-        .nav-chip.color-orange { background-color: var(--btn-orange); border-color: var(--panel-border); }
-        .nav-chip.color-purple { background-color: var(--btn-purple); border-color: var(--panel-border); }
+        .nav-chip.color-darkblue { background-color: var(--btn-darkblue); border-color: var(--panel-border); }
+        .nav-chip.color-blue     { background-color: var(--btn-blue);     border-color: var(--panel-border); }
+        .nav-chip.color-yellow   { background-color: var(--btn-yellow);   border-color: var(--panel-border); }
+        .nav-chip.color-green    { background-color: var(--btn-green);    border-color: var(--panel-border); }
+        .nav-chip.color-red      { background-color: var(--btn-red);      border-color: var(--panel-border); }
+        .nav-chip.color-orange   { background-color: var(--btn-orange);   border-color: var(--panel-border); }
+        .nav-chip.color-purple   { background-color: var(--btn-purple);   border-color: var(--panel-border); }
         
         .nav-chip.not-loaded {
             background-color: var(--disabled) !important;
@@ -341,11 +343,11 @@
         .memory-label { color: var(--text-dim); }
         .memory-value { font-family: monospace; transition: color 0.3s ease; }
 
+        /* Unified Smart-Share Console Footer Styles */
         .ceremonial-footer {
             background-color: var(--footer-blue);
             color: var(--text-bright);
-            text-align: center;
-            padding: 12px 5px;
+            padding: 14px 15px;
             font-size: 0.95rem;
             font-weight: bold;
             letter-spacing: 0.5px;
@@ -353,6 +355,28 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             margin-left: -10px;
             margin-right: -10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-share-app {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: var(--text-bright);
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+        .btn-share-app:active {
+            background: rgba(255, 255, 255, 0.25);
         }
 
         @keyframes playPulse {
@@ -423,7 +447,8 @@
 </div>
 
 <div class="ceremonial-footer">
-    WBro. Robert Billing PGSwdB GLHer
+    <span>WBro. Robert Billing PGSwdB GLHer</span>
+    <button class="btn-share-app" onclick="shareLodgeMusicApp()">🔗 Share App</button>
 </div>
 
 <script>
@@ -527,6 +552,10 @@
                 chip.className = `nav-chip not-loaded`;
             } else {
                 chip.className = `nav-chip color-${chosenColor} ${index === 0 ? 'active' : ''}`;
+                
+                const words = track.title.split(' ');
+                if (words.some(word => word.length > 9)) chip.style.fontSize = '1.05rem';
+
                 chip.onclick = () => { handleTrackSelection(index); };
             }
             
@@ -577,7 +606,6 @@
             const chosenColor = track.color ? track.color.toLowerCase() : 'blue';
             chip.className = `nav-chip color-${chosenColor} ${index === currentTrackIndex ? 'active' : ''}`;
             
-            // Core scanning engine: Adjust long text items smoothly to preserve single-line word boundaries
             const words = track.title.split(' ');
             const hasLongWord = words.some(word => word.length > 9);
             if (hasLongWord) {
@@ -814,9 +842,24 @@
         }, stepTime);
     }
 
-    function fadeAndSwitch(nextIndex) {
-        fadeCurrentTrack();
-        setTimeout(() => { loadTrack(nextIndex); }, 1600);
+    function shareLodgeMusicApp() {
+        const shareUrl = window.location.origin + window.location.pathname;
+        const shareTitle = "Lodge Music Console";
+        const shareText = "Here is the Ceremonial Audio Console app for running lodge music from your phone or tablet.";
+
+        if (navigator.share) {
+            navigator.share({
+                title: shareTitle,
+                text: shareText,
+                url: shareUrl
+            })
+            .then(() => console.log('Successful share event registered.'))
+            .catch((error) => console.log('Native sharing cancelled:', error));
+        } else {
+            const emailSubject = encodeURIComponent(shareTitle);
+            const emailBody = encodeURIComponent(`${shareText}\n\nAccess the console here: ${shareUrl}`);
+            window.location.href = `mailto:?subject=${emailSubject}&body=${emailBody}`;
+        }
     }
 
     document.addEventListener("visibilitychange", () => {
