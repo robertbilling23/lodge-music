@@ -142,9 +142,12 @@
             border: 1px solid var(--panel-border);
             border-radius: 8px;
             padding: 10px;
-            flex: 1; /* Allows container to shrink or grow fluidly */
+            
+            /* UPDATED: Increased vertical scroll threshold bounds by exactly 50% */
+            max-height: 858px; 
             overflow-y: auto;   
             box-sizing: border-box;
+            flex: 1; /* Allows the box to fluidly adapt within the dynamic layout limits */
         }
 
         .playlist-grid {
