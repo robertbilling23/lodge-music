@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lodge Music</title>
     
     <link rel="manifest" href="manifest.json">
@@ -53,7 +53,9 @@
             min-height: 100vh;
             display: flex;
             justify-content: center; 
-            overflow-y: auto;
+            
+            /* CRITICAL UPDATE: Global system scrolling deactivated completely */
+            overflow: hidden; 
         }
 
         .console-grid {
@@ -65,9 +67,61 @@
             box-sizing: border-box;
             padding: 10px;
             background-color: var(--bg-dark); 
-            min-height: 100vh;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+            height: 100vh;
             max-width: 640px; 
+            position: relative;
+        }
+
+        /* SCREEN STATE MANAGERS: Toggled cleanly via functional script states */
+        .app-screen {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        .app-screen.active-view {
+            display: flex;
+        }
+
+        /* DEDICATED FIXED TITLE HEADER BANNER */
+        .screen-header-bar {
+            display: flex;
+            align-items: center;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            height: 56px;
+            box-sizing: border-box;
+            gap: 12px;
+        }
+
+        .btn-header-back {
+            background: #1e293b;
+            border: 1px solid var(--panel-border);
+            color: var(--text-dim);
+            font-weight: 900;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background 0.1s;
+        }
+        .btn-header-back:active {
+            background: var(--panel-border);
+            color: white;
+        }
+
+        .header-title-text {
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: var(--active-blue);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
         }
 
         .playlist-grid-container {
@@ -85,17 +139,11 @@
 
         .nav-chip {
             border: 2px solid var(--panel-border);
-            
-            /* UPDATED: Softer, highly-legible resting color token for non-active states */
             color: #e2e8f0;
-            
             box-sizing: border-box;
             border-radius: 8px;
             font-size: 1.25rem; 
-            
-            /* UPDATED: Normal standard font weight for regular resting buttons */
             font-weight: normal;
-            
             text-align: center;
             cursor: pointer;
             white-space: normal; 
@@ -126,10 +174,9 @@
             pointer-events: none; 
         }
 
-        /* UPDATED: Max-intensity Bold target selection configuration styles */
         .nav-chip.active {
             color: #ffffff !important;
-            font-weight: 900 !important; /* Forces bold emphasis cleanly */
+            font-weight: 900 !important; 
             border-color: #ffffff !important;
             box-shadow: 0 0 20px 6px rgba(255, 255, 255, 0.85);
             filter: brightness(1.2);
@@ -153,104 +200,6 @@
             pointer-events: none; 
         }
 
-        .control-deck {
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-radius: 8px;
-            padding: 14px;
-            display: none; 
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .track-info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .current-track-title { 
-            font-weight: 900; 
-            font-size: 1.45rem; 
-            color: var(--active-blue); 
-            line-height: 1.2;
-            word-break: break-word;
-        }
-        .running-time { font-family: monospace; color: var(--text-dim); font-size: 1.15rem; font-weight: bold; white-space: nowrap; }
-
-        .timeline-slider {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            height: 14px;
-            border-radius: 6px;
-            background: #233145;
-            outline: none;
-            cursor: pointer;
-            margin: 4px 0;
-            display: block;
-        }
-
-        .timeline-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--active-blue);
-            border: 2px solid white;
-            cursor: pointer;
-            box-shadow: 0 0 8px rgba(0, 188, 212, 0.6);
-        }
-        .timeline-slider::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--active-blue);
-            border: 2px solid white;
-            cursor: pointer;
-            box-shadow: 0 0 8px rgba(0, 188, 212, 0.6);
-        }
-
-        .action-grid {
-            display: flex;
-            gap: 12px;
-            width: 100%;
-        }
-
-        .btn-tactical {
-            border: none;
-            border-radius: 10px;
-            font-weight: 900;
-            color: white;
-            cursor: pointer;
-            padding: 16px 10px; 
-            font-size: 1.3rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            box-sizing: border-box;
-        }
-        .btn-tactical:disabled {
-            background-color: #2d3d52 !important;
-            color: #4f637d !important;
-            opacity: 0.4;
-            box-shadow: none !important;
-        }
-
-        .btn-tactical-play { 
-            flex: 0 0 70%; 
-            background-color: var(--play-green); 
-        }
-        
-        .btn-tactical-fade { 
-            flex: 0 0 30%; 
-            background-color: var(--stop-red); 
-            font-size: 1.1rem; 
-        }
-
         .cue-banner {
             background: rgba(243, 156, 18, 0.12);
             border: 2px solid var(--cue-gold); 
@@ -259,6 +208,7 @@
             position: relative;
             display: flex;
             flex-direction: column;
+            box-sizing: border-box;
         }
         .cue-label {
             font-size: 0.9rem;
@@ -272,7 +222,7 @@
             font-size: 1.15rem;
             font-weight: bold;
             line-height: 1.3;
-            padding-right: 35px; 
+            padding-right: 38px; 
         }
         
         .btn-deck-toggle {
@@ -284,23 +234,26 @@
             border: 1px solid rgba(243, 156, 18, 0.4);
             color: var(--cue-gold);
             border-radius: 6px;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            font-size: 1.1rem;
-        }
-        .btn-deck-toggle:active {
-            background: rgba(243, 156, 18, 0.25);
+            font-size: 1.2rem;
         }
 
+        /* UPDATED INDEPENDENT INTERNAL SCROLL LYRICS WRAPPER */
         .lyrics-panel {
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
             border-radius: 8px;
             padding: 15px;
+            flex: 1; 
+            overflow-y: auto; 
+            box-sizing: border-box;
+        }
+        .lyrics-content-container {
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -314,87 +267,74 @@
             line-height: 1.4;
         }
 
-        .volume-pad {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+        /* SET SWITCHER GRID CONTAINER ON DASHBOARD HOME SCREEN */
+        .home-switcher-container {
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
+            border-radius: 8px;
             padding: 12px;
-            border-radius: 8px;
-        }
-        .volume-status-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 4px;
-            font-size: 1.15rem;
-            font-weight: bold;
-            color: var(--text-dim);
-        }
-        .volume-pct-display {
-            color: var(--active-blue);
-            font-family: monospace;
-            font-size: 1.2rem;
-        }
-        .volume-btn-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 10px;
-        }
-        .btn-vol {
-            padding: 18px 4px;
-            border: 1px solid var(--panel-border);
-            border-radius: 6px;
-            font-size: 1.1rem;
-            font-weight: 900;
-            color: var(--text-dim);
-            background-color: #1e293b;
-            cursor: pointer;
-            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-        }
-        .btn-vol.active {
-            background-color: var(--active-blue);
-            color: var(--bg-dark);
-            border-color: var(--text-bright);
-        }
-
-        .playlist-grid-container-switcher {
-            background: rgba(0,0,0,0.2);
-            border: 1px dashed var(--panel-border);
-            border-radius: 8px;
-            padding: 10px;
+            flex: 1; 
+            overflow-y: auto;
         }
         .set-switcher-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 10px;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 12px;
         }
         .btn-set-switch {
             width: 100%;
             border: 1px solid var(--panel-border);
             background: #1e293b;
-            color: var(--text-dim);
-            font-size: 1.05rem;
-            font-weight: bold;
-            border-radius: 6px;
+            color: #ffffff;
+            font-size: 1.15rem;
+            font-weight: 900;
+            border-radius: 8px;
             cursor: pointer;
             white-space: normal;
             word-break: break-word;
-            line-height: 1.2;
+            line-height: 1.3;
             box-sizing: border-box;
-            height: 54px;
-            padding: 4px;
+            height: 76px;
+            padding: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: background 0.1s, border-color 0.2s;
+        }
+        .btn-set-switch:active {
+            background: var(--panel-border);
+            transform: scale(0.98);
         }
         .btn-set-switch.active {
-            background: var(--active-blue);
-            color: var(--bg-dark);
-            border-color: var(--text-bright);
+            border-color: var(--active-blue) !important;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.3);
+        }
+
+        /* DASHBOARD MASTER BUTTONS CONTROLS ROW Layout */
+        .dashboard-control-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            box-sizing: border-box;
+        }
+        .btn-dashboard-utility {
+            width: 100%;
+            background: #1c2838;
+            border: 1px solid var(--panel-border);
+            color: var(--text-dim);
+            padding: 14px;
+            font-size: 1.1rem;
             font-weight: 900;
-            box-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-dashboard-utility:active {
+            background: var(--panel-border);
+            color: white;
         }
 
         .system-metric-row {
@@ -431,9 +371,6 @@
             gap: 6px;
             white-space: nowrap;
         }
-        .btn-share-app:active {
-            background: rgba(0, 188, 212, 0.25);
-        }
 
         .ceremonial-footer {
             background-color: var(--footer-blue);
@@ -446,6 +383,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
             line-height: 1.5;
+            box-sizing: border-box;
         }
         .footer-sub-note {
             display: block;
@@ -455,12 +393,127 @@
             margin-top: 4px;
         }
 
+        /* MODAL DIALOG POPUP OPERATIONS ENGINE OVERLAY STYLES */
+        .operations-modal-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(5, 7, 10, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            z-index: 1000;
+        }
+        .operations-dialog-box {
+            background: #131a24;
+            border: 2px solid var(--panel-border);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            padding: 16px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--panel-border);
+            padding-bottom: 8px;
+        }
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--cue-gold);
+        }
+        .btn-modal-close {
+            background: #233145;
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 6px;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+
+        .control-deck {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: var(--panel-bg);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .timeline-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 14px;
+            border-radius: 6px;
+            background: #233145;
+            outline: none;
+            cursor: pointer;
+            margin: 4px 0;
+            display: block;
+        }
+        .timeline-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--active-blue);
+            border: 2px solid white;
+            cursor: pointer;
+        }
+
+        .volume-pad {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: var(--panel-bg);
+            padding: 12px;
+            border-radius: 8px;
+        }
+        .volume-btn-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 10px;
+        }
+        .btn-vol {
+            padding: 14px 4px;
+            border: 1px solid var(--panel-border);
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 900;
+            color: var(--text-dim);
+            background-color: #1e293b;
+            cursor: pointer;
+        }
+        .btn-vol.active {
+            background-color: var(--active-blue);
+            color: var(--bg-dark);
+            border-color: var(--text-bright);
+        }
+
+        .modal-metric-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--panel-border);
+            padding-top: 10px;
+        }
+
         @keyframes playPulse {
             0% { box-shadow: 0 0 15px 2px var(--play-green); }
             50% { box-shadow: 0 0 30px 8px var(--play-green); filter: brightness(1.15); }
             100% { box-shadow: 0 0 15px 2px var(--play-green); }
         }
-
         @keyframes stopPulse {
             0% { box-shadow: 0 0 20px 4px var(--stop-red); }
             50% { box-shadow: 0 0 40px 12px var(--stop-red); filter: brightness(1.25); }
@@ -471,60 +524,93 @@
 <body>
 
 <div class="console-grid">
-    <div class="playlist-grid-container">
-        <div class="playlist-grid" id="playlistGrid"></div>
-    </div>
 
-    <div class="control-deck" id="diagnosticDeck">
-        <div class="track-info-row">
-            <span class="current-track-title" id="trackTitle">---</span>
-            <span class="running-time" id="trackTime">0:00 / 0:00</span>
+    <div class="app-screen active-view" id="screenHome">
+        <div class="dashboard-control-row">
+            <button class="btn-dashboard-utility" onclick="window.location.reload(true)">🔄 Hard Refresh Layout</button>
         </div>
-        <input type="range" class="timeline-slider" id="timelineProgress" min="0" max="100" value="0" oninput="handleManualTimelineSeek(this.value)">
-        <div class="action-grid">
-            <button class="btn-tactical btn-tactical-play" id="playBtn" onclick="playCurrentTrack()" disabled>▶ PLAY</button>
-            <button class="btn-tactical btn-tactical-fade" id="fadeBtn" onclick="fadeCurrentTrack()" disabled>■ STOP</button>
+        
+        <div class="home-switcher-container">
+            <div class="set-switcher-grid" id="setSwitcherRow"></div>
         </div>
-    </div>
 
-    <div class="cue-banner">
-        <span class="cue-label">When to Press Play</span>
-        <span class="cue-text" id="cueText">Loading core assets...</span>
-        <button class="btn-deck-toggle" onclick="toggleDiagnosticsPanel()">⚙️</button>
-    </div>
-
-    <div class="lyrics-panel" id="lyricsPanel">
-        <div class="lyric-line">Awaiting system initialization...</div>
-    </div>
-
-    <div class="playlist-grid-container-switcher">
-        <div class="set-switcher-grid" id="setSwitcherRow"></div>
-    </div>
-
-    <div class="ceremonial-footer">
-        I hope you find my app handy. Please share any requests or feedback.
-        <span class="footer-sub-note">WBro. Robert Billing PGSwdB GLHer</span>
-    </div>
-
-    <div class="volume-pad">
-        <div class="volume-status-row">
-            <span>Volume</span>
-            <span class="volume-pct-display" id="volumePct">Normal (100%)</span>
+        <div class="ceremonial-footer">
+            I hope you find my app handy. Please share any requests or feedback.
+            <span class="footer-sub-note">WBro. Robert Billing PGSwdB GLHer</span>
         </div>
-        <div class="volume-btn-grid">
-            <button class="btn-vol" id="volBtn-05" onclick="transitionToTargetVolume(0.05, '05', 'Very Quiet (5%)')">Very Quiet</button>
-            <button class="btn-vol" id="volBtn-60" onclick="transitionToTargetVolume(0.60, '60', 'Quiet (60%)')">Quiet</button>
-            <button class="btn-vol active" id="volBtn-100" onclick="transitionToTargetVolume(1.00, '100', 'Normal (100%)')">Normal</button>
+
+        <div class="system-metric-row">
+            <div class="memory-status-box">
+                <span class="memory-label">Cached Footprint:</span>
+                <span class="memory-value" id="homeMemoryDisplay" style="color: var(--text-dim);">0.00 MB</span>
+            </div>
+            <button class="btn-share-app" onclick="shareLodgeMusicApp()">🔗 Share App</button>
         </div>
     </div>
 
-    <div class="system-metric-row">
-        <div class="memory-status-box">
-            <span class="memory-label">Music Size</span>
-            <span class="memory-value" id="memoryValue" style="color: var(--text-dim);">0.00 MB</span>
+
+    <div class="app-screen" id="screenConsole">
+        <div class="screen-header-bar">
+            <button class="btn-header-back" onclick="navigateToHomeScreen()">◀ BACK</button>
+            <div class="header-title-text" id="headerTitleDisplay">Lodge Music</div>
         </div>
-        <button class="btn-share-app" onclick="shareLodgeMusicApp()">🔗 Share App</button>
+
+        <div class="playlist-grid-container">
+            <div class="playlist-grid" id="playlistGrid"></div>
+        </div>
+
+        <div class="cue-banner">
+            <span class="cue-label">When to Press Play</span>
+            <span class="cue-text" id="cueText">Loading configuration blueprints...</span>
+            <button class="btn-deck-toggle" onclick="openOperationsModal()">⚙️</button>
+        </div>
+
+        <div class="lyrics-panel">
+            <div class="lyrics-content-container" id="lyricsPanel">
+                <div class="lyric-line">Select a profile row execution sequence to generate prompts.</div>
+            </div>
+        </div>
     </div>
+
+
+    <div class="operations-modal-overlay" id="operationsModal">
+        <div class="operations-dialog-box">
+            <div class="modal-header">
+                <span class="modal-title">🎛️ Diagnostics Override</span>
+                <button class="btn-modal-close" onclick="closeOperationsModal()">DONE</button>
+            </div>
+
+            <div class="control-deck">
+                <div class="track-info-row">
+                    <span class="current-track-title" id="trackTitle">---</span>
+                    <span class="running-time" id="trackTime">0:00 / 0:00</span>
+                </div>
+                <input type="range" class="timeline-slider" id="timelineProgress" min="0" max="100" value="0" oninput="handleManualTimelineSeek(this.value)">
+                <div class="action-grid">
+                    <button class="btn-tactical btn-tactical-play" id="playBtn" onclick="playCurrentTrack()" disabled>▶ PLAY</button>
+                    <button class="btn-tactical btn-tactical-fade" id="fadeBtn" onclick="fadeCurrentTrack()" disabled>■ STOP</button>
+                </div>
+            </div>
+
+            <div class="volume-pad">
+                <div class="volume-status-row">
+                    <span>Active Audio Volume Level:</span>
+                    <span class="volume-pct-display" id="volumePct">Normal (100%)</span>
+                </div>
+                <div class="volume-btn-grid">
+                    <button class="btn-vol" id="volBtn-05" onclick="transitionToTargetVolume(0.05, '05', 'Very Quiet (5%)')">Very Quiet</button>
+                    <button class="btn-vol" id="volBtn-60" onclick="transitionToTargetVolume(0.60, '60', 'Quiet (60%)')">Quiet</button>
+                    <button class="btn-vol active" id="volBtn-100" onclick="transitionToTargetVolume(1.00, '100', 'Normal (100%)')">Normal</button>
+                </div>
+            </div>
+
+            <div class="modal-metric-footer">
+                <span style="color:var(--text-dim); font-weight:bold;">RAM Cache Allocation:</span>
+                <span id="modalMemoryValue" style="font-family:monospace; font-weight:bold; color:var(--play-green);">0.00 MB</span>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -535,8 +621,6 @@
     let audioCtx = null;
     let audioCache = {}; 
     let cachedBytesCounter = {}; 
-
-    // ADDED: Memory profile layer tracks structure patterns entirely offline
     let structuralBlueprintProfilesCache = {};
 
     let currentSource = null;
@@ -559,19 +643,19 @@
             
             if (dynamicSets.length > 0) {
                 buildSetSwitcherUI();
+                
+                // Deep link state recovery handling
                 const urlParams = new URLSearchParams(window.location.search);
                 const targetSetId = urlParams.get('set');
-                let initialSet = dynamicSets[0];
-                
                 if (targetSetId) {
                     const matchedSet = dynamicSets.find(s => s.id.toString() === targetSetId.toString());
-                    if (matchedSet) initialSet = matchedSet;
+                    if (matchedSet) {
+                        await switchCeremonialSet(matchedSet.file, matchedSet.id, matchedSet.label, true);
+                    }
                 }
-                
-                await switchCeremonialSet(initialSet.file, initialSet.id, true);
             }
         } catch (err) {
-            document.getElementById('cueText').innerText = "Error tracking sets.json master profile.";
+            console.error("Initialization fault fetching sets configuration indices.");
         }
     }
 
@@ -583,32 +667,30 @@
             btn.className = 'btn-set-switch';
             btn.id = `setBtn-${set.id}`;
             btn.innerText = set.label;
-            btn.onclick = () => { switchCeremonialSet(set.file, set.id, false); };
+            btn.onclick = () => { switchCeremonialSet(set.file, set.id, set.label, false); };
             switcherRow.appendChild(btn);
         });
     }
 
-    async function switchCeremonialSet(jsonPath, setId, isInitialBoot) {
+    async function switchCeremonialSet(jsonPath, setId, setLabel, isInitialBoot) {
         stopAudioEngine();
         if (fadeInterval) { clearInterval(fadeInterval); fadeInterval = null; }
         if (volumeFadeInterval) { clearInterval(volumeFadeInterval); volumeFadeInterval = null; }
-        
-        document.querySelectorAll('.btn-set-switch').forEach(b => b.classList.remove('active'));
-        const targetBtn = document.getElementById(`setBtn-${setId}`);
-        if (targetBtn) targetBtn.classList.add('active');
 
-        if (!isInitialBoot) {
-            const newUrl = `${window.location.pathname}?set=${setId}`;
-            window.history.pushState({ path: newUrl }, '', newUrl);
-        }
+        // Update target runtime header title texts
+        document.getElementById('headerTitleDisplay').innerText = setLabel;
 
-        document.getElementById('cueText').innerText = "Verifying memory configurations... Please standby.";
-        playBtn.disabled = true;
-        fadeBtn.disabled = true;
+        // Push routing string history records dynamically
+        const newUrl = `${window.location.pathname}?set=${setId}`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
 
-        // TIED OFFLINE SCAN OVERRIDE: Check if structural JSON file properties exist in layout RAM cache
+        // Transition views cleanly to active dashboard console screen layout
+        document.getElementById('screenHome').classList.remove('active-view');
+        document.getElementById('screenConsole').classList.add('active-view');
+
+        document.getElementById('cueText').innerText = "Syncing memory configurations... Please standby.";
+
         if (structuralBlueprintProfilesCache[jsonPath]) {
-            console.log("Offline Blueprint Target Restored Safely:", jsonPath);
             tracks = structuralBlueprintProfilesCache[jsonPath];
             buildPlaylistGrid(false);
             await cacheAllAudioToRAM();
@@ -619,8 +701,6 @@
         try {
             const response = await fetch(jsonPath);
             tracks = await response.json();
-            
-            // Commit blueprint tracks mapping cleanly into local RAM storage space
             structuralBlueprintProfilesCache[jsonPath] = tracks;
             
             if (tracks.length > 0) {
@@ -629,8 +709,17 @@
                 loadTrack(0);
             }
         } catch (err) {
-            document.getElementById('cueText').innerText = `Failed to locate layout profile map offline.`;
+            document.getElementById('cueText').innerText = `Failed to process layout profile structural maps.`;
         }
+    }
+
+    function navigateToHomeScreen() {
+        // Safe navigation wipe back to master dashboard selection menus
+        const cleanUrl = window.location.pathname;
+        window.history.pushState({ path: cleanUrl }, '', cleanUrl);
+        
+        document.getElementById('screenConsole').classList.remove('active-view');
+        document.getElementById('screenHome').classList.add('active-view');
     }
 
     function buildPlaylistGrid(forceDisabledState) {
@@ -644,10 +733,8 @@
                 chip.className = `nav-chip not-loaded`;
             } else {
                 chip.className = `nav-chip color-${chosenColor} ${index === 0 ? 'active' : ''}`;
-                
                 const words = track.title.split(' ');
                 if (words.some(word => word.length > 9)) chip.style.fontSize = '1.05rem';
-
                 chip.onclick = () => { handleTrackSelection(index); };
             }
             
@@ -661,12 +748,10 @@
         if (!audioCtx) {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
-        
         let loadedCount = 0;
 
         for (let i = 0; i < tracks.length; i++) {
             const track = tracks[i];
-            
             if (audioCache[track.file]) {
                 loadedCount++;
                 activateLoadedButtonChip(i, track);
@@ -675,7 +760,6 @@
             }
 
             try {
-                document.getElementById('cueText').innerText = `Buffering items into memory...`;
                 const res = await fetch(track.file);
                 const arrayBuffer = await res.arrayBuffer();
                 
@@ -685,11 +769,9 @@
                 const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
                 audioCache[track.file] = audioBuffer;
                 loadedCount++;
-                
                 activateLoadedButtonChip(i, track);
-                
             } catch (e) {
-                console.error("RAM allocation failure for target asset link:", track.file);
+                console.error("RAM compilation failed for target file target paths:", track.file);
             }
         }
     }
@@ -699,21 +781,11 @@
         for (let key in cachedBytesCounter) {
             grandTotalBytes += cachedBytesCounter[key];
         }
-        
         const totalMB = grandTotalBytes / (1024 * 1024);
-        const displayEl = document.getElementById('memoryValue');
-        let baselineStatus = "Safe";
-        let trackingColor = 'var(--play-green)'; 
-
-        if (totalMB >= 75 && totalMB < 180) {
-            baselineStatus = "Moderate";
-            trackingColor = 'var(--cue-gold)';
-        } else if (totalMB >= 180) {
-            baselineStatus = "Heavy Load";
-            trackingColor = 'var(--stop-red)';
-        }
-        displayEl.innerText = `${totalMB.toFixed(2)} MB (${baselineStatus})`;
-        displayEl.style.color = trackingColor;
+        const formatStr = `${totalMB.toFixed(2)} MB`;
+        
+        document.getElementById('homeMemoryDisplay').innerText = formatStr;
+        document.getElementById('modalMemoryValue').innerText = formatStr;
     }
 
     function activateLoadedButtonChip(index, track) {
@@ -721,24 +793,15 @@
         if (chip) {
             const chosenColor = track.color ? track.color.toLowerCase() : 'blue';
             chip.className = `nav-chip color-${chosenColor} ${index === currentTrackIndex ? 'active' : ''}`;
-            
-            const words = track.title.split(' ');
-            const hasLongWord = words.some(word => word.length > 9);
-            if (hasLongWord) {
-                chip.style.fontSize = '1.05rem'; 
-            }
-
             chip.onclick = () => { handleTrackSelection(index); };
         }
     }
 
-    function toggleDiagnosticsPanel() {
-        const panel = document.getElementById('diagnosticDeck');
-        if (panel.style.display === "flex") {
-            panel.style.display = "none";
-        } else {
-            panel.style.display = "flex";
-        }
+    function openOperationsModal() {
+        document.getElementById('operationsModal').style.display = "flex";
+    }
+    function closeOperationsModal() {
+        document.getElementById('operationsModal').style.display = "none";
     }
 
     function handleTrackSelection(index) {
@@ -797,7 +860,7 @@
         const panel = document.getElementById('lyricsPanel');
         panel.innerHTML = '';
         if (lines.length === 0) {
-            panel.innerHTML = '<div class="lyric-line" style="color:var(--text-dim)">(Instrumental / No Words)</div>';
+            panel.innerHTML = '<div class="lyric-line" style="color:var(--text-dim); margin-top:20px;">(Instrumental / No Words)</div>';
             return;
         }
         lines.forEach((line) => {
@@ -861,16 +924,12 @@
                 try { currentSource.stop(); } catch(e){}
                 currentSource = null;
             }
-            
             currentSource = audioCtx.createBufferSource();
             currentSource.buffer = cachedBuffer;
-            
             gainNode = audioCtx.createGain();
             gainNode.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
-            
             currentSource.connect(gainNode);
             gainNode.connect(audioCtx.destination);
-            
             currentSource.start(0, targetSeconds);
             startTime = audioCtx.currentTime - targetSeconds;
         }
@@ -882,7 +941,6 @@
         document.getElementById('volumePct').innerText = displayLabelText;
 
         if (volumeFadeInterval) clearInterval(volumeFadeInterval);
-
         if (!isPlaying || !gainNode || fadeInterval) {
             currentVolume = targetVol;
             return;
@@ -918,7 +976,6 @@
             handleTrackPlaybackCompletion();
             return;
         }
-
         const pct = (currentElapsed / trackDuration) * 100;
         document.getElementById('timelineProgress').value = pct;
         document.getElementById('trackTime').innerText = `${formatTime(currentElapsed)} / ${formatTime(trackDuration)}`;
@@ -946,7 +1003,6 @@
 
     function fadeCurrentTrack() {
         if (!isPlaying || fadeInterval) return;
-
         fadeBtn.disabled = true;
         const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
         if (activeChip) {
@@ -968,10 +1024,8 @@
                 clearInterval(fadeInterval);
                 fadeInterval = null;
                 stopAudioEngine();
-                
                 playBtn.disabled = false;
                 playBtn.innerText = "▶ PLAY";
-                
                 if (currentTrackIndex + 1 < tracks.length) {
                     loadTrack(currentTrackIndex + 1);
                 }
@@ -985,13 +1039,9 @@
         const shareText = "Here is the Lodge Music app for running ceremonial audio straight from your phone or tablet.";
 
         if (navigator.share) {
-            navigator.share({
-                title: shareTitle,
-                text: shareText,
-                url: shareUrl
-            })
-            .then(() => console.log('Successful share event registered.'))
-            .catch((error) => console.log('Native sharing cancelled:', error));
+            navigator.share({ title: shareTitle, text: shareText, url: shareUrl })
+            .then(() => console.log('Successful share event.'))
+            .catch((error) => console.log('Sharing cancelled:', error));
         } else {
             const emailSubject = encodeURIComponent(shareTitle);
             const emailBody = encodeURIComponent(`${shareText}\n\nAccess the app here: ${shareUrl}`);
