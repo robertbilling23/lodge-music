@@ -1,7 +1,7 @@
 [
   {
     "id": "track1",
-    "title": "Entry Marc4",
+    "title": "Entry Marc5",
     "color": "purple",
     "file": "audio/Installation/1 GL Entry by Don.wav",
     "cue": "After the Tyler knocks once and the door is opened",
@@ -197,10 +197,8 @@
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "Enter timing directive guidelines here...",
     "lyrics": [
-      "1 For this one I am going to put a lot of words so we see if it will scroll",
-      "2 For this one I am going to put a lot of words so we see if it will scroll",
-      "3 For this one I am going to put a lot of words so we see if it will scroll",
-      "4 For this one I am going to put a lot of words so we see if it will scroll"
+      "1 For this one I am going to put a lot of words so we see if it will scroll 2 For this one I am going to put a lot of words so we see if it will scroll 3 For this one I am going to put a lot of words so we see if it will scroll 4 For this one I am going to put a lot of words so we see if it will scroll",
+      "AAA 1 For this one I am going to put a lot of words so we see if it will scroll 2 For this one I am going to put a lot of words so we see if it will scroll 3 For this one I am going to put a lot of words so we see if it will scroll 4 For this one I am going to put a lot of words so we see if it will scroll"
     ]
   },
   {
