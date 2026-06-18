@@ -50,8 +50,6 @@
             -webkit-user-select: none;
             user-select: none;
             touch-action: manipulation;
-            
-            /* UPDATED: Dynamic Viewport Tracking fields avoid clipping boundaries */
             min-height: 100vh;
             min-height: 100dvh;
             display: flex;
@@ -68,8 +66,6 @@
             box-sizing: border-box;
             padding: 10px;
             background-color: var(--bg-dark); 
-            
-            /* UPDATED: Forces calculation grid to scale inside dynamic heights */
             height: 100vh;
             height: 100dvh;
             max-width: 640px; 
@@ -83,7 +79,7 @@
             flex: 1;
             height: 100%;
             box-sizing: border-box;
-            overflow: hidden; /* Guards outer layout from shifting positions */
+            overflow: hidden; 
         }
         .app-screen.active-view {
             display: flex;
@@ -143,11 +139,11 @@
             border-radius: 8px;
             padding: 10px;
             
-            /* UPDATED: Increased vertical scroll threshold bounds by exactly 50% */
+            /* FIXED RE-ALLOCATION: The button box is now the aggressive spring container */
+            flex: 1; 
             max-height: 858px; 
             overflow-y: auto;   
             box-sizing: border-box;
-            flex: 1; /* Allows the box to fluidly adapt within the dynamic layout limits */
         }
 
         .playlist-grid {
@@ -286,22 +282,17 @@
             border: 1px solid var(--panel-border);
             border-radius: 8px;
             padding: 15px;
-            flex: 1; 
-            overflow-y: auto; 
             box-sizing: border-box;
+            overflow-y: auto; 
+            flex-shrink: 0;
+            
+            /* FIXED CONFIG: Locked height leaves maximum room for your buttons above */
+            height: 160px; 
         }
         .lyrics-content-container {
             display: flex;
             flex-direction: column;
             gap: 12px;
-        }
-
-        .lyric-line {
-            font-size: 1.25rem;
-            color: var(--text-bright);
-            text-align: center;
-            font-weight: bold;
-            line-height: 1.4;
         }
 
         .home-switcher-container {
@@ -351,7 +342,7 @@
             border-radius: 8px;
             padding: 12px;
             box-sizing: border-box;
-            flex-shrink: 0; /* Prevents button row from compressing */
+            flex-shrink: 0; 
         }
         .home-metric-status-line {
             font-size: 0.95rem;
@@ -790,11 +781,14 @@
     }
 
     function navigateToHomeScreen() {
-        const cleanUrl = window.location.pathname;
-        window.history.pushState({ path: cleanUrl }, '', cleanUrl);
+        // FIXED ROUTING: Complete clean state swap eliminates screen jump bugs on navigation loops
+        window.history.pushState({}, '', window.location.pathname);
         
         document.getElementById('screenConsole').classList.remove('active-view');
         document.getElementById('screenHome').classList.add('active-view');
+        
+        // Force rendering paint engines to synchronize component constraints instantly
+        window.dispatchEvent(new Event('resize'));
     }
 
     function buildPlaylistGrid(forceDisabledState) {
@@ -1129,20 +1123,16 @@
         } else {
             const emailSubject = encodeURIComponent(shareTitle);
             const emailBody = encodeURIComponent(`${shareText}\n\nAccess the app here: ${shareUrl}`);
-            window.location.href = `mailto:?subject=${emailSubject}&body=${emailBody}`;
+            window.location.href = `mailto:?subject= ${emailSubject}&body=${emailBody}`;
         }
     }
 
-    /* HARD CACHE FORCE-RESET ROUTINE ENGINE */
     function executePwaServiceCacheClear() {
-        // Step 1: Wipe the browser's service worker asset caches explicitly
         if ('caches' in window) {
             caches.keys().then((names) => {
                 for (let name of names) caches.delete(name);
             });
         }
-        
-        // Step 2: Unregister active PWA worker listeners to trigger fresh compilation handshakes
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.getRegistrations().then((registrations) => {
                 for (let registration of registrations) {
@@ -1150,14 +1140,11 @@
                 }
             });
         }
-
-        // Step 3: Evict runtime blueprint profile maps to force clean data downloads
         structuralBlueprintProfilesCache = {};
         for (let key in audioCache) delete audioCache[key];
         audioCache = {};
         cachedBytesCounter = {};
 
-        // Step 4: Force a clean HTTP bypass cache bust reload loop execution
         setTimeout(() => {
             window.location.reload(true);
         }, 150);
