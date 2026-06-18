@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lodge Music</title>
     
-    <!-- PWA Registration Assets Links -->
     <link rel="manifest" href="manifest.json">
     <script>
         if ('serviceWorker' in navigator) {
@@ -85,11 +84,10 @@
             display: flex;
         }
 
-        /* SCREEN 1 SPECIFIC ISOLATION HOOK */
         #screenHome {
             display: none;
             flex-direction: column;
-            justify-content: space-between; /* Securely forces footer elements to absolute bottom layout boundaries */
+            justify-content: space-between; 
             height: 100%;
         }
         #screenHome.active-view {
@@ -152,8 +150,8 @@
             padding: 10px;
             flex: 1; 
             
-            /* UPDATED: Height expanded by 33% to maximize tactile hitting lanes */
-            max-height: 912px; 
+            /* UPDATED: Maximum grid layout ceiling height expanded to 1140px */
+            max-height: 1140px; 
             overflow-y: auto;   
             box-sizing: border-box;
         }
@@ -599,8 +597,7 @@
 
 <div class="console-grid">
 
-    <!-- ================= SCREEN 1: ISOLATED HOME DASHBOARD SCREEN ================= -->
-    <div class="app-screen" id="screenHome">
+    <div class="app-screen active-view" id="screenHome">
         <div>
             <div class="home-header-banner">Lodge Music</div>
             <div class="home-switcher-container">
@@ -627,14 +624,12 @@
     </div>
 
 
-    <!-- ================= SCREEN 2: ACTIVE CONSOLE INTERFACE SCREEN ================= -->
     <div class="app-screen" id="screenConsole">
         <div class="screen-header-bar">
             <button class="btn-header-back" onclick="navigateToHomeScreen()">◀ BACK</button>
             <div class="header-title-text" id="headerTitleDisplay">Lodge Music</div>
         </div>
 
-        <!-- Button Container expanded by 33% (Max bounds locked safely at 912px) -->
         <div class="playlist-grid-container">
             <div class="playlist-grid" id="playlistGrid"></div>
         </div>
@@ -660,7 +655,6 @@
     </div>
 
 
-    <!-- ================= CONSOLIDATED PLAY OPTIONS MODAL DIALOG ================= -->
     <div class="operations-modal-overlay" id="operationsModal">
         <div class="operations-dialog-box">
             <div class="modal-header">
@@ -950,10 +944,6 @@
         document.getElementById('trackTime').innerText = `0:00 / ${formatTime(trackDuration)}`;
     }
 
-    function htmlEscape(str) {
-        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    }
-
     function buildStaticTextPanel(lines) {
         const panel = document.getElementById('lyricsPanel');
         panel.innerHTML = '';
@@ -1153,6 +1143,7 @@
         }
     }
 
+    /* UPDATED: Erases historical state parameter routing records BEFORE hard resetting */
     function executePwaServiceCacheClear() {
         if ('caches' in window) {
             caches.keys().then((names) => {
@@ -1170,6 +1161,9 @@
         for (let key in audioCache) delete audioCache[key];
         audioCache = {};
         cachedBytesCounter = {};
+
+        // HARD SANITIZATION LOOP: Wipes out deep query links so it forces a pristine home frame boot
+        window.history.pushState({}, '', window.location.pathname);
 
         setTimeout(() => {
             window.location.reload(true);
