@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lodge Music</title>
     
-    <!-- PWA Registration Assets Links -->
     <link rel="manifest" href="manifest.json">
     <script>
         if ('serviceWorker' in navigator) {
@@ -51,7 +50,10 @@
             -webkit-user-select: none;
             user-select: none;
             touch-action: manipulation;
+            
+            /* UPDATED: Dynamic Viewport Tracking fields avoid clipping boundaries */
             min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             justify-content: center; 
             overflow: hidden; 
@@ -60,13 +62,16 @@
         .console-grid {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             flex: 1;
             width: 100%;
             box-sizing: border-box;
             padding: 10px;
             background-color: var(--bg-dark); 
+            
+            /* UPDATED: Forces calculation grid to scale inside dynamic heights */
             height: 100vh;
+            height: 100dvh;
             max-width: 640px; 
             position: relative;
         }
@@ -74,10 +79,11 @@
         .app-screen {
             display: none;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             flex: 1;
             height: 100%;
             box-sizing: border-box;
+            overflow: hidden; /* Guards outer layout from shifting positions */
         }
         .app-screen.active-view {
             display: flex;
@@ -86,7 +92,7 @@
         .home-header-banner {
             background-color: var(--footer-blue);
             color: var(--text-bright);
-            padding: 14px 15px;
+            padding: 12px 15px;
             font-size: 1.4rem;
             font-weight: 900;
             letter-spacing: 0.5px;
@@ -94,6 +100,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
             box-sizing: border-box;
+            flex-shrink: 0;
         }
 
         .screen-header-bar {
@@ -103,9 +110,10 @@
             border: 1px solid var(--panel-border);
             border-radius: 8px;
             padding: 8px 12px;
-            height: 56px;
+            height: 52px;
             box-sizing: border-box;
             gap: 12px;
+            flex-shrink: 0;
         }
 
         .btn-header-back {
@@ -113,15 +121,10 @@
             border: 1px solid var(--panel-border);
             color: var(--text-dim);
             font-weight: 900;
-            padding: 8px 14px;
+            padding: 6px 12px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.95rem;
-            transition: background 0.1s;
-        }
-        .btn-header-back:active {
-            background: var(--panel-border);
-            color: white;
         }
 
         .header-title-text {
@@ -139,9 +142,7 @@
             border: 1px solid var(--panel-border);
             border-radius: 8px;
             padding: 10px;
-            
-            /* FIXED ROW LIMIT OVERRIDE: Clamps layout frame grid to exactly 7 vertical rows max */
-            max-height: 572px; 
+            flex: 1; /* Allows container to shrink or grow fluidly */
             overflow-y: auto;   
             box-sizing: border-box;
         }
@@ -227,6 +228,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
         .ticker-highlight {
             color: var(--active-blue);
@@ -241,6 +243,7 @@
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
+            flex-shrink: 0;
         }
         .cue-label {
             font-size: 0.9rem;
@@ -345,6 +348,7 @@
             border-radius: 8px;
             padding: 12px;
             box-sizing: border-box;
+            flex-shrink: 0; /* Prevents button row from compressing */
         }
         .home-metric-status-line {
             font-size: 0.95rem;
@@ -384,15 +388,16 @@
         .ceremonial-footer {
             background-color: var(--footer-blue);
             color: var(--text-bright);
-            padding: 14px 15px;
+            padding: 12px 15px;
             font-size: 1.05rem;
             font-weight: bold;
             letter-spacing: 0.3px;
             border-radius: 6px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
-            line-height: 1.5;
+            line-height: 1.4;
             box-sizing: border-box;
+            flex-shrink: 0;
         }
         .footer-sub-note {
             display: block;
@@ -448,7 +453,6 @@
             border-radius: 8px;
             padding: 12px 24px;
             cursor: pointer;
-            transition: background 0.1s;
         }
         .btn-modal-close:active {
             background: var(--panel-border);
@@ -586,7 +590,6 @@
 
 <div class="console-grid">
 
-    <!-- ================= SCREEN 1: THE HOME DASHBOARD SCREEN ================= -->
     <div class="app-screen active-view" id="screenHome">
         <div class="home-header-banner">
             Lodge Music
@@ -606,14 +609,13 @@
                 Downloaded: <span class="home-metric-value-span" id="homeMemoryDisplay">0.00 MB</span>
             </div>
             <div class="home-buttons-action-grid">
-                <button class="btn-home-utility-trigger" onclick="window.location.reload(true)">🔄 Refresh</button>
+                <button class="btn-home-utility-trigger" onclick="executePwaServiceCacheClear()">🔄 Refresh</button>
                 <button class="btn-home-utility-trigger" onclick="shareLodgeMusicApp()">🔗 Share App</button>
             </div>
         </div>
     </div>
 
 
-    <!-- ================= SCREEN 2: ACTIVE CONSOLE INTERFACE SCREEN ================= -->
     <div class="app-screen" id="screenConsole">
         <div class="screen-header-bar">
             <button class="btn-header-back" onclick="navigateToHomeScreen()">◀ BACK</button>
@@ -643,7 +645,6 @@
     </div>
 
 
-    <!-- ================= CONSOLIDATED PLAY OPTIONS MODAL DIALOG ================= -->
     <div class="operations-modal-overlay" id="operationsModal">
         <div class="operations-dialog-box">
             <div class="modal-header">
@@ -730,7 +731,7 @@
                 }
             }
         } catch (err) {
-            console.error("Initialization fault fetching sets configuration indices.");
+            console.error("Initialization fault fetching master indices.");
         }
     }
 
@@ -781,7 +782,7 @@
                 loadTrack(0);
             }
         } catch (err) {
-            document.getElementById('cueText').innerText = `Failed to process layout profile structural maps.`;
+            document.getElementById('cueText').innerText = `Failed to process configuration blueprints layout profiles.`;
         }
     }
 
@@ -842,7 +843,7 @@
                 loadedCount++;
                 activateLoadedButtonChip(i, track);
             } catch (e) {
-                console.error("RAM compilation failed for target file target paths:", track.file);
+                console.error("RAM compilation asset lookup failed for:", track.file);
             }
         }
     }
@@ -1062,6 +1063,12 @@
         }
     }
 
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible" && audioCtx && audioCtx.state === "interrupted") {
+            audioCtx.resume();
+        }
+    });
+
     function stopAudioEngine() {
         isPlaying = false;
         clearInterval(timeUpdateInterval);
@@ -1123,11 +1130,35 @@
         }
     }
 
-    document.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === "visible" && audioCtx && audioCtx.state === "interrupted") {
-            audioCtx.resume();
+    /* HARD CACHE FORCE-RESET ROUTINE ENGINE */
+    function executePwaServiceCacheClear() {
+        // Step 1: Wipe the browser's service worker asset caches explicitly
+        if ('caches' in window) {
+            caches.keys().then((names) => {
+                for (let name of names) caches.delete(name);
+            });
         }
-    });
+        
+        // Step 2: Unregister active PWA worker listeners to trigger fresh compilation handshakes
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then((registrations) => {
+                for (let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+
+        // Step 3: Evict runtime blueprint profile maps to force clean data downloads
+        structuralBlueprintProfilesCache = {};
+        for (let key in audioCache) delete audioCache[key];
+        audioCache = {};
+        cachedBytesCounter = {};
+
+        // Step 4: Force a clean HTTP bypass cache bust reload loop execution
+        setTimeout(() => {
+            window.location.reload(true);
+        }, 150);
+    }
 
     function formatTime(secs) {
         if (isNaN(secs) || secs === 0) return "0:00";
