@@ -1,7 +1,7 @@
 [
   {
     "id": "track1",
-    "title": "1. So Mote It Be",
+    "title": "1. Opening. SMIB",
     "color": "yellow",
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "As the Chaplain says - in harmony",
@@ -35,23 +35,20 @@
     "id": "track1",
     "title": "Visitor Entry",
     "color": "darkblue",
-    "file": "audio/1-Open-1st-SMIB-Faster.mp3",
+    "file": "audio/",
     "cue": "When the IG opens the door",
     "lyrics": [
-      "Rob is hunting for this tune.",
-      "This can be played earlier if the DC is walking around the lodge to escort the visitors.  It is mainly intended for non PMs.",
-      "This tune is known as the March of the Angry Men."
+      "asdf"
     ]
   },
   {
     "id": "track1",
-    "title": "Past Masters",
+    "title": "PM/WM Entry",
     "color": "darkblue",
     "file": "audio/PMEntry_marchscipio.wav",
     "cue": "When the DC heads west to escort the visitors",
     "lyrics": [
-      "This is also fine for WM entry.",
-      "When the DC is announcing the visitors, lower the volume to barely audible, but keep it playing.",
+      "Before the DC starts announcing the visitors, lower the volume to barely audible, but keep it playing.",
       "The tune is called Scipio."
     ]
   },
@@ -67,7 +64,7 @@
   },
   {
     "id": "track1",
-    "title": "66. So Mote It Be",
+    "title": "66. Closing. SMIB.",
     "color": "yellow",
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "As the Chaplain says - social virtue",
@@ -82,7 +79,7 @@
     "title": "68. Close 1st TB",
     "color": "blue",
     "file": "audio/68 Close 1st TB.mp3",
-    "cue": "After the IG knocks three times",
+    "cue": "Wait for the IG/Tyler to knock three times",
     "lyrics": [
       "Ode 68",
       "Abide with me, fast falls the eventide; The darkness deepens, Lord, with me abide; When other helpers fail, and comforts flee, Help of the helpless, O abide with me."
@@ -113,7 +110,7 @@
   },
   {
     "id": "track_1781595909450",
-    "title": "Onward Brother Masons",
+    "title": "Exit - Onward Brother Masons",
     "color": "blue",
     "file": "audio/WMExit 63 GL Exit March.mp3",
     "cue": "After the WM says - and Brethren",
@@ -123,7 +120,7 @@
   },
   {
     "id": "track_1781595969860",
-    "title": "Exit Fancy",
+    "title": "Exit - William Tell",
     "color": "blue",
     "file": "audio/WMExit_William Tell.mp3",
     "cue": "After the WM says - and Brethren",

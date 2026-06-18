@@ -1,19 +1,20 @@
 [
   {
     "id": "track1",
-    "title": "Entry Marc12",
+    "title": "Entry March",
     "color": "purple",
     "file": "audio/Installation/1 GL Entry by Don.wav",
     "cue": "After the Tyler knocks once and the door is opened",
     "lyrics": [
-      "The Grand Team outside need to be able to hear the first note of this, so wait accordingly."
+      "The Grand Team outside need to be able to hear the first note of this, so wait accordingly.",
+      "Stop this as the IM salutes.  Start it again after he salutes.  Stop it as he gets to the East."
     ]
   },
   {
     "id": "track_1781676498071",
     "title": "Be Seated",
     "color": "blue",
-    "file": "audio/Installation/Incidental_2Bolsward - Martinikerk - Martin Mans - Friesche Volksliedjes.mp3",
+    "file": "audio/",
     "cue": "After the Proclaiming Officer says - Be Seated, Brethren.",
     "lyrics": [
       "Keep an eye on the Proclaiming Officer.  If he sits, end the tune.  If he comes out to do Grand Honors, end it before he needs to talk"
@@ -31,9 +32,9 @@
   },
   {
     "id": "track_1781676499111",
-    "title": "FIX Get the Master Elect",
+    "title": "Get the Master Elect",
     "color": "blue",
-    "file": "audio/1-Open-1st-SMIB-Faster.mp3",
+    "file": "audio/",
     "cue": "After the Grand Deacons stand",
     "lyrics": [
       "This happens as soon as the Installed Board is opened"
@@ -41,7 +42,7 @@
   },
   {
     "id": "track_1781676499359",
-    "title": "So Mote It Be",
+    "title": "Chaplain. SMIB",
     "color": "yellow",
     "file": "audio/Installation/53 SMIB.mp3",
     "cue": "Start it as he says - holy name",
@@ -72,7 +73,7 @@
   },
   {
     "id": "track_1781676798123",
-    "title": "HS",
+    "title": "H.S.",
     "color": "orange",
     "file": "audio/Installation/55b_HollowSquare_canonind.mp3",
     "cue": "After the Proclaiming Officer addresses the WBros in the middle",
@@ -82,9 +83,9 @@
   },
   {
     "id": "track_1781676817713",
-    "title": "FIX Re-entry of MMs FCs EAs",
+    "title": "IG admits MMs etc",
     "color": "blue",
-    "file": "audio/1-Open-1st-SMIB-Faster.mp3",
+    "file": "audio/",
     "cue": "Enter timing directive guidelines here...",
     "lyrics": [
       "First line of text words..."
@@ -92,7 +93,7 @@
   },
   {
     "id": "track_1781676845011",
-    "title": "East Proclamation",
+    "title": "East Proclaim",
     "color": "green",
     "file": "audio/Installation/56 god bless our master true.mp3",
     "cue": "After everyone has sat after the proclamation",
@@ -102,7 +103,7 @@
   },
   {
     "id": "track_1781676871402",
-    "title": "West Proclamation",
+    "title": "West Proclaim",
     "color": "green",
     "file": "audio/Installation/57 let every craftsman gather.mp3",
     "cue": "After everyone has sat after the proclamation",
@@ -112,7 +113,7 @@
   },
   {
     "id": "track_1781676879411",
-    "title": "South Proclamation",
+    "title": "South Proclaim",
     "color": "green",
     "file": "audio/Installation/58 great architect divine with song.mp3",
     "cue": "After everyone has sat after the proclamation",
@@ -152,7 +153,7 @@
   },
   {
     "id": "track_1781676911675",
-    "title": "So Mote It Be",
+    "title": "Address to Master. SMIB",
     "color": "yellow",
     "file": "audio/Installation/60 SMIB",
     "cue": "When the SW finishes the Address to the Master",
@@ -162,7 +163,7 @@
   },
   {
     "id": "track_1781676911675",
-    "title": "So Mote It Be",
+    "title": "Address to Brethren. SMIB",
     "color": "yellow",
     "file": "audio/Installation/61 SMIB.mp3",
     "cue": "When the IM finishes the Address to the Brethren",
@@ -175,90 +176,9 @@
     "title": "Exit - Onward Brother Masons",
     "color": "blue",
     "file": "audio/Installation/63 GL Exit March.mp3",
-    "cue": "Enter timing directive guidelines here...",
+    "cue": "After the IM has saluted the WM",
     "lyrics": [
-      "First line of text words..."
-    ]
-  },
-  {
-    "id": "track_1781676942228",
-    "title": "Highland Cathedral",
-    "color": "blue",
-    "file": "audio/1-Open-1st-SMIB-Faster.mp3",
-    "cue": "Enter timing directive guidelines here...",
-    "lyrics": [
-      "First line of text words..."
-    ]
-  },
-  {
-    "id": "track_1781676960415",
-    "title": "Something Nice",
-    "color": "blue",
-    "file": "audio/1-Open-1st-SMIB-Faster.mp3",
-    "cue": "Enter timing directive guidelines here...",
-    "lyrics": [
-      "1 For this one I am going to put a lot of words so we see if it will scroll 2 For this one I am going to put a lot of words so we see if it will scroll 3 For this one I am going to put a lot of words so we see if it will scroll 4 For this one I am going to put a lot of words so we see if it will scroll",
-      "AAA 1 For this one I am going to put a lot of words so we see if it will scroll 2 For this one I am going to put a lot of words so we see if it will scroll 3 For this one I am going to put a lot of words so we see if it will scroll 4 For this one I am going to put a lot of words so we see if it will scroll"
-    ]
-  },
-  {
-    "id": "track_1781676960415",
-    "title": "Something Nice1",
-    "color": "blue",
-    "file": "audio/filename.mp3",
-    "cue": "Enter timing directive guidelines here...",
-    "lyrics": [
-      "First line of text words..."
-    ]
-  },
-  {
-    "id": "track_1781676960415",
-    "title": "Something Nice2",
-    "color": "blue",
-    "file": "audio/filename.mp3",
-    "cue": "Enter timing directive guidelines here...",
-    "lyrics": [
-      "First line of text words..."
-    ]
-  },
-  {
-    "id": "track_1781676960415",
-    "title": "Something Nic3",
-    "color": "blue",
-    "file": "audio/filename.mp3",
-    "cue": "Enter timing directive guidelines here...",
-    "lyrics": [
-      "First line of text words..."
-    ]
-  },
-  {
-    "id": "track_1781676960415",
-    "title": "Something Nice4",
-    "color": "blue",
-    "file": "audio/1-Open-1st-SMIB-Faster.mp3",
-    "cue": "Enter timing directive guidelines here...",
-    "lyrics": [
-      "First line of text words..."
-    ]
-  },
-  {
-    "id": "track_1781676960415",
-    "title": "Something Nice5",
-    "color": "blue",
-    "file": "audio/filename.mp3",
-    "cue": "Enter timing directive guidelines here...",
-    "lyrics": [
-      "First line of text words..."
-    ]
-  },
-  {
-    "id": "track_1781676960415",
-    "title": "Something Nice6",
-    "color": "blue",
-    "file": "audio/filename.mp3",
-    "cue": "Enter timing directive guidelines here...",
-    "lyrics": [
-      "First line of text words..."
+      "Done."
     ]
   }
 ]
