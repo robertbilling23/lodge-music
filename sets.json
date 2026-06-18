@@ -4,31 +4,9 @@
     "label": "Craft General",
     "file": "craft.json"
   },
-  {
-    "id": 2,
-    "label": "EA Degree",
-    "file": "ea.json"
-  },
-  {
-    "id": 3,
-    "label": "FC Degree",
-    "file": "fc.json"
-  },
-  {
-    "id": 4,
-    "label": "MM Degree",
-    "file": "mm.json"
-  },
     {
     "id": 5,
     "label": "Installation",
     "file": "installation.json"
-  },
-      {
-    "id": 6,
-    "label": "Mark",
-    "file": "mark.json"
   }
-
-
 ]
