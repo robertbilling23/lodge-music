@@ -83,7 +83,6 @@
             display: flex;
         }
 
-        /* NEW: Matching Header Banner for the Home Screen Layout */
         .home-header-banner {
             background-color: var(--footer-blue);
             color: var(--text-bright);
@@ -140,12 +139,18 @@
             border: 1px solid var(--panel-border);
             border-radius: 8px;
             padding: 10px;
+            
+            /* FIXED ROW LIMIT OVERRIDE: Clamps layout frame grid to exactly 7 vertical rows max */
+            max-height: 572px; 
+            overflow-y: auto;   
+            box-sizing: border-box;
         }
 
         .playlist-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr); 
             gap: 10px;
+            overflow: hidden; 
         }
 
         .nav-chip {
@@ -211,7 +216,6 @@
             pointer-events: none; 
         }
 
-        /* NEW: Discrete Active Track Feedback Display Strip */
         .track-ticker-line {
             background: rgba(0, 0, 0, 0.2);
             border-left: 3px solid var(--active-blue);
@@ -332,7 +336,6 @@
             transform: scale(0.98);
         }
 
-        /* NEW STYLE BLOCKS: Quad-button Home Screen Action Bar Layout */
         .home-action-row-container {
             display: flex;
             flex-direction: column;
@@ -435,7 +438,6 @@
             color: var(--cue-gold);
         }
 
-        /* NEW: Scaled Up DONE Button for easier navigation */
         .btn-modal-close {
             background: var(--footer-blue);
             border: 1px solid var(--panel-border);
@@ -462,7 +464,6 @@
             border: 1px solid rgba(255,255,255,0.05);
         }
         
-        /* NEW: Low-contrast, non-obtrusive styling parameter rule for storage paths */
         .raw-filename-readout {
             font-family: monospace;
             font-size: 0.8rem;
@@ -495,7 +496,6 @@
             cursor: pointer;
         }
 
-        /* RESTORED: Heavy-Duty Tactical Layout Button Styling Rules */
         .action-grid {
             display: flex;
             gap: 12px;
@@ -588,23 +588,19 @@
 
     <!-- ================= SCREEN 1: THE HOME DASHBOARD SCREEN ================= -->
     <div class="app-screen active-view" id="screenHome">
-        <!-- NEW: Dedicated Matching Top Title Header Banner Block -->
         <div class="home-header-banner">
             Lodge Music
         </div>
         
-        <!-- Interactive Profiles Container -->
         <div class="home-switcher-container">
             <div class="set-switcher-grid" id="setSwitcherRow"></div>
         </div>
 
-        <!-- Bio Greeting Segment Frame -->
         <div class="ceremonial-footer">
             I hope you find my app handy. Please share any requests or feedback.
             <span class="footer-sub-note">WBro. Robert Billing PGSwdB GLHer</span>
         </div>
 
-        <!-- NEW FORMAT: Consolidated Twin-Button Action Control Footer Container Row -->
         <div class="home-action-row-container">
             <div class="home-metric-status-line">
                 Downloaded: <span class="home-metric-value-span" id="homeMemoryDisplay">0.00 MB</span>
@@ -619,31 +615,26 @@
 
     <!-- ================= SCREEN 2: ACTIVE CONSOLE INTERFACE SCREEN ================= -->
     <div class="app-screen" id="screenConsole">
-        <!-- Structural Top Header Banner Bar Layout -->
         <div class="screen-header-bar">
             <button class="btn-header-back" onclick="navigateToHomeScreen()">◀ BACK</button>
             <div class="header-title-text" id="headerTitleDisplay">Lodge Music</div>
         </div>
 
-        <!-- Playback Target Grid Array Layout Box -->
         <div class="playlist-grid-container">
             <div class="playlist-grid" id="playlistGrid"></div>
         </div>
 
-        <!-- NEW: Discretely Embedded Selected Track Confirmation Line -->
         <div class="track-ticker-line">
             <span>Selected Track:</span>
             <span class="ticker-highlight" id="tickerTrackTitle">None</span>
         </div>
 
-        <!-- Cue Prompt Banner Target -->
         <div class="cue-banner">
             <span class="cue-label">When to Press Play</span>
             <span class="cue-text" id="cueText">Loading configuration blueprints...</span>
             <button class="btn-deck-toggle" onclick="openOperationsModal()">⚙️</button>
         </div>
 
-        <!-- Scrollable Lyric Frame Area Section -->
         <div class="lyrics-panel">
             <div class="lyrics-content-container" id="lyricsPanel">
                 <div class="lyric-line">Select a track row sequence to begin.</div>
@@ -656,18 +647,14 @@
     <div class="operations-modal-overlay" id="operationsModal">
         <div class="operations-dialog-box">
             <div class="modal-header">
-                <!-- UPDATED TITLE STRING -->
                 <span class="modal-title">🎛️ Play Options</span>
-                <!-- UPDATED SCALED BUTTON COMPONENT -->
                 <button class="btn-modal-close" onclick="closeOperationsModal()">DONE</button>
             </div>
 
-            <!-- Custom Tactical Control Deck Block Frame -->
             <div class="control-deck">
                 <div class="track-info-row">
                     <div style="display: flex; flex-direction: column; gap: 2px; flex: 1; overflow: hidden;">
                         <span class="current-track-title" id="trackTitle">---</span>
-                        <!-- NEW: Embedded Non-obtrusive system asset identifier filename target readout -->
                         <span class="raw-filename-readout" id="trackFilenameReadout">no_file.mp3</span>
                     </div>
                     <span class="running-time" id="trackTime">0:00 / 0:00</span>
@@ -675,14 +662,12 @@
                 
                 <input type="range" class="timeline-slider" id="timelineProgress" min="0" max="100" value="0" oninput="handleManualTimelineSeek(this.value)">
                 
-                <!-- RESTORED: Large Tactical Performance Overrides Action Grid buttons -->
                 <div class="action-grid">
                     <button class="btn-tactical btn-tactical-play" id="playBtn" onclick="playCurrentTrack()" disabled>▶ PLAY</button>
                     <button class="btn-tactical btn-tactical-fade" id="fadeBtn" onclick="fadeCurrentTrack()" disabled>■ STOP</button>
                 </div>
             </div>
 
-            <!-- Volume Control Interface Segment -->
             <div class="volume-pad">
                 <div class="volume-status-row">
                     <span style="font-weight: bold; color: var(--text-dim);">Active Audio Volume Level:</span>
@@ -931,10 +916,7 @@
         trackDuration = cachedBuffer ? cachedBuffer.duration : 0;
         pausedTime = 0;
 
-        // Sync main interface feedback line displays
         document.getElementById('tickerTrackTitle').innerText = track.title;
-
-        // Update popup tools diagnostics entries
         document.getElementById('trackTitle').innerText = track.title;
         document.getElementById('trackFilenameReadout').innerText = track.file.split('/').pop();
         
