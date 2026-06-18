@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lodge Music</title>
     
+    <!-- PWA Registration Assets Links -->
     <link rel="manifest" href="manifest.json">
     <script>
         if ('serviceWorker' in navigator) {
@@ -53,8 +54,6 @@
             min-height: 100vh;
             display: flex;
             justify-content: center; 
-            
-            /* CRITICAL UPDATE: Global system scrolling deactivated completely */
             overflow: hidden; 
         }
 
@@ -72,7 +71,6 @@
             position: relative;
         }
 
-        /* SCREEN STATE MANAGERS: Toggled cleanly via functional script states */
         .app-screen {
             display: none;
             flex-direction: column;
@@ -85,7 +83,20 @@
             display: flex;
         }
 
-        /* DEDICATED FIXED TITLE HEADER BANNER */
+        /* NEW: Matching Header Banner for the Home Screen Layout */
+        .home-header-banner {
+            background-color: var(--footer-blue);
+            color: var(--text-bright);
+            padding: 14px 15px;
+            font-size: 1.4rem;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            box-sizing: border-box;
+        }
+
         .screen-header-bar {
             display: flex;
             align-items: center;
@@ -200,6 +211,23 @@
             pointer-events: none; 
         }
 
+        /* NEW: Discrete Active Track Feedback Display Strip */
+        .track-ticker-line {
+            background: rgba(0, 0, 0, 0.2);
+            border-left: 3px solid var(--active-blue);
+            padding: 6px 10px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--text-dim);
+            border-radius: 0 6px 6px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .ticker-highlight {
+            color: var(--active-blue);
+        }
+
         .cue-banner {
             background: rgba(243, 156, 18, 0.12);
             border: 2px solid var(--cue-gold); 
@@ -243,7 +271,6 @@
             font-size: 1.2rem;
         }
 
-        /* UPDATED INDEPENDENT INTERNAL SCROLL LYRICS WRAPPER */
         .lyrics-panel {
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
@@ -267,7 +294,6 @@
             line-height: 1.4;
         }
 
-        /* SET SWITCHER GRID CONTAINER ON DASHBOARD HOME SCREEN */
         .home-switcher-container {
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
@@ -305,71 +331,51 @@
             background: var(--panel-border);
             transform: scale(0.98);
         }
-        .btn-set-switch.active {
-            border-color: var(--active-blue) !important;
-            box-shadow: 0 0 10px rgba(0, 188, 212, 0.3);
-        }
 
-        /* DASHBOARD MASTER BUTTONS CONTROLS ROW Layout */
-        .dashboard-control-row {
-            display: grid;
-            grid-template-columns: 1fr;
+        /* NEW STYLE BLOCKS: Quad-button Home Screen Action Bar Layout */
+        .home-action-row-container {
+            display: flex;
+            flex-direction: column;
             gap: 10px;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 12px;
             box-sizing: border-box;
         }
-        .btn-dashboard-utility {
-            width: 100%;
-            background: #1c2838;
-            border: 1px solid var(--panel-border);
+        .home-metric-status-line {
+            font-size: 0.95rem;
+            font-weight: bold;
             color: var(--text-dim);
-            padding: 14px;
-            font-size: 1.1rem;
+            text-align: center;
+            padding-bottom: 2px;
+        }
+        .home-metric-value-span {
+            font-family: monospace;
+            color: var(--play-green);
+        }
+        .home-buttons-action-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .btn-home-utility-trigger {
+            background: #1e293b;
+            border: 1px solid var(--panel-border);
+            color: #ffffff;
             font-weight: 900;
-            border-radius: 8px;
+            font-size: 0.95rem;
+            padding: 12px 6px;
+            border-radius: 6px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-        }
-        .btn-dashboard-utility:active {
-            background: var(--panel-border);
-            color: white;
-        }
-
-        .system-metric-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-radius: 8px;
-            padding: 10px 14px;
-            box-sizing: border-box;
-        }
-        .memory-status-box {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.95rem;
-            font-weight: bold;
-        }
-        .memory-label { color: var(--text-dim); }
-        .memory-value { font-family: monospace; transition: color 0.3s ease; }
-
-        .btn-share-app {
-            background: rgba(0, 188, 212, 0.12);
-            border: 1px solid var(--active-blue);
-            color: var(--active-blue);
-            padding: 10px 16px;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            font-weight: 900;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
             gap: 6px;
             white-space: nowrap;
+        }
+        .btn-home-utility-trigger:active {
+            background: var(--panel-border);
         }
 
         .ceremonial-footer {
@@ -393,7 +399,6 @@
             margin-top: 4px;
         }
 
-        /* MODAL DIALOG POPUP OPERATIONS ENGINE OVERLAY STYLES */
         .operations-modal-overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -425,18 +430,26 @@
             padding-bottom: 8px;
         }
         .modal-title {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 900;
             color: var(--cue-gold);
         }
+
+        /* NEW: Scaled Up DONE Button for easier navigation */
         .btn-modal-close {
-            background: #233145;
-            border: none;
+            background: var(--footer-blue);
+            border: 1px solid var(--panel-border);
             color: white;
-            font-weight: bold;
-            border-radius: 6px;
-            padding: 6px 12px;
+            font-weight: 900;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+            padding: 12px 24px;
             cursor: pointer;
+            transition: background 0.1s;
+        }
+        .btn-modal-close:active {
+            background: var(--panel-border);
         }
 
         .control-deck {
@@ -444,10 +457,21 @@
             flex-direction: column;
             gap: 12px;
             background: var(--panel-bg);
-            padding: 12px;
+            padding: 14px;
             border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.05);
         }
+        
+        /* NEW: Low-contrast, non-obtrusive styling parameter rule for storage paths */
+        .raw-filename-readout {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #43546c;
+            word-break: break-all;
+            margin-top: -2px;
+            display: block;
+        }
+
         .timeline-slider {
             -webkit-appearance: none;
             appearance: none;
@@ -469,6 +493,43 @@
             background: var(--active-blue);
             border: 2px solid white;
             cursor: pointer;
+        }
+
+        /* RESTORED: Heavy-Duty Tactical Layout Button Styling Rules */
+        .action-grid {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
+        .btn-tactical {
+            border: none;
+            border-radius: 10px;
+            font-weight: 900;
+            color: white;
+            cursor: pointer;
+            padding: 24px 10px; 
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-sizing: border-box;
+        }
+        .btn-tactical:disabled {
+            background-color: #2d3d52 !important;
+            color: #4f637d !important;
+            opacity: 0.4;
+        }
+        .btn-tactical-play { 
+            flex: 0 0 70%; 
+            background-color: var(--play-green); 
+            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+        }
+        .btn-tactical-fade { 
+            flex: 0 0 30%; 
+            background-color: var(--stop-red); 
+            font-size: 1.25rem; 
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
         }
 
         .volume-pad {
@@ -525,76 +586,106 @@
 
 <div class="console-grid">
 
+    <!-- ================= SCREEN 1: THE HOME DASHBOARD SCREEN ================= -->
     <div class="app-screen active-view" id="screenHome">
-        <div class="dashboard-control-row">
-            <button class="btn-dashboard-utility" onclick="window.location.reload(true)">🔄 Hard Refresh Layout</button>
+        <!-- NEW: Dedicated Matching Top Title Header Banner Block -->
+        <div class="home-header-banner">
+            Lodge Music
         </div>
         
+        <!-- Interactive Profiles Container -->
         <div class="home-switcher-container">
             <div class="set-switcher-grid" id="setSwitcherRow"></div>
         </div>
 
+        <!-- Bio Greeting Segment Frame -->
         <div class="ceremonial-footer">
             I hope you find my app handy. Please share any requests or feedback.
             <span class="footer-sub-note">WBro. Robert Billing PGSwdB GLHer</span>
         </div>
 
-        <div class="system-metric-row">
-            <div class="memory-status-box">
-                <span class="memory-label">Cached Footprint:</span>
-                <span class="memory-value" id="homeMemoryDisplay" style="color: var(--text-dim);">0.00 MB</span>
+        <!-- NEW FORMAT: Consolidated Twin-Button Action Control Footer Container Row -->
+        <div class="home-action-row-container">
+            <div class="home-metric-status-line">
+                Downloaded: <span class="home-metric-value-span" id="homeMemoryDisplay">0.00 MB</span>
             </div>
-            <button class="btn-share-app" onclick="shareLodgeMusicApp()">🔗 Share App</button>
+            <div class="home-buttons-action-grid">
+                <button class="btn-home-utility-trigger" onclick="window.location.reload(true)">🔄 Refresh</button>
+                <button class="btn-home-utility-trigger" onclick="shareLodgeMusicApp()">🔗 Share App</button>
+            </div>
         </div>
     </div>
 
 
+    <!-- ================= SCREEN 2: ACTIVE CONSOLE INTERFACE SCREEN ================= -->
     <div class="app-screen" id="screenConsole">
+        <!-- Structural Top Header Banner Bar Layout -->
         <div class="screen-header-bar">
             <button class="btn-header-back" onclick="navigateToHomeScreen()">◀ BACK</button>
             <div class="header-title-text" id="headerTitleDisplay">Lodge Music</div>
         </div>
 
+        <!-- Playback Target Grid Array Layout Box -->
         <div class="playlist-grid-container">
             <div class="playlist-grid" id="playlistGrid"></div>
         </div>
 
+        <!-- NEW: Discretely Embedded Selected Track Confirmation Line -->
+        <div class="track-ticker-line">
+            <span>Selected Track:</span>
+            <span class="ticker-highlight" id="tickerTrackTitle">None</span>
+        </div>
+
+        <!-- Cue Prompt Banner Target -->
         <div class="cue-banner">
             <span class="cue-label">When to Press Play</span>
             <span class="cue-text" id="cueText">Loading configuration blueprints...</span>
             <button class="btn-deck-toggle" onclick="openOperationsModal()">⚙️</button>
         </div>
 
+        <!-- Scrollable Lyric Frame Area Section -->
         <div class="lyrics-panel">
             <div class="lyrics-content-container" id="lyricsPanel">
-                <div class="lyric-line">Select a profile row execution sequence to generate prompts.</div>
+                <div class="lyric-line">Select a track row sequence to begin.</div>
             </div>
         </div>
     </div>
 
 
+    <!-- ================= CONSOLIDATED PLAY OPTIONS MODAL DIALOG ================= -->
     <div class="operations-modal-overlay" id="operationsModal">
         <div class="operations-dialog-box">
             <div class="modal-header">
-                <span class="modal-title">🎛️ Diagnostics Override</span>
+                <!-- UPDATED TITLE STRING -->
+                <span class="modal-title">🎛️ Play Options</span>
+                <!-- UPDATED SCALED BUTTON COMPONENT -->
                 <button class="btn-modal-close" onclick="closeOperationsModal()">DONE</button>
             </div>
 
+            <!-- Custom Tactical Control Deck Block Frame -->
             <div class="control-deck">
                 <div class="track-info-row">
-                    <span class="current-track-title" id="trackTitle">---</span>
+                    <div style="display: flex; flex-direction: column; gap: 2px; flex: 1; overflow: hidden;">
+                        <span class="current-track-title" id="trackTitle">---</span>
+                        <!-- NEW: Embedded Non-obtrusive system asset identifier filename target readout -->
+                        <span class="raw-filename-readout" id="trackFilenameReadout">no_file.mp3</span>
+                    </div>
                     <span class="running-time" id="trackTime">0:00 / 0:00</span>
                 </div>
+                
                 <input type="range" class="timeline-slider" id="timelineProgress" min="0" max="100" value="0" oninput="handleManualTimelineSeek(this.value)">
+                
+                <!-- RESTORED: Large Tactical Performance Overrides Action Grid buttons -->
                 <div class="action-grid">
                     <button class="btn-tactical btn-tactical-play" id="playBtn" onclick="playCurrentTrack()" disabled>▶ PLAY</button>
                     <button class="btn-tactical btn-tactical-fade" id="fadeBtn" onclick="fadeCurrentTrack()" disabled>■ STOP</button>
                 </div>
             </div>
 
+            <!-- Volume Control Interface Segment -->
             <div class="volume-pad">
                 <div class="volume-status-row">
-                    <span>Active Audio Volume Level:</span>
+                    <span style="font-weight: bold; color: var(--text-dim);">Active Audio Volume Level:</span>
                     <span class="volume-pct-display" id="volumePct">Normal (100%)</span>
                 </div>
                 <div class="volume-btn-grid">
@@ -644,7 +735,6 @@
             if (dynamicSets.length > 0) {
                 buildSetSwitcherUI();
                 
-                // Deep link state recovery handling
                 const urlParams = new URLSearchParams(window.location.search);
                 const targetSetId = urlParams.get('set');
                 if (targetSetId) {
@@ -677,14 +767,11 @@
         if (fadeInterval) { clearInterval(fadeInterval); fadeInterval = null; }
         if (volumeFadeInterval) { clearInterval(volumeFadeInterval); volumeFadeInterval = null; }
 
-        // Update target runtime header title texts
         document.getElementById('headerTitleDisplay').innerText = setLabel;
 
-        // Push routing string history records dynamically
         const newUrl = `${window.location.pathname}?set=${setId}`;
         window.history.pushState({ path: newUrl }, '', newUrl);
 
-        // Transition views cleanly to active dashboard console screen layout
         document.getElementById('screenHome').classList.remove('active-view');
         document.getElementById('screenConsole').classList.add('active-view');
 
@@ -714,7 +801,6 @@
     }
 
     function navigateToHomeScreen() {
-        // Safe navigation wipe back to master dashboard selection menus
         const cleanUrl = window.location.pathname;
         window.history.pushState({ path: cleanUrl }, '', cleanUrl);
         
@@ -845,7 +931,13 @@
         trackDuration = cachedBuffer ? cachedBuffer.duration : 0;
         pausedTime = 0;
 
+        // Sync main interface feedback line displays
+        document.getElementById('tickerTrackTitle').innerText = track.title;
+
+        // Update popup tools diagnostics entries
         document.getElementById('trackTitle').innerText = track.title;
+        document.getElementById('trackFilenameReadout').innerText = track.file.split('/').pop();
+        
         document.getElementById('cueText').innerText = track.cue || "No special cues assigned.";
         buildStaticTextPanel(track.lyrics || []);
         
