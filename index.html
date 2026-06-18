@@ -156,19 +156,23 @@
             flex: 1;
         }
 
-        .playlist-grid-container {
+
+.playlist-grid-container {
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
             border-radius: 8px;
             padding: 10px;
-            flex: 1;
             
-            /* BALANCED SCALING: Increased slightly for readability without dominating screen */
+            /* FORCE CELL ALLOCATION: Demands room for at least 6 full rows on mobile */
+            min-height: 490px; 
             max-height: 760px; 
             
             overflow-y: auto;   
             box-sizing: border-box;
+            flex-shrink: 0; /* Prevents other panels from shrinking the music buttons */
         }
+
+        
 
         .playlist-grid {
             display: grid;
@@ -297,10 +301,17 @@
             border: 1px solid var(--panel-border);
             border-radius: 8px;
             padding: 15px 15px 45px 15px; 
+            
+            /* DYNAMIC CONTRACT: Absorbs remaining space down to a safe compact minimum */
             flex: 1; 
+            min-height: 80px; 
+            
             overflow-y: auto; 
             box-sizing: border-box;
         }
+
+
+
         .lyrics-content-container {
             display: flex;
             flex-direction: column;
