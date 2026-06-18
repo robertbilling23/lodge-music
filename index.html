@@ -156,23 +156,19 @@
             flex: 1;
         }
 
-
-.playlist-grid-container {
+        .playlist-grid-container {
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
             border-radius: 8px;
             padding: 10px;
             
-            /* FORCE CELL ALLOCATION: Demands room for at least 6 full rows on mobile */
-            min-height: 490px; 
-            max-height: 760px; 
+            /* RE-ENGINEERED CLAMP: Shrinks for short sets, locks explicitly at ~6 rows for large sets */
+            flex: 0 1 auto; 
+            max-height: 54vh; 
             
             overflow-y: auto;   
             box-sizing: border-box;
-            flex-shrink: 0; /* Prevents other panels from shrinking the music buttons */
         }
-
-        
 
         .playlist-grid {
             display: grid;
@@ -288,12 +284,12 @@
 
         .lyrics-section-wrapper {
             position: relative;
-            flex: 1;
+            flex: 1; /* Absorbs all leftover space below the buttons frame */
             box-sizing: border-box;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            min-height: 120px; 
+            min-height: 80px; 
         }
 
         .lyrics-panel {
@@ -301,17 +297,10 @@
             border: 1px solid var(--panel-border);
             border-radius: 8px;
             padding: 15px 15px 45px 15px; 
-            
-            /* DYNAMIC CONTRACT: Absorbs remaining space down to a safe compact minimum */
             flex: 1; 
-            min-height: 80px; 
-            
             overflow-y: auto; 
             box-sizing: border-box;
         }
-
-
-
         .lyrics-content-container {
             display: flex;
             flex-direction: column;
@@ -346,7 +335,6 @@
             box-sizing: border-box;
         }
         
-        /* RESTORED NICER LARGER MENU LAYOUT FORMAT RULES FOR HOME SWITCHER BUTTONS */
         .set-switcher-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr); 
@@ -400,7 +388,6 @@
             color: var(--play-green);
         }
         
-        /* RESTORED NICER LARGER PERFORMANCE UTILITY BUTTON RULES */
         .home-buttons-action-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
