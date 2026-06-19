@@ -6,7 +6,7 @@
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "As the Chaplain says - in harmony",
     "lyrics": [
-      "The lodge being duly formed, before it is declared open let us invoke a blessing from the GAOTU on all our undertakings. May our labours, thus begun in order, be conducted in peace, and closed in harmony.",
+      "Chaplain - The lodge being duly formed, before it is declared open let us invoke a blessing from the GAOTU on all our undertakings. May our labours, thus begun in order, be conducted in peace, and closed in harmony.",
       "Ode 1",
       "So mote it be"
     ]
@@ -17,6 +17,7 @@
     "file": "audio/2-Open-1st-TB.mp3",
     "cue": "Wait for the IG/Tyler to knock three times",
     "lyrics": [
+      "WM knocks, SW knocks, JW knocks and the JD starts moving, IG knocks, Tyler knocks.",
       "Ode 2",
       "Hail, Eternal, by Whose aid, All created things were made; Heav'n and earth, Thy vast design; Hear us, Architect divine. May our work, begun in Thee, Ever blest with order be, And may we, when labours cease, Part in harmony and peace."
     ]
@@ -26,9 +27,10 @@
     "title": "Minutes",
     "color": "green",
     "file": "audio/Minutes_William Tell.mp3",
-    "cue": "After the WM knocks to carry the motion",
+    "cue": "After the WM knocks to carry the motion to adopt the minutes",
     "lyrics": [
-      "This is some nice music, part of the William Tell Overture, to play when the Senior Deacon takes the minutes up to be signed."
+      "WM - The motion does not require a seconder.  Is there any discussion?  Those For.  Against.  Carried.  Knock",
+      "The SD then takes the minutes to the WM to be signed"
     ]
   },
   {
@@ -46,8 +48,10 @@
     "title": "PM/WM Entry",
     "color": "darkblue",
     "file": "audio/PMEntry_marchscipio.wav",
-    "cue": "When the DC heads west to escort the visitors",
+    "cue": "When the DC leaves his position and heads towards the door",
     "lyrics": [
+      "For Past Masters, the JW will tell the IG - Admit at the appropriate time, and the DC will start moving towards the door",
+      "For visiting WMs, the WM will ask everyone to rise, and the DC will start moving towards the door",
       "Before the DC starts announcing the visitors, lower the volume to barely audible, but keep it playing.",
       "The tune is called Scipio."
     ]
