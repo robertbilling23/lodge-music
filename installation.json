@@ -14,12 +14,34 @@
     "id": "track_1781676498071",
     "title": "Be Seated",
     "color": "blue",
-    "file": "audio/",
+    "file": "audio/Filler/Bolsward_Martin Mans_Friesche.mp3",
     "cue": "After the Proclaiming Officer says - Be Seated, Brethren.",
     "lyrics": [
       "Keep an eye on the Proclaiming Officer.  If he sits, end the tune.  If he comes out to do Grand Honors, end it before he needs to talk"
     ]
   },
+  { "id": "2",
+    "title": "Escort SW to chair",
+    "color": "green",
+    "file": "audio/Filler/Amazing_Grace.mp3",
+    "cue": "As the SW stands",
+    "lyrics": ["Be ready to hit stop when the PO gets back to his spot","Amaziung Grace"
+    ]},
+      { "id": "2",
+    "title": "Escort JW to chair",
+    "color": "green",
+    "file": "audio/Filler/canonind.mp3",
+    "cue": "As the SW stands",
+    "lyrics": ["Be ready to hit stop when the PO gets back to his spot", "Canon in D"
+    ]},
+      { "id": "2",
+    "title": "All other Intros",
+    "color": "green",
+    "file": "audio/Filler/Highland Cathedral.mp3",
+    "cue": "As needed",
+    "lyrics": ["Long enough for the IG also", "Highland Cathedral"
+    ]},
+
   {
     "id": "track_1781676498862",
     "title": "Collar Collect",
@@ -34,7 +56,7 @@
     "id": "track_1781676499111",
     "title": "Get the Master Elect",
     "color": "blue",
-    "file": "audio/",
+    "file": "audio/Filler/Beethoven_Sonata.mp3",
     "cue": "After the Grand Deacons stand",
     "lyrics": [
       "This happens as soon as the Installed Board is opened"
@@ -85,10 +107,10 @@
     "id": "track_1781676817713",
     "title": "IG admits MMs etc",
     "color": "blue",
-    "file": "audio/",
-    "cue": "Enter timing directive guidelines here...",
+    "file": "audio/Installation/marchofangrymen.wav",
+    "cue": "After the IG turns to go to the door",
     "lyrics": [
-      "First line of text words..."
+      "The PO asks the IG to admit EAs or other, then the IG will turn to do that."
     ]
   },
   {
@@ -151,6 +173,29 @@
       "Support to the Warden"
     ]
   },
+
+    { "id": "3",
+    "title": "Invest Filler",
+    "color": "purple",
+    "file": "audio/Filler/incidental13.mp3",
+    "cue": "As needed",
+    "lyrics": ["When Grand Lodge Officer is moving or Officer to invest is moving or Officer is going to their place"
+    ]},
+    { "id": "3",
+    "title": "Invest Filler",
+    "color": "purple",
+    "file": "audio/Filler/incidentalmusic2abc.mp3",
+    "cue": "As needed",
+    "lyrics": ["When Grand Lodge Officer is moving or Officer to invest is moving or Officer is going to their place"
+    ]},
+    { "id": "3",
+    "title": "Invest Filler",
+    "color": "purple",
+    "file": "audio/Filler/Martin Mans - My Way.mp3",
+    "cue": "As needed",
+    "lyrics": ["When Grand Lodge Officer is moving or Officer to invest is moving or Officer is going to their place"
+    ]},
+
   {
     "id": "track_1781676911675",
     "title": "Address to Master. SMIB",

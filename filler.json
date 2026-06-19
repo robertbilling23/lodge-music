@@ -1,0 +1,23 @@
+[
+  { "id": "1",
+    "title": "Generic Shortish 1",
+    "color": "blue",
+    "file": "audio/Filler/1min15incidental.wav",
+    "cue": "As needed",
+    "lyrics": ["Ceremony Filler. Escorting.  Entry.  1min 18s"
+    ]},
+  { "id": "2",
+    "title": "Amazing Grace",
+    "color": "green",
+    "file": "audio/Filler/Amazing_Grace.mp3",
+    "cue": "As needed",
+    "lyrics": ["Escorting.  Entry.  1min 53s"
+    ]},
+  { "id": "2",
+    "title": "Beethoven Sonata",
+    "color": "blue",
+    "file": "audio/Filler/Beethoven_Sonata.mp3",
+    "cue": "As needed",
+    "lyrics": ["Ceremony Filler. Escorting.  Entry.  1min 53s"
+    ]}
+]
