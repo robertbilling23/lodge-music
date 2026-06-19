@@ -40,7 +40,7 @@
     "file": "audio/Installation/marchofangrymen.wav",
     "cue": "When the IG opens the door",
     "lyrics": [
-      "asdf"
+      "For use when MMs, FCs, EAs, etc, are entering as visitors","March of the Angry Men"
     ]
   },
   {
@@ -52,7 +52,6 @@
     "lyrics": [
       "For Past Masters, the JW will tell the IG - Admit at the appropriate time, and the DC will start moving towards the door",
       "For visiting WMs, the WM will ask everyone to rise, and the DC will start moving towards the door",
-      "Before the DC starts announcing the visitors, lower the volume to barely audible, but keep it playing.",
       "The tune is called Scipio."
     ]
   },
@@ -61,7 +60,7 @@
     "title": "WM Entry Star Wars",
     "color": "darkblue",
     "file": "audio/WMEntry_Star Wars.mp3",
-    "cue": "When the door is opened to admit the WM",
+    "cue": "When the door is opened to admit WMs",
     "lyrics": [
       "Note: This is a fun track and may not always be appropriate"
     ]
