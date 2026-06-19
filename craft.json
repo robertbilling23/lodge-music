@@ -37,7 +37,7 @@
     "id": "track1",
     "title": "Visitor Entry",
     "color": "darkblue",
-    "file": "audio/",
+    "file": "audio/Installation/marchofangrymen.wav",
     "cue": "When the IG opens the door",
     "lyrics": [
       "asdf"
