@@ -1,7 +1,7 @@
 [
   {
     "id": "track1",
-    "title": "1. Opening. SMIB",
+    "title": "Opening. SMIB",
     "color": "yellow",
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "As the Chaplain says - in harmony",
@@ -13,7 +13,7 @@
   },
   {
     "id": "track2",
-    "title": "2. Open 1st TB",
+    "title": "Open 1st TB",
     "file": "audio/2-Open-1st-TB.mp3",
     "cue": "Wait for the IG/Tyler to knock three times",
     "lyrics": [
@@ -68,7 +68,7 @@
   },
   {
     "id": "track1",
-    "title": "66. Closing. SMIB.",
+    "title": "Closing. SMIB.",
     "color": "yellow",
     "file": "audio/1-Open-1st-SMIB-Faster.mp3",
     "cue": "As the Chaplain says - social virtue",
@@ -80,7 +80,7 @@
   },
   {
     "id": "track_1781590846184",
-    "title": "68. Close 1st TB",
+    "title": "Close 1st TB",
     "color": "blue",
     "file": "audio/68 Close 1st TB.mp3",
     "cue": "Wait for the IG/Tyler to knock three times",
@@ -91,7 +91,7 @@
   },
   {
     "id": "track_1781591259190",
-    "title": "69. Fidelity",
+    "title": "Fidelity",
     "color": "blue",
     "file": "audio/69 Close 1st Fidelity f.mp3",
     "cue": "When the IPM is saying - the act",
@@ -103,7 +103,7 @@
   },
   {
     "id": "track_1781591161781",
-    "title": "70.2. Retirement Procession",
+    "title": "Exit Process'n",
     "color": "blue",
     "file": "audio/70.2 Close 1st Exit.mp3",
     "cue": "After the DC says - Brother Deacons",
@@ -114,7 +114,7 @@
   },
   {
     "id": "track_1781595909450",
-    "title": "Exit - Onward Brother Masons",
+    "title": "WM Exit",
     "color": "blue",
     "file": "audio/WMExit 63 GL Exit March.mp3",
     "cue": "After the WM says - and Brethren",
@@ -124,7 +124,7 @@
   },
   {
     "id": "track_1781595969860",
-    "title": "Exit - William Tell",
+    "title": "Fancy Exit",
     "color": "blue",
     "file": "audio/WMExit_William Tell.mp3",
     "cue": "After the WM says - and Brethren",

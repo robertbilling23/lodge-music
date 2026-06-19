@@ -59,7 +59,7 @@
     "file": "audio/Filler/Beethoven_Sonata.mp3",
     "cue": "After the Grand Deacons stand",
     "lyrics": [
-      "This happens as soon as the Installed Board is opened"
+      "This happens as soon as the Installed Board is opened","Beethoven Sonata"
     ]
   },
   {
@@ -69,7 +69,7 @@
     "file": "audio/Installation/53 SMIB.mp3",
     "cue": "Start it as he says - holy name",
     "lyrics": [
-      "... thy most holy name",
+      "... thy most holy name","So Mote It Be",
       "This is the end of the prayer by the Grand Officer in the Chaplain position"
     ]
   },
@@ -80,7 +80,7 @@
     "file": "audio/Installation/54 Kneel.mp3",
     "cue": "After the ME kneels and the Installing Master knocks",
     "lyrics": [
-      "Oh god unseen.."
+      "O God, unseen, yet ever near, Thy Presence may we feel; And thus inspired with holy fear, Before Thine altar kneel."
     ]
   },
   {
@@ -88,19 +88,19 @@
     "title": "Seal the VSL",
     "color": "yellow",
     "file": "audio/Installation/55 Keep Thy.mp3",
-    "cue": "After the Installing Master says - Three Times",
+    "cue": "After the Installing Master says - Three Times on the VSL",
     "lyrics": [
-      "Keep thy tongue from evil, etc."
+      "Keep thy tongue from evil; And thy lips that they speak no guile."
     ]
   },
   {
     "id": "track_1781676798123",
     "title": "H.S.",
     "color": "orange",
-    "file": "audio/Installation/55b_HollowSquare_canonind.mp3",
+    "file": "audio/Filler/Finlandia2.mp3",
     "cue": "After the Proclaiming Officer addresses the WBros in the middle",
     "lyrics": [
-      "This track gets loud, so keep an eye on it."
+      "Finlandia.  If it finishes and they are still going, consider starting it again, maybe."
     ]
   },
   {
@@ -110,7 +110,7 @@
     "file": "audio/Installation/marchofangrymen.wav",
     "cue": "After the IG turns to go to the door",
     "lyrics": [
-      "The PO asks the IG to admit EAs or other, then the IG will turn to do that."
+      "The PO asks the IG to admit EAs or other, then the IG will turn to do that.","March of the Angry Men"
     ]
   },
   {
@@ -118,9 +118,9 @@
     "title": "East Proclaim",
     "color": "green",
     "file": "audio/Installation/56 god bless our master true.mp3",
-    "cue": "After everyone has sat after the proclamation",
+    "cue": "After the PO says - Be Seated Brethren",
     "lyrics": [
-      "God Bless Our Master True"
+      "God bless our Master new, With joy his life imbue, So mote it be; This then our fervent prayer, Grant of Thy strength a share, Truth for his watchword e'er, So mote it be."
     ]
   },
   {
@@ -128,9 +128,9 @@
     "title": "West Proclaim",
     "color": "green",
     "file": "audio/Installation/57 let every craftsman gather.mp3",
-    "cue": "After everyone has sat after the proclamation",
+    "cue": "After the PO says - Be Seated Brethren",
     "lyrics": [
-      "Let every craftsman.."
+      "Let ev'ry Craftsman gather, with wish sincere to share; And welcome, with hearts glowing, our Master in the chair. God grant he rule us wisely, and to his trust be true, Then shall we ever proudly our loyalty renew."
     ]
   },
   {
@@ -138,9 +138,9 @@
     "title": "South Proclaim",
     "color": "green",
     "file": "audio/Installation/58 great architect divine with song.mp3",
-    "cue": "After everyone has sat after the proclamation",
+    "cue": "After the PO says - Be Seated Brethren",
     "lyrics": [
-      "Great Architect.."
+      "Great Architect divine, with song, In this Thy temple now we throng, With grateful hearts to ask anew Thy blessings on our Master true."
     ]
   },
   {
@@ -148,9 +148,9 @@
     "title": "Support to the Master",
     "color": "red",
     "file": "audio/Installation/59.1 support to the Master.mp3",
-    "cue": "After the Proclaiming officer has finished presenting the 1st WTs, Warrant, etc and is moving away.",
+    "cue": "After the Proclaiming officer has finished presenting the 1st WTs, Warrant, etc.",
     "lyrics": [
-      "Support to the Master"
+      "Support to the Master, who rules by the Square, Let sons of the light to the East now repair; With hearts for his aid, united and free, Obedient we labour, obedient we labour, Obedient we labour, and kindly agree."
     ]
   },
   {
@@ -158,9 +158,9 @@
     "title": "Support to the SW",
     "color": "red",
     "file": "audio/Installation/59.2 support to the Warden SW.mp3",
-    "cue": "After the Sword finishes addressing the SW and is moving to the saluting base",
+    "cue": "After the Sword finishes addressing the SW",
     "lyrics": [
-      "Support to the Warden"
+      "Support to the Warden, installed in the West, Who works by the Level, where sorrows may rest; With hearts for his aid, united and free, Obedient we labour, obedient we labour, Obedient we labour, and kindly agree."
     ]
   },
   {
@@ -168,28 +168,28 @@
     "title": "Support to the JW",
     "color": "red",
     "file": "audio/Installation/59.3 support to the Warden JW.mp3",
-    "cue": "After the Sword finishes addressing the JW and is moving West",
+    "cue": "After the Sword finishes addressing the JW",
     "lyrics": [
-      "Support to the Warden"
+      "Support to the Warden, by Plumb still upright, Whose sun in the South never hides its fair light; With hearts for his aid, united and free, Obedient we labour, obedient we labour, Obedient we labour, and kindly agree."
     ]
   },
 
     { "id": "3",
-    "title": "Invest Filler",
+    "title": "Invest Filler 1",
     "color": "purple",
     "file": "audio/Filler/incidental13.mp3",
     "cue": "As needed",
     "lyrics": ["When Grand Lodge Officer is moving or Officer to invest is moving or Officer is going to their place"
     ]},
     { "id": "3",
-    "title": "Invest Filler",
+    "title": "Invest Filler 2",
     "color": "purple",
     "file": "audio/Filler/incidentalmusic2abc.mp3",
     "cue": "As needed",
     "lyrics": ["When Grand Lodge Officer is moving or Officer to invest is moving or Officer is going to their place"
     ]},
     { "id": "3",
-    "title": "Invest Filler",
+    "title": "Invest Filler 3",
     "color": "purple",
     "file": "audio/Filler/Martin Mans - My Way.mp3",
     "cue": "As needed",
@@ -203,7 +203,7 @@
     "file": "audio/Installation/60 SMIB.mp3",
     "cue": "When the SW finishes the Address to the Master",
     "lyrics": [
-      "Support to the Warden"
+      "So Mote It Be"
     ]
   },
   {
@@ -213,17 +213,17 @@
     "file": "audio/Installation/61 SMIB.mp3",
     "cue": "When the IM finishes the Address to the Brethren",
     "lyrics": [
-      "Support to the Warden"
+      "So Mote It Be"
     ]
   },
   {
     "id": "track_1781676917789",
-    "title": "Exit - Onward Brother Masons",
+    "title": "GL Exit March",
     "color": "blue",
     "file": "audio/Installation/63 GL Exit March.mp3",
     "cue": "After the IM has saluted the WM",
     "lyrics": [
-      "Done."
+      "Onward Brother Masons"
     ]
   }
 ]
