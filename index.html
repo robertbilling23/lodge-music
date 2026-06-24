@@ -85,7 +85,7 @@
 
         /* SCREEN 1 SPECIFIC POSITION LAYOUT */
         #screenHome {
-            padding-bottom: 225px; /* Creates clean buffer clearance for anchored trays */
+            padding-bottom: 275px; /* Room buffer height matches the expanded tracking toggles tray */
         }
 
         .home-scrolling-content-zone {
@@ -162,7 +162,7 @@
             border-radius: 8px;
             padding: 10px;
             
-            /* RE-ENGINEERED CLAMP: Shrinks for short sets, locks explicitly at ~6 rows for large sets */
+            /* RE-ENGINEERED COMPACT BOUNDS CLAMP FRAME SYSTEM */
             flex: 0 1 auto; 
             max-height: 54vh; 
             
@@ -284,7 +284,7 @@
 
         .lyrics-section-wrapper {
             position: relative;
-            flex: 1; /* Absorbs all leftover space below the buttons frame */
+            flex: 1; 
             box-sizing: border-box;
             overflow: hidden;
             display: flex;
@@ -624,9 +624,14 @@
         </div>
         
         <div class="home-anchored-bottom-tray">
+            <div style="display: flex; align-items: center; justify-content: space-between; background: var(--panel-bg); border: 1px solid var(--panel-border); padding: 10px 14px; border-radius: 6px; width: 100%; box-sizing: border-box;">
+                <span style="font-weight: bold; font-size: 1.05rem; color: var(--text-dim);">Allow Mobile Data Downloads:</span>
+                <input type="checkbox" id="mobileDataToggleCheckbox" style="width: 26px; height: 26px; cursor: pointer; accent-color: var(--active-blue);" onchange="handleMobileDataPermissionToggle(this.checked)">
+            </div>
+
             <div class="ceremonial-footer">
-                The Concord of Sweet Sounds
-                <span class="footer-sub-note">United Grand Lodge of Victoria</span>
+                I hope you find my app handy. Please share any requests or feedback.
+                <span class="footer-sub-note">WBro. Robert Billing PGSwdB GLHer</span>
             </div>
 
             <div class="home-action-row-container">
@@ -742,6 +747,9 @@
     let fadeInterval = null; 
 
     async function initConsole() {
+        // Sync the checkbox UI state with the local storage value immediately on load
+        document.getElementById('mobileDataToggleCheckbox').checked = localStorage.getItem('allowMobileDataDownloads') === 'true';
+
         try {
             const response = await fetch('sets.json');
             dynamicSets = await response.json();
@@ -853,6 +861,9 @@
         }
         let loadedCount = 0;
 
+        // Inspect the user permission state from localStorage
+        const allowMobileData = localStorage.getItem('allowMobileDataDownloads') === 'true';
+
         for (let i = 0; i < tracks.length; i++) {
             const track = tracks[i];
             if (audioCache[track.file]) {
@@ -863,9 +874,17 @@
             }
 
             try {
-                const res = await fetch(track.file);
-                const arrayBuffer = await res.arrayBuffer();
+                // If permission is on, append the token query to bypass sw cellular guards
+                const fetchUrl = allowMobileData ? `${track.file}?forceMobile=true` : track.file;
                 
+                const res = await fetch(fetchUrl);
+                
+                if (res.status === 403) {
+                    document.getElementById('cueText').innerText = "⚠️ Cellular download blocked. Turn on 'Allow Mobile Data' on the Home Screen to bypass.";
+                    continue;
+                }
+
+                const arrayBuffer = await res.arrayBuffer();
                 cachedBytesCounter[track.file] = arrayBuffer.byteLength;
                 calculateTotalMemoryUsageMetrics();
 
@@ -876,6 +895,14 @@
             } catch (e) {
                 console.error("RAM compilation asset lookup failed for:", track.file);
             }
+        }
+    }
+
+    function handleMobileDataPermissionToggle(isAllowed) {
+        localStorage.setItem('allowMobileDataDownloads', isAllowed ? 'true' : 'false');
+        // Trigger download retry loop immediately if enabled inside a set
+        if (isAllowed && tracks.length > 0) {
+            cacheAllAudioToRAM();
         }
     }
 
