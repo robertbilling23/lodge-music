@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lodge-music-v45';
+const CACHE_NAME = 'lodge-music-v46';
 
 // Only pre-cache the absolute core layout shell files on first install
 const CORE_ASSETS = [
@@ -39,7 +39,7 @@ self.addEventListener('fetch', (event) => {
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      // If the file is already sitting safely in our local database cache, use it instantly!
+      // If the file is already sitting safely in our permanent database cache, use it instantly!
       if (cachedResponse) {
         return cachedResponse;
       }
@@ -49,9 +49,9 @@ self.addEventListener('fetch', (event) => {
         const connectionType = navigator.connection.type;
         const saveDataActive = navigator.connection.saveData;
 
-        // Block if explicitly on a cellular connection or if data-saver mode is active
+        // If explicitly on a cellular network or data-saver mode is active
         if (connectionType === 'cellular' || saveDataActive === true) {
-          // Check if the individual request payload explicitly contains the ?forceMobile parameter passed by index
+          // FIXED PIPELINE: Check if the request contains the bypass flag directly in its URL
           if (url.searchParams.get('forceMobile') !== 'true') {
             return new Response(
               JSON.stringify({ error: "Cellular data download blocked. Turn on 'Allow Mobile Data' on the home screen to override." }),

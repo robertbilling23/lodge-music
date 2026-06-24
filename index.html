@@ -11,7 +11,18 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js', { scope: './' })
-                    .then(reg => console.log('Service Worker Registered Successfully!'))
+                    .then(reg => {
+                        console.log('Service Worker Registered Successfully!');
+                        // FORCE CONTROLLER CLAIM HANDSHAKE ON INSTALLATION
+                        reg.onupdatefound = () => {
+                            const installingWorker = reg.installing;
+                            installingWorker.onstatechange = () => {
+                                if (installingWorker.state === 'activated') {
+                                    window.location.reload(); // Refresh once to lock the service worker into place
+                                }
+                            };
+                        };
+                    })
                     .catch(err => console.log('PWA Service Worker Registration failed:', err));
             });
         }
@@ -86,7 +97,7 @@
 
         /* SCREEN 1 SPECIFIC POSITION LAYOUT */
         #screenHome {
-            padding-bottom: 300px; /* Strong buffer keeps scrolling menu separated from footer controls layout */
+            padding-bottom: 300px; 
         }
 
         .home-scrolling-content-zone {
@@ -162,11 +173,8 @@
             border: 1px solid var(--panel-border);
             border-radius: 8px;
             padding: 10px;
-            
-            /* RE-ENGINEERED CLAMP: Shrinks for short sets, locks explicitly at ~6 rows for large sets */
             flex: 0 1 auto; 
             max-height: 54vh; 
-            
             overflow-y: auto;   
             box-sizing: border-box;
         }
@@ -206,7 +214,6 @@
         .nav-chip.color-orange   { background-color: var(--btn-orange);   border-color: var(--panel-border); }
         .nav-chip.color-purple   { background-color: var(--btn-purple);   border-color: var(--btn-purple); }
         
-        /* UNLOCKED LOADING STATE DESIGN: Keeps original color but adds dynamic indicator info */
         .nav-chip.not-loaded {
             opacity: 0.85;
             position: relative;
@@ -290,7 +297,7 @@
 
         .lyrics-section-wrapper {
             position: relative;
-            flex: 1; /* Beautifully absorbs remaining lower space elements */
+            flex: 1; 
             box-sizing: border-box;
             overflow: hidden;
             display: flex;
@@ -632,7 +639,6 @@
         
         <!-- FIXED VIEWPORT BASE ACTION TRAY FOR SCREEN 1 -->
         <div class="home-anchored-bottom-tray">
-            <!-- CELLULAR OVERRIDE TOGGLE INTERFACE LINK -->
             <div style="display: flex; align-items: center; justify-content: space-between; background: var(--panel-bg); border: 1px solid var(--panel-border); padding: 10px 14px; border-radius: 6px; width: 100%; box-sizing: border-box;">
                 <span style="font-weight: bold; font-size: 1.05rem; color: var(--text-dim);">Allow Mobile Data Downloads:</span>
                 <input type="checkbox" id="mobileDataToggleCheckbox" style="width: 26px; height: 26px; cursor: pointer; accent-color: var(--active-blue);" onchange="handleMobileDataPermissionToggle(this.checked)">
@@ -647,9 +653,8 @@
                 <div class="home-metric-status-line">
                     Downloaded: <span class="home-metric-value-span" id="homeMemoryDisplay">0.00 MB</span>
                 </div>
-                <!-- FIXED VERSION CONTROL LABELLING MARKER CONTAINER -->
                 <div class="home-metric-status-line" style="font-size: 0.85rem; padding-top: 2px; color: var(--text-dim); opacity: 0.7;">
-                    App Build Version: <span class="home-metric-value-span" id="appVersionDisplay" style="color: var(--active-blue);">v45b</span>
+                    App Build Version: <span class="home-metric-value-span" id="appVersionDisplay" style="color: var(--active-blue);">v46</span>
                 </div>
                 <div class="home-buttons-action-grid">
                     <button class="btn-home-utility-trigger" onclick="executePwaServiceCacheClear()">🔄 Refresh</button>
@@ -762,10 +767,31 @@
     let fadeInterval = null; 
 
     async function initConsole() {
-        // Sync the checkbox UI state dynamically with local storage logs immediately on boot
         const checkbox = document.getElementById('mobileDataToggleCheckbox');
         if (checkbox) {
             checkbox.checked = localStorage.getItem('allowMobileDataDownloads') === 'true';
+        }
+
+        // READ DIRECTLY FROM THE HARD STORAGE TO CHECK DOWNLOAD SIZE EXECUTIONS ON BOOT
+        if ('caches' in window) {
+            caches.open('lodge-music-v46').then((cache) => {
+                cache.keys().then((requests) => {
+                    let totalBytes = 0;
+                    let processed = 0;
+                    if(requests.length === 0) calculateTotalMemoryUsageMetrics();
+                    requests.forEach((req) => {
+                        cache.match(req).then((res) => {
+                            if(res) {
+                                res.clone().arrayBuffer().then((buf) => {
+                                    cachedBytesCounter[req.url] = buf.byteLength;
+                                    processed++;
+                                    if(processed === requests.length) calculateTotalMemoryUsageMetrics();
+                                });
+                            }
+                        });
+                    });
+                });
+            });
         }
 
         try {
@@ -842,10 +868,8 @@
 
     function navigateToHomeScreen() {
         window.history.pushState({}, '', window.location.pathname);
-        
         document.getElementById('screenConsole').classList.remove('active-view');
         document.getElementById('screenHome').classList.add('active-view');
-        
         window.dispatchEvent(new Event('resize'));
     }
 
@@ -856,7 +880,6 @@
             const chip = document.createElement('div');
             const chosenColor = track.color ? track.color.toLowerCase() : 'blue';
             
-            // Plugs visual indicator rules directly into compiling track elements without disabling interactions
             if (forceDisabledState && !audioCache[track.file]) {
                 chip.className = `nav-chip color-${chosenColor} not-loaded`;
             } else {
@@ -877,7 +900,6 @@
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
         let loadedCount = 0;
-
         const allowMobileData = localStorage.getItem('allowMobileDataDownloads') === 'true';
 
         for (let i = 0; i < tracks.length; i++) {
@@ -890,6 +912,7 @@
             }
 
             try {
+                // FIXED: Query strings go through service worker layer to block/allow cellular route instantly
                 const fetchUrl = allowMobileData ? `${track.file}?forceMobile=true` : track.file;
                 const res = await fetch(fetchUrl);
                 
@@ -937,7 +960,6 @@
             const chosenColor = track.color ? track.color.toLowerCase() : 'blue';
             chip.className = `nav-chip color-${chosenColor} ${index === currentTrackIndex ? 'active' : ''}`;
             
-            // If user is actively reading/inspecting this track file, seamlessly unlock operations deck controls
             if (index === currentTrackIndex) {
                 const cachedBuffer = audioCache[track.file];
                 trackDuration = cachedBuffer ? cachedBuffer.duration : 0;
@@ -1002,7 +1024,6 @@
         document.getElementById('timelineProgress').value = 0;
         document.getElementById('trackTime').innerText = `0:00 / ${formatTime(trackDuration)}`;
 
-        // Dynamic playback button state handler lets you click tracks without background asset crashes
         if (cachedBuffer) {
             playBtn.disabled = false;
             playBtn.innerText = "▶ PLAY";
