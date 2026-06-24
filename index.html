@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lodge Music</title>
     
+    <!-- PWA Registration Assets Links -->
     <link rel="manifest" href="manifest.json">
     <script>
         if ('serviceWorker' in navigator) {
@@ -85,7 +86,7 @@
 
         /* SCREEN 1 SPECIFIC POSITION LAYOUT */
         #screenHome {
-            padding-bottom: 275px; /* Room buffer height matches the expanded tracking toggles tray */
+            padding-bottom: 300px; /* Strong buffer keeps scrolling menu separated from footer controls layout */
         }
 
         .home-scrolling-content-zone {
@@ -162,7 +163,7 @@
             border-radius: 8px;
             padding: 10px;
             
-            /* RE-ENGINEERED COMPACT BOUNDS CLAMP FRAME SYSTEM */
+            /* RE-ENGINEERED CLAMP: Shrinks for short sets, locks explicitly at ~6 rows for large sets */
             flex: 0 1 auto; 
             max-height: 54vh; 
             
@@ -203,15 +204,20 @@
         .nav-chip.color-green    { background-color: var(--btn-green);    border-color: var(--panel-border); }
         .nav-chip.color-red      { background-color: var(--btn-red);      border-color: var(--panel-border); }
         .nav-chip.color-orange   { background-color: var(--btn-orange);   border-color: var(--panel-border); }
-        .nav-chip.color-purple   { background-color: var(--btn-purple);   border-color: var(--panel-border); }
+        .nav-chip.color-purple   { background-color: var(--btn-purple);   border-color: var(--btn-purple); }
         
+        /* UNLOCKED LOADING STATE DESIGN: Keeps original color but adds dynamic indicator info */
         .nav-chip.not-loaded {
-            background-color: var(--disabled) !important;
-            border-color: #1f2b3d !important;
-            color: #43546c !important;
-            opacity: 0.5;
-            cursor: not-allowed;
-            pointer-events: none; 
+            opacity: 0.85;
+            position: relative;
+        }
+        .nav-chip.not-loaded::after {
+            content: "⏳";
+            position: absolute;
+            top: 4px;
+            right: 6px;
+            font-size: 0.75rem;
+            opacity: 0.65;
         }
 
         .nav-chip.active {
@@ -284,7 +290,7 @@
 
         .lyrics-section-wrapper {
             position: relative;
-            flex: 1; 
+            flex: 1; /* Beautifully absorbs remaining lower space elements */
             box-sizing: border-box;
             overflow: hidden;
             display: flex;
@@ -615,6 +621,7 @@
 
 <div class="console-grid">
 
+    <!-- ================= SCREEN 1: LOCKED SCAFFOLD HOME DASHBOARD ================= -->
     <div class="app-screen active-view" id="screenHome">
         <div class="home-scrolling-content-zone">
             <div class="home-header-banner">Lodge Music</div>
@@ -623,7 +630,9 @@
             </div>
         </div>
         
+        <!-- FIXED VIEWPORT BASE ACTION TRAY FOR SCREEN 1 -->
         <div class="home-anchored-bottom-tray">
+            <!-- CELLULAR OVERRIDE TOGGLE INTERFACE LINK -->
             <div style="display: flex; align-items: center; justify-content: space-between; background: var(--panel-bg); border: 1px solid var(--panel-border); padding: 10px 14px; border-radius: 6px; width: 100%; box-sizing: border-box;">
                 <span style="font-weight: bold; font-size: 1.05rem; color: var(--text-dim);">Allow Mobile Data Downloads:</span>
                 <input type="checkbox" id="mobileDataToggleCheckbox" style="width: 26px; height: 26px; cursor: pointer; accent-color: var(--active-blue);" onchange="handleMobileDataPermissionToggle(this.checked)">
@@ -638,8 +647,9 @@
                 <div class="home-metric-status-line">
                     Downloaded: <span class="home-metric-value-span" id="homeMemoryDisplay">0.00 MB</span>
                 </div>
+                <!-- FIXED VERSION CONTROL LABELLING MARKER CONTAINER -->
                 <div class="home-metric-status-line" style="font-size: 0.85rem; padding-top: 2px; color: var(--text-dim); opacity: 0.7;">
-                    App Build version: <span class="home-metric-value-span" id="appVersionDisplay" style="color: var(--active-blue);">v45</span>
+                    App Build Version: <span class="home-metric-value-span" id="appVersionDisplay" style="color: var(--active-blue);">v45</span>
                 </div>
                 <div class="home-buttons-action-grid">
                     <button class="btn-home-utility-trigger" onclick="executePwaServiceCacheClear()">🔄 Refresh</button>
@@ -650,6 +660,7 @@
     </div>
 
 
+    <!-- ================= SCREEN 2: ACTIVE CONSOLE INTERFACE SCREEN ================= -->
     <div class="app-screen" id="screenConsole">
         <div class="screen-header-bar">
             <button class="btn-header-back" onclick="navigateToHomeScreen()">◀ BACK</button>
@@ -681,6 +692,7 @@
     </div>
 
 
+    <!-- ================= CONSOLIDATED PLAY OPTIONS MODAL DIALOG ================= -->
     <div class="operations-modal-overlay" id="operationsModal">
         <div class="operations-dialog-box">
             <div class="modal-header">
@@ -750,11 +762,11 @@
     let fadeInterval = null; 
 
     async function initConsole() {
-// Sync the checkbox UI state with the local storage value immediately on load
-    const checkbox = document.getElementById('mobileDataToggleCheckbox');
-    if (checkbox) {
-        checkbox.checked = localStorage.getItem('allowMobileDataDownloads') === 'true';
-    }
+        // Sync the checkbox UI state dynamically with local storage logs immediately on boot
+        const checkbox = document.getElementById('mobileDataToggleCheckbox');
+        if (checkbox) {
+            checkbox.checked = localStorage.getItem('allowMobileDataDownloads') === 'true';
+        }
 
         try {
             const response = await fetch('sets.json');
@@ -811,7 +823,6 @@
             tracks = structuralBlueprintProfilesCache[jsonPath];
             buildPlaylistGrid(false);
             await cacheAllAudioToRAM();
-            loadTrack(0);
             return;
         }
 
@@ -823,7 +834,6 @@
             if (tracks.length > 0) {
                 buildPlaylistGrid(true);
                 await cacheAllAudioToRAM();
-                loadTrack(0);
             }
         } catch (err) {
             document.getElementById('cueText').innerText = `Failed to process configuration blueprints layout profiles.`;
@@ -846,17 +856,18 @@
             const chip = document.createElement('div');
             const chosenColor = track.color ? track.color.toLowerCase() : 'blue';
             
+            // Plugs visual indicator rules directly into compiling track elements without disabling interactions
             if (forceDisabledState && !audioCache[track.file]) {
-                chip.className = `nav-chip not-loaded`;
+                chip.className = `nav-chip color-${chosenColor} not-loaded`;
             } else {
-                chip.className = `nav-chip color-${chosenColor} ${index === 0 ? 'active' : ''}`;
+                chip.className = `nav-chip color-${chosenColor}`;
                 const words = track.title.split(' ');
                 if (words.some(word => word.length > 9)) chip.style.fontSize = '1.05rem';
-                chip.onclick = () => { handleTrackSelection(index); };
             }
             
             chip.id = `chip-${index}`;
             chip.innerText = track.title; 
+            chip.onclick = () => { handleTrackSelection(index); };
             grid.appendChild(chip);
         });
     }
@@ -867,7 +878,6 @@
         }
         let loadedCount = 0;
 
-        // Inspect the user permission state from localStorage
         const allowMobileData = localStorage.getItem('allowMobileDataDownloads') === 'true';
 
         for (let i = 0; i < tracks.length; i++) {
@@ -880,13 +890,11 @@
             }
 
             try {
-                // If permission is on, append the token query to bypass sw cellular guards
                 const fetchUrl = allowMobileData ? `${track.file}?forceMobile=true` : track.file;
-                
                 const res = await fetch(fetchUrl);
                 
                 if (res.status === 403) {
-                    document.getElementById('cueText').innerText = "⚠️ Cellular download blocked. Turn on 'Allow Mobile Data' on the Home Screen to bypass.";
+                    document.getElementById('cueText').innerText = "⚠️ Cellular download blocked. Toggle 'Allow Mobile Data' on the Home Screen to bypass.";
                     continue;
                 }
 
@@ -906,7 +914,6 @@
 
     function handleMobileDataPermissionToggle(isAllowed) {
         localStorage.setItem('allowMobileDataDownloads', isAllowed ? 'true' : 'false');
-        // Trigger download retry loop immediately if enabled inside a set
         if (isAllowed && tracks.length > 0) {
             cacheAllAudioToRAM();
         }
@@ -929,7 +936,15 @@
         if (chip) {
             const chosenColor = track.color ? track.color.toLowerCase() : 'blue';
             chip.className = `nav-chip color-${chosenColor} ${index === currentTrackIndex ? 'active' : ''}`;
-            chip.onclick = () => { handleTrackSelection(index); };
+            
+            // If user is actively reading/inspecting this track file, seamlessly unlock operations deck controls
+            if (index === currentTrackIndex) {
+                const cachedBuffer = audioCache[track.file];
+                trackDuration = cachedBuffer ? cachedBuffer.duration : 0;
+                document.getElementById('trackTime').innerText = `0:00 / ${formatTime(trackDuration)}`;
+                playBtn.disabled = false;
+                playBtn.innerText = "▶ PLAY";
+            }
         }
     }
 
@@ -954,10 +969,8 @@
             if (isPlaying) { 
                 if (fadeInterval) { clearInterval(fadeInterval); fadeInterval = null; }
                 stopAudioEngine();  
-                loadTrack(index);   
-            } else { 
-                loadTrack(index); 
-            }
+            } 
+            loadTrack(index); 
         }
     }
 
@@ -966,13 +979,11 @@
         stopAudioEngine();
         
         document.querySelectorAll('.nav-chip').forEach(c => {
-            if (!c.classList.contains('not-loaded')) {
-                c.className = c.className.replace(/\b(active|playing-now|fading-now)\b/g, '').trim();
-            }
+            c.className = c.className.replace(/\b(active|playing-now|fading-now)\b/g, '').trim();
         });
         
         const activeChip = document.getElementById(`chip-${index}`);
-        if (activeChip && !activeChip.classList.contains('not-loaded')) activeChip.classList.add('active');
+        if (activeChip) activeChip.classList.add('active');
 
         currentTrackIndex = index;
         const track = tracks[index];
@@ -988,11 +999,18 @@
         document.getElementById('cueText').innerText = track.cue || "No special cues assigned.";
         buildStaticTextPanel(track.lyrics || []);
         
-        playBtn.disabled = false;
-        playBtn.innerText = "▶ PLAY";
-        fadeBtn.disabled = true;
         document.getElementById('timelineProgress').value = 0;
         document.getElementById('trackTime').innerText = `0:00 / ${formatTime(trackDuration)}`;
+
+        // Dynamic playback button state handler lets you click tracks without background asset crashes
+        if (cachedBuffer) {
+            playBtn.disabled = false;
+            playBtn.innerText = "▶ PLAY";
+        } else {
+            playBtn.disabled = true;
+            playBtn.innerText = "⏳ LOADING AUDIO...";
+        }
+        fadeBtn.disabled = true;
     }
 
     function buildStaticTextPanel(lines) {
@@ -1141,7 +1159,7 @@
             currentSource = null;
         }
         const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
-        if (activeChip && !activeChip.classList.contains('not-loaded')) {
+        if (activeChip) {
             activeChip.className = activeChip.className.replace(/\b(playing-now|fading-now)\b/g, '').trim();
         }
     }
