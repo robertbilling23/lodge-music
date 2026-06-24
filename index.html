@@ -638,6 +638,9 @@
                 <div class="home-metric-status-line">
                     Downloaded: <span class="home-metric-value-span" id="homeMemoryDisplay">0.00 MB</span>
                 </div>
+                <div class="home-metric-status-line" style="font-size: 0.85rem; padding-top: 2px; color: var(--text-dim); opacity: 0.7;">
+                    App Build version: <span class="home-metric-value-span" id="appVersionDisplay" style="color: var(--active-blue);">v45</span>
+                </div>
                 <div class="home-buttons-action-grid">
                     <button class="btn-home-utility-trigger" onclick="executePwaServiceCacheClear()">🔄 Refresh</button>
                     <button class="btn-home-utility-trigger" onclick="shareLodgeMusicApp()">🔗 Share App</button>
@@ -747,8 +750,11 @@
     let fadeInterval = null; 
 
     async function initConsole() {
-        // Sync the checkbox UI state with the local storage value immediately on load
-        document.getElementById('mobileDataToggleCheckbox').checked = localStorage.getItem('allowMobileDataDownloads') === 'true';
+// Sync the checkbox UI state with the local storage value immediately on load
+    const checkbox = document.getElementById('mobileDataToggleCheckbox');
+    if (checkbox) {
+        checkbox.checked = localStorage.getItem('allowMobileDataDownloads') === 'true';
+    }
 
         try {
             const response = await fetch('sets.json');
