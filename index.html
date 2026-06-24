@@ -13,12 +13,11 @@
                 navigator.serviceWorker.register('./sw.js', { scope: './' })
                     .then(reg => {
                         console.log('Service Worker Registered Successfully!');
-                        // FORCE CONTROLLER CLAIM HANDSHAKE ON INSTALLATION
                         reg.onupdatefound = () => {
                             const installingWorker = reg.installing;
                             installingWorker.onstatechange = () => {
                                 if (installingWorker.state === 'activated') {
-                                    window.location.reload(); // Refresh once to lock the service worker into place
+                                    window.location.reload(); 
                                 }
                             };
                         };
@@ -654,7 +653,7 @@
                     Downloaded: <span class="home-metric-value-span" id="homeMemoryDisplay">0.00 MB</span>
                 </div>
                 <div class="home-metric-status-line" style="font-size: 0.85rem; padding-top: 2px; color: var(--text-dim); opacity: 0.7;">
-                    App Build Version: <span class="home-metric-value-span" id="appVersionDisplay" style="color: var(--active-blue);">v46</span>
+                    App Build Version: <span class="home-metric-value-span" id="appVersionDisplay" style="color: var(--active-blue);">v47</span>
                 </div>
                 <div class="home-buttons-action-grid">
                     <button class="btn-home-utility-trigger" onclick="executePwaServiceCacheClear()">🔄 Refresh</button>
@@ -772,11 +771,10 @@
             checkbox.checked = localStorage.getItem('allowMobileDataDownloads') === 'true';
         }
 
-        // READ DIRECTLY FROM THE HARD STORAGE TO CHECK DOWNLOAD SIZE EXECUTIONS ON BOOT
+        // FIXED SCAN ROUTINE: Reads hardware disk size metadata directly to survive system force quits
         if ('caches' in window) {
             caches.open('lodge-music-v46').then((cache) => {
                 cache.keys().then((requests) => {
-                    let totalBytes = 0;
                     let processed = 0;
                     if(requests.length === 0) calculateTotalMemoryUsageMetrics();
                     requests.forEach((req) => {
@@ -891,7 +889,7 @@
             chip.id = `chip-${index}`;
             chip.innerText = track.title; 
             chip.onclick = () => { handleTrackSelection(index); };
-            grid.appendChild(chip);
+            grid.appendChild(grid.appendChild(chip));
         });
     }
 
@@ -899,20 +897,25 @@
         if (!audioCtx) {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
-        let loadedCount = 0;
         const allowMobileData = localStorage.getItem('allowMobileDataDownloads') === 'true';
 
         for (let i = 0; i < tracks.length; i++) {
             const track = tracks[i];
-            if (audioCache[track.file]) {
-                loadedCount++;
-                activateLoadedButtonChip(i, track);
-                calculateTotalMemoryUsageMetrics();
-                continue;
+            
+            // FIXED CACHE SAFETY HIT CHECK: Looks on physical device storage first to eliminate internet loops
+            if ('caches' in window) {
+                const globalStorageVault = await caches.open('lodge-music-v46');
+                const hardDiskMatch = await globalStorageVault.match(track.file);
+                
+                // If it's already sitting locally on disk, pull it right out into the audio execution channels
+                if (hardDiskMatch && audioCache[track.file]) {
+                    activateLoadedButtonChip(i, track);
+                    calculateTotalMemoryUsageMetrics();
+                    continue;
+                }
             }
 
             try {
-                // FIXED: Query strings go through service worker layer to block/allow cellular route instantly
                 const fetchUrl = allowMobileData ? `${track.file}?forceMobile=true` : track.file;
                 const res = await fetch(fetchUrl);
                 
@@ -927,7 +930,6 @@
 
                 const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
                 audioCache[track.file] = audioBuffer;
-                loadedCount++;
                 activateLoadedButtonChip(i, track);
             } catch (e) {
                 console.error("RAM compilation asset lookup failed for:", track.file);
@@ -996,7 +998,7 @@
         }
     }
 
-    function loadTrack(index) {
+    async function loadTrack(index) {
         if (fadeInterval) clearInterval(fadeInterval);
         stopAudioEngine();
         
@@ -1009,6 +1011,20 @@
 
         currentTrackIndex = index;
         const track = tracks[index];
+
+        // DYNAMIC HARD PROTECTION FILL: If RAM cleared out from a force quit, read the file right off the disk
+        if (!audioCache[track.file] && 'caches' in window) {
+            const globalStorageVault = await caches.open('lodge-music-v46');
+            const hardDiskMatch = await globalStorageVault.match(track.file);
+            if (hardDiskMatch) {
+                try {
+                    const arrayBuffer = await hardDiskMatch.arrayBuffer();
+                    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+                    audioCache[track.file] = audioBuffer;
+                    activateLoadedButtonChip(index, track);
+                } catch(e) {}
+            }
+        }
 
         const cachedBuffer = audioCache[track.file];
         trackDuration = cachedBuffer ? cachedBuffer.duration : 0;
