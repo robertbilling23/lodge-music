@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lodge Music</title>
     
+    <!-- PWA Registration Assets Links -->
     <link rel="manifest" href="manifest.json">
     <script>
         if ('serviceWorker' in navigator) {
@@ -621,6 +622,7 @@
 
 <div class="console-grid">
 
+    <!-- ================= SCREEN 1: OPTIMIZED CLEAN HOME DASHBOARD ================= -->
     <div class="app-screen active-view" id="screenHome">
         <div class="home-scrolling-content-zone">
             <div class="home-header-banner">Lodge Music</div>
@@ -647,7 +649,7 @@
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px; font-size: 0.82rem; color: var(--text-dim); opacity: 0.55;">
                     <span>Disk Storage: <span id="diskStorageDisplay" style="font-family: monospace; color: var(--play-green); font-weight: bold;">0.00 MB</span></span>
-                    <span>Build: <span style="font-family: monospace; color: var(--active-blue); font-weight: bold;">v51</span></span>
+                    <span>Build: <span style="font-family: monospace; color: var(--active-blue); font-weight: bold;">v52</span></span>
                 </div>
 
                 <button class="btn-home-refresh-subtle" onclick="executePwaServiceCacheClear()">reset / repair system storage</button>
@@ -656,6 +658,7 @@
     </div>
 
 
+    <!-- ================= SCREEN 2: ACTIVE CONSOLE INTERFACE SCREEN ================= -->
     <div class="app-screen" id="screenConsole">
         <div class="screen-header-bar">
             <button class="btn-header-back" onclick="navigateToHomeScreen()">◀ BACK</button>
@@ -687,6 +690,7 @@
     </div>
 
 
+    <!-- ================= CONSOLIDATED PLAY OPTIONS MODAL DIALOG ================= -->
     <div class="operations-modal-overlay" id="operationsModal">
         <div class="operations-dialog-box">
             <div class="modal-header">
@@ -794,7 +798,7 @@
     async function updateOfflineDiskMetricDisplay() {
         if (!('caches' in window)) return;
         try {
-            const storageVault = await caches.open('lodge-music-v50');
+            const storageVault = await caches.open('lodge-music-v52'); // UPDATED TO V52 FOR SYNCHRONIZED STORAGE MATCHING
             const storedRequests = await storageVault.keys();
             
             let totalEstimatedMB = 0.08; 
@@ -856,6 +860,7 @@
         if (structuralBlueprintProfilesCache[jsonPath]) {
             tracks = structuralBlueprintProfilesCache[jsonPath];
             buildPlaylistGrid(false);
+            loadTrack(0); // FIXED STATE HANDLER: Instantly locks configuration focus onto button index 0 by default
             await cacheAllAudioToRAM();
             return;
         }
@@ -867,6 +872,7 @@
             
             if (tracks.length > 0) {
                 buildPlaylistGrid(true);
+                loadTrack(0); // FIXED STATE HANDLER: Instantly locks configuration focus onto button index 0 by default
                 await cacheAllAudioToRAM();
             }
         } catch (err) {
@@ -875,6 +881,22 @@
     }
 
     function navigateToHomeScreen() {
+        // FIXED SAFETY RESET MECHANICS: Clears active audio, resets playback, and zeros selection indices
+        if (fadeInterval) { clearInterval(fadeInterval); fadeInterval = null; }
+        if (volumeFadeInterval) { clearInterval(volumeFadeInterval); volumeFadeInterval = null; }
+        stopAudioEngine();
+        
+        // Wipe all text displays back to clean factory state
+        document.getElementById('tickerTrackTitle').innerText = "None";
+        document.getElementById('trackTitle').innerText = "---";
+        document.getElementById('trackFilenameReadout').innerText = "no_file.mp3";
+        document.getElementById('timelineProgress').value = 0;
+        document.getElementById('trackTime').innerText = "0:00 / 0:00";
+        document.getElementById('cueText').innerText = "Select a track row sequence to begin.";
+        buildStaticTextPanel([]);
+
+        currentTrackIndex = 0;
+
         window.history.pushState({}, '', window.location.pathname);
         document.getElementById('screenConsole').classList.remove('active-view');
         document.getElementById('screenHome').classList.add('active-view');
