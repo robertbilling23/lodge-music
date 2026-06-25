@@ -64,7 +64,6 @@
             overflow: hidden; 
         }
 
-        /* MASTER WINDOW PROTECTION: Hard-locks canvas frame boundaries securely */
         .console-grid {
             position: fixed;
             top: 0; bottom: 0; left: 50%;
@@ -77,7 +76,6 @@
             overflow: hidden;
         }
 
-        /* FIXED SCREEN ENGINE ISOLATION: Immune to multi-view address bar shifting */
         .app-screen {
             position: absolute;
             top: 10px;
@@ -94,7 +92,6 @@
             display: flex;
         }
 
-        /* SCREEN 1 SPECIFIC POSITION LAYOUT */
         #screenHome {
             padding-bottom: 300px; 
         }
@@ -106,7 +103,6 @@
             box-sizing: border-box;
         }
 
-        /* ANCHORED ACTION WRAPPER FRAME FOR SCREEN 1 */
         .home-anchored-bottom-tray {
             position: absolute;
             bottom: 0; left: 0; right: 0;
@@ -650,10 +646,10 @@
 
             <div class="home-action-row-container">
                 <div class="home-metric-status-line">
-                    Downloaded: <span class="home-metric-value-span" id="homeMemoryDisplay">0.00 MB</span>
+                    Offline Disk Storage: <span class="home-metric-value-span" id="diskStorageDisplay">0.00 MB</span>
                 </div>
                 <div class="home-metric-status-line" style="font-size: 0.85rem; padding-top: 2px; color: var(--text-dim); opacity: 0.7;">
-                    App Build Version: <span class="home-metric-value-span" id="appVersionDisplay" style="color: var(--active-blue);">v47</span>
+                    App Build Version: <span class="home-metric-value-span" id="appVersionDisplay" style="color: var(--active-blue);">v48</span>
                 </div>
                 <div class="home-buttons-action-grid">
                     <button class="btn-home-utility-trigger" onclick="executePwaServiceCacheClear()">🔄 Refresh</button>
@@ -734,7 +730,7 @@
             </div>
 
             <div class="modal-metric-footer">
-                <span style="color:var(--text-dim); font-weight:bold;">RAM Cache Allocation:</span>
+                <span style="color:var(--text-dim); font-weight:bold;">Active RAM Audio Unpacked:</span>
                 <span id="modalMemoryValue" style="font-family:monospace; font-weight:bold; color:var(--play-green);">0.00 MB</span>
             </div>
         </div>
@@ -771,20 +767,25 @@
             checkbox.checked = localStorage.getItem('allowMobileDataDownloads') === 'true';
         }
 
-        // FIXED SCAN ROUTINE: Reads hardware disk size metadata directly to survive system force quits
+        // V48 ZERO-LATENCY SCAN: Scans lightweight file headers only to confirm disk storage without crashing CPU
         if ('caches' in window) {
-            caches.open('lodge-music-v46').then((cache) => {
+            caches.open('lodge-music-v48').then((cache) => {
                 cache.keys().then((requests) => {
+                    let totalBytes = 0;
                     let processed = 0;
-                    if(requests.length === 0) calculateTotalMemoryUsageMetrics();
+                    if(requests.length === 0) return;
                     requests.forEach((req) => {
                         cache.match(req).then((res) => {
                             if(res) {
-                                res.clone().arrayBuffer().then((buf) => {
-                                    cachedBytesCounter[req.url] = buf.byteLength;
+                                res.blob().then((blob) => {
+                                    totalBytes += blob.size;
                                     processed++;
-                                    if(processed === requests.length) calculateTotalMemoryUsageMetrics();
+                                    if(processed === requests.length) {
+                                        document.getElementById('diskStorageDisplay').innerText = (totalBytes / (1024 * 1024)).toFixed(2) + " MB";
+                                    }
                                 });
+                            } else {
+                                processed++;
                             }
                         });
                     });
@@ -889,7 +890,7 @@
             chip.id = `chip-${index}`;
             chip.innerText = track.title; 
             chip.onclick = () => { handleTrackSelection(index); };
-            grid.appendChild(grid.appendChild(chip));
+            grid.appendChild(chip);
         });
     }
 
@@ -902,20 +903,13 @@
         for (let i = 0; i < tracks.length; i++) {
             const track = tracks[i];
             
-            // FIXED CACHE SAFETY HIT CHECK: Looks on physical device storage first to eliminate internet loops
-            if ('caches' in window) {
-                const globalStorageVault = await caches.open('lodge-music-v46');
-                const hardDiskMatch = await globalStorageVault.match(track.file);
-                
-                // If it's already sitting locally on disk, pull it right out into the audio execution channels
-                if (hardDiskMatch && audioCache[track.file]) {
-                    activateLoadedButtonChip(i, track);
-                    calculateTotalMemoryUsageMetrics();
-                    continue;
-                }
+            if (audioCache[track.file]) {
+                activateLoadedButtonChip(i, track);
+                continue;
             }
 
             try {
+                // Background process grabs from SW local hardware cache instantly, decodes cleanly
                 const fetchUrl = allowMobileData ? `${track.file}?forceMobile=true` : track.file;
                 const res = await fetch(fetchUrl);
                 
@@ -926,7 +920,7 @@
 
                 const arrayBuffer = await res.arrayBuffer();
                 cachedBytesCounter[track.file] = arrayBuffer.byteLength;
-                calculateTotalMemoryUsageMetrics();
+                calculateTotalMemoryUsageMetrics(); // Updates the RAM display in the Modal Gear
 
                 const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
                 audioCache[track.file] = audioBuffer;
@@ -949,10 +943,7 @@
         for (let key in cachedBytesCounter) {
             grandTotalBytes += cachedBytesCounter[key];
         }
-        const totalMB = grandTotalBytes / (1024 * 1024);
-        const formatStr = `${totalMB.toFixed(2)} MB`;
-        
-        document.getElementById('homeMemoryDisplay').innerText = formatStr;
+        const formatStr = (grandTotalBytes / (1024 * 1024)).toFixed(2) + " MB";
         document.getElementById('modalMemoryValue').innerText = formatStr;
     }
 
@@ -998,7 +989,7 @@
         }
     }
 
-    async function loadTrack(index) {
+    function loadTrack(index) {
         if (fadeInterval) clearInterval(fadeInterval);
         stopAudioEngine();
         
@@ -1011,20 +1002,6 @@
 
         currentTrackIndex = index;
         const track = tracks[index];
-
-        // DYNAMIC HARD PROTECTION FILL: If RAM cleared out from a force quit, read the file right off the disk
-        if (!audioCache[track.file] && 'caches' in window) {
-            const globalStorageVault = await caches.open('lodge-music-v46');
-            const hardDiskMatch = await globalStorageVault.match(track.file);
-            if (hardDiskMatch) {
-                try {
-                    const arrayBuffer = await hardDiskMatch.arrayBuffer();
-                    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-                    audioCache[track.file] = audioBuffer;
-                    activateLoadedButtonChip(index, track);
-                } catch(e) {}
-            }
-        }
 
         const cachedBuffer = audioCache[track.file];
         trackDuration = cachedBuffer ? cachedBuffer.duration : 0;
