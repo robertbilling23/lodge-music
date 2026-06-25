@@ -93,7 +93,7 @@
         }
 
         #screenHome {
-            padding-bottom: 300px; 
+            padding-bottom: 250px; 
         }
 
         .home-scrolling-content-zone {
@@ -376,49 +376,47 @@
         .home-action-row-container {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-radius: 8px;
-            padding: 12px;
-            box-sizing: border-box;
+            gap: 12px;
             width: 100%;
-        }
-        .home-metric-status-line {
-            font-size: 0.95rem;
-            font-weight: bold;
-            color: var(--text-dim);
-            text-align: center;
-            padding-bottom: 2px;
-        }
-        .home-metric-value-span {
-            font-family: monospace;
-            color: var(--play-green);
+            box-sizing: border-box;
         }
         
-        .home-buttons-action-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-        .btn-home-utility-trigger {
-            background: #1e293b;
+        .btn-home-share-primary {
+            width: 100%;
+            background: var(--panel-bg);
             border: 2px solid var(--panel-border);
             color: #ffffff;
             font-weight: 900;
-            font-size: 1.15rem; 
-            padding: 16px 6px; 
+            font-size: 1.25rem; 
+            padding: 18px 10px; 
             border-radius: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            white-space: nowrap;
         }
-        .btn-home-utility-trigger:active {
+        .btn-home-share-primary:active {
             background: var(--panel-border);
             transform: scale(0.97);
+        }
+
+        /* Subtle plain link styling for the dangerous system clear hook */
+        .btn-home-refresh-subtle {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            text-decoration: underline;
+            cursor: pointer;
+            opacity: 0.4;
+            padding: 4px;
+            display: inline-block;
+            margin: 0 auto;
+        }
+        .btn-home-refresh-subtle:active {
+            color: var(--stop-red);
+            opacity: 0.8;
         }
 
         .ceremonial-footer {
@@ -434,13 +432,15 @@
             line-height: 1.4;
             box-sizing: border-box;
             width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         .footer-sub-note {
             display: block;
             font-size: 0.9rem;
             color: var(--text-dim);
             font-weight: normal;
-            margin-top: 4px;
         }
 
         .operations-modal-overlay {
@@ -623,7 +623,7 @@
 
 <div class="console-grid">
 
-    <!-- ================= SCREEN 1: LOCKED SCAFFOLD HOME DASHBOARD ================= -->
+    <!-- ================= SCREEN 1: OPTIMIZED CLEAN HOME DASHBOARD ================= -->
     <div class="app-screen active-view" id="screenHome">
         <div class="home-scrolling-content-zone">
             <div class="home-header-banner">Lodge Music</div>
@@ -632,29 +632,31 @@
             </div>
         </div>
         
-        <!-- FIXED VIEWPORT BASE ACTION TRAY FOR SCREEN 1 -->
+        <!-- NEATENED ANCHORED BASE TRAY LAYOUT -->
         <div class="home-anchored-bottom-tray">
-            <div style="display: flex; align-items: center; justify-content: space-between; background: var(--panel-bg); border: 1px solid var(--panel-border); padding: 10px 14px; border-radius: 6px; width: 100%; box-sizing: border-box;">
-                <span style="font-weight: bold; font-size: 1.05rem; color: var(--text-dim);">Allow Mobile Data Downloads:</span>
-                <input type="checkbox" id="mobileDataToggleCheckbox" style="width: 26px; height: 26px; cursor: pointer; accent-color: var(--active-blue);" onchange="handleMobileDataPermissionToggle(this.checked)">
-            </div>
-
             <div class="ceremonial-footer">
-                I hope you find my app handy. Please share any requests or feedback.
-                <span class="footer-sub-note">WBro. Robert Billing PGSwdB GLHer</span>
+                <div>
+                    I hope you find my app handy. Please share any requests or feedback.
+                    <span class="footer-sub-note" style="margin-top: 4px;">WBro. Robert Billing PGSwdB GLHer</span>
+                </div>
+                
+                <!-- RE-POSITIONED CHEKBOX: Moved directly to baseline of text footer content card -->
+                <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.25); padding: 8px 12px; border-radius: 6px; margin-top: 4px;">
+                    <span style="font-weight: normal; font-size: 0.95rem; color: var(--text-dim);">Allow Mobile Data Downloads:</span>
+                    <input type="checkbox" id="mobileDataToggleCheckbox" style="width: 22px; height: 22px; cursor: pointer; accent-color: var(--active-blue);" onchange="handleMobileDataPermissionToggle(this.checked)">
+                </div>
             </div>
 
             <div class="home-action-row-container">
-                <div class="home-metric-status-line">
-                    Offline Disk Storage: <span class="home-metric-value-span" id="diskStorageDisplay">0.00 MB</span>
+                <button class="btn-home-share-primary" onclick="shareLodgeMusicApp()">🔗 Share App Connection</button>
+                
+                <!-- MINIMAL ENGINEERING FOOTNOTE ROW: Combined side-by-side to vanish technical confusion -->
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px; font-size: 0.82rem; color: var(--text-dim); opacity: 0.55;">
+                    <span>Disk Storage: <span id="diskStorageDisplay" style="font-family: monospace; color: var(--play-green); font-weight: bold;">0.00 MB</span></span>
+                    <span>Build: <span style="font-family: monospace; color: var(--active-blue); font-weight: bold;">v49</span></span>
                 </div>
-                <div class="home-metric-status-line" style="font-size: 0.85rem; padding-top: 2px; color: var(--text-dim); opacity: 0.7;">
-                    App Build Version: <span class="home-metric-value-span" id="appVersionDisplay" style="color: var(--active-blue);">v48</span>
-                </div>
-                <div class="home-buttons-action-grid">
-                    <button class="btn-home-utility-trigger" onclick="executePwaServiceCacheClear()">🔄 Refresh</button>
-                    <button class="btn-home-utility-trigger" onclick="shareLodgeMusicApp()">🔗 Share App</button>
-                </div>
+
+                <button class="btn-home-refresh-subtle" onclick="executePwaServiceCacheClear()">reset / repair system storage</button>
             </div>
         </div>
     </div>
@@ -767,9 +769,9 @@
             checkbox.checked = localStorage.getItem('allowMobileDataDownloads') === 'true';
         }
 
-        // V48 ZERO-LATENCY SCAN: Scans lightweight file headers only to confirm disk storage without crashing CPU
+        // FIXED ENERGETIC LOOKUP KEY: Dynamically queries the exact matching modern cache table build
         if ('caches' in window) {
-            caches.open('lodge-music-v48').then((cache) => {
+            caches.open('lodge-music-v49').then((cache) => {
                 cache.keys().then((requests) => {
                     let totalBytes = 0;
                     let processed = 0;
@@ -909,7 +911,6 @@
             }
 
             try {
-                // Background process grabs from SW local hardware cache instantly, decodes cleanly
                 const fetchUrl = allowMobileData ? `${track.file}?forceMobile=true` : track.file;
                 const res = await fetch(fetchUrl);
                 
@@ -920,7 +921,7 @@
 
                 const arrayBuffer = await res.arrayBuffer();
                 cachedBytesCounter[track.file] = arrayBuffer.byteLength;
-                calculateTotalMemoryUsageMetrics(); // Updates the RAM display in the Modal Gear
+                calculateTotalMemoryUsageMetrics(); 
 
                 const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
                 audioCache[track.file] = audioBuffer;
