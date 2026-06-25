@@ -441,6 +441,161 @@
             font-weight: normal;
         }
 
+        .operations-modal-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(5, 7, 10, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            z-index: 1000;
+        }
+        .operations-dialog-box {
+            background: #131a24;
+            border: 2px solid var(--panel-border);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            padding: 16px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--panel-border);
+            padding-bottom: 8px;
+        }
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: var(--cue-gold);
+        }
+
+        .btn-modal-close {
+            background: var(--footer-blue);
+            border: 1px solid var(--panel-border);
+            color: white;
+            font-weight: 900;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+            padding: 12px 24px;
+            cursor: pointer;
+        }
+
+        .control-deck {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: var(--panel-bg);
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .raw-filename-readout {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #43546c;
+            word-break: break-all;
+            margin-top: -2px;
+            display: block;
+        }
+
+        .timeline-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 14px;
+            border-radius: 6px;
+            background: #233145;
+            outline: none;
+            cursor: pointer;
+            margin: 4px 0;
+            display: block;
+        }
+        .timeline-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--active-blue);
+            border: 2px solid white;
+            cursor: pointer;
+        }
+
+        .action-grid {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
+        .btn-tactical {
+            border: none;
+            border-radius: 10px;
+            font-weight: 900;
+            color: white;
+            cursor: pointer;
+            padding: 24px 10px; 
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-sizing: border-box;
+        }
+        .btn-tactical:disabled {
+            background-color: #2d3d52 !important;
+            color: #4f637d !important;
+            opacity: 0.4;
+        }
+        .btn-tactical-play { 
+            flex: 0 0 70%; 
+            background-color: var(--play-green); 
+            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+        }
+        .btn-tactical-fade { 
+            flex: 0 0 30%; 
+            background-color: var(--stop-red); 
+            font-size: 1.25rem; 
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+        }
+
+        .volume-pad {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: var(--panel-bg);
+            padding: 12px;
+            border-radius: 8px;
+        }
+        .volume-btn-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 10px;
+        }
+        .btn-vol {
+            padding: 14px 4px;
+            border: 1px solid var(--panel-border);
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 900;
+            color: var(--text-dim);
+            background-color: #1e293b;
+            cursor: pointer;
+        }
+        .btn-vol.active {
+            background-color: var(--active-blue);
+            color: var(--bg-dark);
+            border-color: var(--text-bright);
+        }
+
         .modal-metric-footer {
             display: flex;
             justify-content: space-between;
@@ -492,7 +647,7 @@
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px; font-size: 0.82rem; color: var(--text-dim); opacity: 0.55;">
                     <span>Disk Storage: <span id="diskStorageDisplay" style="font-family: monospace; color: var(--play-green); font-weight: bold;">0.00 MB</span></span>
-                    <span>Build: <span style="font-family: monospace; color: var(--active-blue); font-weight: bold;">v50c   </span></span>
+                    <span>Build: <span style="font-family: monospace; color: var(--active-blue); font-weight: bold;">v51</span></span>
                 </div>
 
                 <button class="btn-home-refresh-subtle" onclick="executePwaServiceCacheClear()">reset / repair system storage</button>
@@ -745,7 +900,7 @@
             chip.id = `chip-${index}`;
             chip.innerText = track.title; 
             chip.onclick = () => { handleTrackSelection(index); };
-            grid.appendChild(chip); // FIXED: Clean standalone append removes the rogue ceiling texts completely!
+            grid.appendChild(chip); 
         });
     }
 
@@ -868,4 +1023,251 @@
         document.getElementById('cueText').innerText = track.cue || "No special cues assigned.";
         buildStaticTextPanel(track.lyrics || []);
         
-        document
+        document.getElementById('timelineProgress').value = 0;
+        document.getElementById('trackTime').innerText = `0:00 / ${formatTime(trackDuration)}`;
+
+        if (cachedBuffer) {
+            playBtn.disabled = false;
+            playBtn.innerText = "▶ PLAY";
+        } else {
+            playBtn.disabled = true;
+            playBtn.innerText = "⏳ LOADING AUDIO...";
+        }
+        fadeBtn.disabled = true;
+    }
+
+    function buildStaticTextPanel(lines) {
+        const panel = document.getElementById('lyricsPanel');
+        panel.innerHTML = '';
+        if (lines.length === 0) {
+            panel.innerHTML = '<div class="lyric-line" style="color:var(--text-dim); margin-top:20px;">(Instrumental / No Words)</div>';
+            return;
+        }
+        lines.forEach((line) => {
+            const div = document.createElement('div');
+            div.className = 'lyric-line';
+            div.innerText = line;
+            panel.appendChild(div);
+        });
+    }
+
+    function playCurrentTrack() {
+        if (fadeInterval) clearInterval(fadeInterval);
+        if (isPlaying) return;
+
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+
+        const track = tracks[currentTrackIndex];
+        const cachedBuffer = audioCache[track.file];
+        if (!cachedBuffer) return;
+
+        currentSource = audioCtx.createBufferSource();
+        currentSource.buffer = cachedBuffer;
+
+        gainNode = audioCtx.createGain();
+        gainNode.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
+
+        currentSource.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        currentSource.start(0, pausedTime);
+        startTime = audioCtx.currentTime - pausedTime;
+        isPlaying = true;
+
+        playBtn.disabled = true;
+        playBtn.innerText = "▶ PLAYING";
+        fadeBtn.disabled = false;
+
+        const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
+        if (activeChip) {
+            activeChip.classList.remove('active', 'fading-now');
+            activeChip.classList.add('playing-now');
+        }
+
+        clearInterval(timeUpdateInterval);
+        timeUpdateInterval = setInterval(updateTimelineProgress, 100);
+    }
+
+    function handleManualTimelineSeek(percentValue) {
+        if (!tracks[currentTrackIndex]) return;
+        const cachedBuffer = audioCache[tracks[currentTrackIndex].file];
+        if (!cachedBuffer) return;
+
+        const targetSeconds = (percentValue / 100) * cachedBuffer.duration;
+        pausedTime = targetSeconds;
+        document.getElementById('trackTime').innerText = `${formatTime(targetSeconds)} / ${formatTime(cachedBuffer.duration)}`;
+
+        if (isPlaying) {
+            if (currentSource) {
+                try { currentSource.stop(); } catch(e){}
+                currentSource = null;
+            }
+            currentSource = audioCtx.createBufferSource();
+            currentSource.buffer = cachedBuffer;
+            gainNode = audioCtx.createGain();
+            gainNode.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
+            currentSource.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            currentSource.start(0, targetSeconds);
+            startTime = audioCtx.currentTime - targetSeconds;
+        }
+    }
+
+    function transitionToTargetVolume(targetVol, btnIdSuffix, displayLabelText) {
+        document.querySelectorAll('.btn-vol').forEach(b => b.classList.remove('active'));
+        document.getElementById(`volBtn-${btnIdSuffix}`).classList.add('active');
+        document.getElementById('volumePct').innerText = displayLabelText;
+
+        if (volumeFadeInterval) clearInterval(volumeFadeInterval);
+        if (!isPlaying || !gainNode || fadeInterval) {
+            currentVolume = targetVol;
+            return;
+        }
+
+        const transitionDuration = 1200; 
+        const stepTime = 40; 
+        const steps = transitionDuration / stepTime;
+        const volumeDelta = targetVol - currentVolume;
+        const volStep = volumeDelta / steps;
+        let runningVol = currentVolume;
+
+        volumeFadeInterval = setInterval(() => {
+            stepsLeft = Math.abs(targetVol - runningVol);
+            if (stepsLeft > Math.abs(volStep)) {
+                runningVol += volStep;
+                if (gainNode && isPlaying) gainNode.gain.setValueAtTime(runningVol, audioCtx.currentTime);
+            } else {
+                clearInterval(volumeFadeInterval);
+                volumeFadeInterval = null;
+                runningVol = targetVol;
+                if (gainNode && isPlaying) gainNode.gain.setValueAtTime(runningVol, audioCtx.currentTime);
+            }
+            currentVolume = runningVol; 
+        }, stepTime);
+    }
+
+    function updateTimelineProgress() {
+        if (!isPlaying) return;
+        const currentElapsed = audioCtx.currentTime - startTime;
+        
+        if (currentElapsed >= trackDuration) {
+            handleTrackPlaybackCompletion();
+            return;
+        }
+        const pct = (currentElapsed / trackDuration) * 100;
+        document.getElementById('timelineProgress').value = pct;
+        document.getElementById('trackTime').innerText = `${formatTime(currentElapsed)} / ${formatTime(trackDuration)}`;
+    }
+
+    function handleTrackPlaybackCompletion() {
+        stopAudioEngine();
+        if (currentTrackIndex + 1 < tracks.length) {
+            loadTrack(currentTrackIndex + 1);
+        }
+    }
+
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible" && audioCtx && audioCtx.state === "interrupted") {
+            audioCtx.resume();
+        }
+    });
+
+    function stopAudioEngine() {
+        isPlaying = false;
+        clearInterval(timeUpdateInterval);
+        if (currentSource) {
+            try { currentSource.stop(); } catch(e){}
+            currentSource = null;
+        }
+        const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
+        if (activeChip) {
+            activeChip.className = activeChip.className.replace(/\b(playing-now|fading-now)\b/g, '').trim();
+        }
+    }
+
+    function fadeCurrentTrack() {
+        if (!isPlaying || fadeInterval) return;
+        fadeBtn.disabled = true;
+        const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
+        if (activeChip) {
+            activeChip.classList.remove('playing-now');
+            activeChip.classList.add('fading-now');
+        }
+
+        const fadeDuration = 1.5; 
+        const stepTime = 50; 
+        const steps = (fadeDuration * 1000) / stepTime;
+        const volStep = currentVolume / steps;
+        let runningVol = currentVolume;
+
+        fadeInterval = setInterval(() => {
+            if (runningVol > volStep) {
+                runningVol -= volStep;
+                if (gainNode) gainNode.gain.setValueAtTime(runningVol, audioCtx.currentTime);
+            } else {
+                clearInterval(fadeInterval);
+                fadeInterval = null;
+                stopAudioEngine();
+                playBtn.disabled = false;
+                playBtn.innerText = "▶ PLAY";
+                if (currentTrackIndex + 1 < tracks.length) {
+                    loadTrack(currentTrackIndex + 1);
+                }
+            }
+        }, stepTime);
+    }
+
+    function shareLodgeMusicApp() {
+        const shareUrl = window.location.origin + window.location.pathname;
+        const shareTitle = "Lodge Music";
+        const shareText = "Here is the Lodge Music app for running ceremonial audio straight from your phone or tablet.";
+
+        if (navigator.share) {
+            navigator.share({ title: shareTitle, text: shareText, url: shareUrl })
+            .then(() => console.log('Successful share event.'))
+            .catch((error) => console.log('Sharing cancelled:', error));
+        } else {
+            const emailSubject = encodeURIComponent(shareTitle);
+            const emailBody = encodeURIComponent(`${shareText}\n\nAccess the app here: ${shareUrl}`);
+            window.location.href = `mailto:?subject= ${emailSubject}&body=${emailBody}`;
+        }
+    }
+
+    function executePwaServiceCacheClear() {
+        if ('caches' in window) {
+            caches.keys().then((names) => {
+                for (let name of names) caches.delete(name);
+            });
+        }
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then((registrations) => {
+                for (let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+        structuralBlueprintProfilesCache = {};
+        for (let key in audioCache) delete audioCache[key];
+        audioCache = {};
+        cachedBytesCounter = {};
+
+        window.history.pushState({}, '', window.location.pathname);
+
+        setTimeout(() => {
+            window.location.reload(true);
+        }, 150);
+    }
+
+    function formatTime(secs) {
+        if (isNaN(secs) || secs === 0) return "0:00";
+        const m = Math.floor(secs / 60);
+        const s = Math.floor(secs % 60);
+        return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    window.onload = initConsole;
+</script>
+</body>
+</html>
