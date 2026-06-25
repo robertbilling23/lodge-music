@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lodge-music-v49';
+const CACHE_NAME = 'lodge-music-v50';
 
 // Only pre-cache the absolute core layout shell files on first install
 const CORE_ASSETS = [
