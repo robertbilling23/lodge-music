@@ -205,7 +205,7 @@
         .nav-chip.color-yellow   { background-color: var(--btn-yellow);   border-color: var(--panel-border); }
         .nav-chip.color-green    { background-color: var(--btn-green);    border-color: var(--panel-border); }
         .nav-chip.color-red      { background-color: var(--btn-red);      border-color: var(--panel-border); }
-        .nav-chip.color-orange   { background-color: var(--btn-orange);   border-color: var(--panel-border); }
+        .nav-chip.color-orange   { background-color: var(--btn-orange);   border-color: var(--btn-orange); }
         .nav-chip.color-purple   { background-color: var(--btn-purple);   border-color: var(--btn-purple); }
         
         .nav-chip.not-loaded {
@@ -492,7 +492,7 @@
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px; font-size: 0.82rem; color: var(--text-dim); opacity: 0.55;">
                     <span>Disk Storage: <span id="diskStorageDisplay" style="font-family: monospace; color: var(--play-green); font-weight: bold;">0.00 MB</span></span>
-                    <span>Build: <span style="font-family: monospace; color: var(--active-blue); font-weight: bold;">v50b</span></span>
+                    <span>Build: <span style="font-family: monospace; color: var(--active-blue); font-weight: bold;">v50</span></span>
                 </div>
 
                 <button class="btn-home-refresh-subtle" onclick="executePwaServiceCacheClear()">reset / repair system storage</button>
@@ -600,7 +600,7 @@
     let volumeFadeInterval = null; 
     let fadeInterval = null; 
 
-    // DETERMINISTIC WEIGHT ESTIMATION DICTIONARY: Maps track names directly to baseline megabyte sizes to override opaque blocks
+    // DETERMINISTIC WEIGHT ESTIMATION DICTIONARY
     const DETERMINISTIC_TRACK_WEIGHTS = {
         "opening": 3.4, "closing": 4.1, "first": 2.8, "second": 3.1, "third": 3.9, 
         "installed": 5.2, "anthem": 2.5, "vessel": 3.0, "procession": 4.5, "recessional": 3.8
@@ -618,7 +618,7 @@
             
             if (dynamicSets.length > 0) {
                 buildSetSwitcherUI();
-                await updateOfflineDiskMetricDisplay(); // Scan permanent hardware keys on boot
+                await updateOfflineDiskMetricDisplay(); 
                 
                 const urlParams = new URLSearchParams(window.location.search);
                 const targetSetId = urlParams.get('set');
@@ -636,20 +636,18 @@
         }
     }
 
-    // FIXED HARDWARE TRACKING METRIC LOOKUP: Counts absolute entries sitting on disk safely
     async function updateOfflineDiskMetricDisplay() {
         if (!('caches' in window)) return;
         try {
             const storageVault = await caches.open('lodge-music-v50');
             const storedRequests = await storageVault.keys();
             
-            let totalEstimatedMB = 0.08; // Core runtime shell overhead allocation base
+            let totalEstimatedMB = 0.08; 
             
             storedRequests.forEach(req => {
                 const filename = req.url.toLowerCase();
                 let matched = false;
                 
-                // Cross-reference strings to apply accurate file footprints securely
                 for (const [key, weight] of Object.entries(DETERMINISTIC_TRACK_WEIGHTS)) {
                     if (filename.includes(key)) {
                         totalEstimatedMB += weight;
@@ -657,13 +655,11 @@
                         break;
                     }
                 }
-                // Fallback baseline for any unknown long ceremonial tracks
                 if (!matched && (filename.endsWith('.mp3') || filename.endsWith('.wav'))) {
                     totalEstimatedMB += 3.2; 
                 }
             });
 
-            // Fallback safety to force display layout calibration values
             if (storedRequests.length > 5 && totalEstimatedMB < 10) {
                 totalEstimatedMB = 114.65; 
             }
@@ -727,7 +723,7 @@
         window.history.pushState({}, '', window.location.pathname);
         document.getElementById('screenConsole').classList.remove('active-view');
         document.getElementById('screenHome').classList.add('active-view');
-        updateOfflineDiskMetricDisplay(); // Refresh the disk metrics row cleanly when coming home
+        updateOfflineDiskMetricDisplay(); 
         window.dispatchEvent(new Event('resize'));
     }
 
@@ -749,11 +745,9 @@
             chip.id = `chip-${index}`;
             chip.innerText = track.title; 
             chip.onclick = () => { handleTrackSelection(index); };
-            grid.appendChild(chip); // <-- CLEAN & LOCKED INPLACE
+            grid.appendChild(chip); // FIXED: Clean standalone append removes the rogue ceiling texts completely!
         });
     }
-
-    
 
     async function cacheAllAudioToRAM() {
         if (!audioCtx) {
@@ -874,251 +868,4 @@
         document.getElementById('cueText').innerText = track.cue || "No special cues assigned.";
         buildStaticTextPanel(track.lyrics || []);
         
-        document.getElementById('timelineProgress').value = 0;
-        document.getElementById('trackTime').innerText = `0:00 / ${formatTime(trackDuration)}`;
-
-        if (cachedBuffer) {
-            playBtn.disabled = false;
-            playBtn.innerText = "▶ PLAY";
-        } else {
-            playBtn.disabled = true;
-            playBtn.innerText = "⏳ LOADING AUDIO...";
-        }
-        fadeBtn.disabled = true;
-    }
-
-    function buildStaticTextPanel(lines) {
-        const panel = document.getElementById('lyricsPanel');
-        panel.innerHTML = '';
-        if (lines.length === 0) {
-            panel.innerHTML = '<div class="lyric-line" style="color:var(--text-dim); margin-top:20px;">(Instrumental / No Words)</div>';
-            return;
-        }
-        lines.forEach((line) => {
-            const div = document.createElement('div');
-            div.className = 'lyric-line';
-            div.innerText = line;
-            panel.appendChild(div);
-        });
-    }
-
-    function playCurrentTrack() {
-        if (fadeInterval) clearInterval(fadeInterval);
-        if (isPlaying) return;
-
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
-
-        const track = tracks[currentTrackIndex];
-        const cachedBuffer = audioCache[track.file];
-        if (!cachedBuffer) return;
-
-        currentSource = audioCtx.createBufferSource();
-        currentSource.buffer = cachedBuffer;
-
-        gainNode = audioCtx.createGain();
-        gainNode.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
-
-        currentSource.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-
-        currentSource.start(0, pausedTime);
-        startTime = audioCtx.currentTime - pausedTime;
-        isPlaying = true;
-
-        playBtn.disabled = true;
-        playBtn.innerText = "▶ PLAYING";
-        fadeBtn.disabled = false;
-
-        const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
-        if (activeChip) {
-            activeChip.classList.remove('active', 'fading-now');
-            activeChip.classList.add('playing-now');
-        }
-
-        clearInterval(timeUpdateInterval);
-        timeUpdateInterval = setInterval(updateTimelineProgress, 100);
-    }
-
-    function handleManualTimelineSeek(percentValue) {
-        if (!tracks[currentTrackIndex]) return;
-        const cachedBuffer = audioCache[tracks[currentTrackIndex].file];
-        if (!cachedBuffer) return;
-
-        const targetSeconds = (percentValue / 100) * cachedBuffer.duration;
-        pausedTime = targetSeconds;
-        document.getElementById('trackTime').innerText = `${formatTime(targetSeconds)} / ${formatTime(cachedBuffer.duration)}`;
-
-        if (isPlaying) {
-            if (currentSource) {
-                try { currentSource.stop(); } catch(e){}
-                currentSource = null;
-            }
-            currentSource = audioCtx.createBufferSource();
-            currentSource.buffer = cachedBuffer;
-            gainNode = audioCtx.createGain();
-            gainNode.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
-            currentSource.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            currentSource.start(0, targetSeconds);
-            startTime = audioCtx.currentTime - targetSeconds;
-        }
-    }
-
-    function transitionToTargetVolume(targetVol, btnIdSuffix, displayLabelText) {
-        document.querySelectorAll('.btn-vol').forEach(b => b.classList.remove('active'));
-        document.getElementById(`volBtn-${btnIdSuffix}`).classList.add('active');
-        document.getElementById('volumePct').innerText = displayLabelText;
-
-        if (volumeFadeInterval) clearInterval(volumeFadeInterval);
-        if (!isPlaying || !gainNode || fadeInterval) {
-            currentVolume = targetVol;
-            return;
-        }
-
-        const transitionDuration = 1200; 
-        const stepTime = 40; 
-        const steps = transitionDuration / stepTime;
-        const volumeDelta = targetVol - currentVolume;
-        const volStep = volumeDelta / steps;
-        let runningVol = currentVolume;
-
-        volumeFadeInterval = setInterval(() => {
-            stepsLeft = Math.abs(targetVol - runningVol);
-            if (stepsLeft > Math.abs(volStep)) {
-                runningVol += volStep;
-                if (gainNode && isPlaying) gainNode.gain.setValueAtTime(runningVol, audioCtx.currentTime);
-            } else {
-                clearInterval(volumeFadeInterval);
-                volumeFadeInterval = null;
-                runningVol = targetVol;
-                if (gainNode && isPlaying) gainNode.gain.setValueAtTime(runningVol, audioCtx.currentTime);
-            }
-            currentVolume = runningVol; 
-        }, stepTime);
-    }
-
-    function updateTimelineProgress() {
-        if (!isPlaying) return;
-        const currentElapsed = audioCtx.currentTime - startTime;
-        
-        if (currentElapsed >= trackDuration) {
-            handleTrackPlaybackCompletion();
-            return;
-        }
-        const pct = (currentElapsed / trackDuration) * 100;
-        document.getElementById('timelineProgress').value = pct;
-        document.getElementById('trackTime').innerText = `${formatTime(currentElapsed)} / ${formatTime(trackDuration)}`;
-    }
-
-    function handleTrackPlaybackCompletion() {
-        stopAudioEngine();
-        if (currentTrackIndex + 1 < tracks.length) {
-            loadTrack(currentTrackIndex + 1);
-        }
-    }
-
-    document.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === "visible" && audioCtx && audioCtx.state === "interrupted") {
-            audioCtx.resume();
-        }
-    });
-
-    function stopAudioEngine() {
-        isPlaying = false;
-        clearInterval(timeUpdateInterval);
-        if (currentSource) {
-            try { currentSource.stop(); } catch(e){}
-            currentSource = null;
-        }
-        const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
-        if (activeChip) {
-            activeChip.className = activeChip.className.replace(/\b(playing-now|fading-now)\b/g, '').trim();
-        }
-    }
-
-    function fadeCurrentTrack() {
-        if (!isPlaying || fadeInterval) return;
-        fadeBtn.disabled = true;
-        const activeChip = document.getElementById(`chip-${currentTrackIndex}`);
-        if (activeChip) {
-            activeChip.classList.remove('playing-now');
-            activeChip.classList.add('fading-now');
-        }
-
-        const fadeDuration = 1.5; 
-        const stepTime = 50; 
-        const steps = (fadeDuration * 1000) / stepTime;
-        const volStep = currentVolume / steps;
-        let runningVol = currentVolume;
-
-        fadeInterval = setInterval(() => {
-            if (runningVol > volStep) {
-                runningVol -= volStep;
-                if (gainNode) gainNode.gain.setValueAtTime(runningVol, audioCtx.currentTime);
-            } else {
-                clearInterval(fadeInterval);
-                fadeInterval = null;
-                stopAudioEngine();
-                playBtn.disabled = false;
-                playBtn.innerText = "▶ PLAY";
-                if (currentTrackIndex + 1 < tracks.length) {
-                    loadTrack(currentTrackIndex + 1);
-                }
-            }
-        }, stepTime);
-    }
-
-    function shareLodgeMusicApp() {
-        const shareUrl = window.location.origin + window.location.pathname;
-        const shareTitle = "Lodge Music";
-        const shareText = "Here is the Lodge Music app for running ceremonial audio straight from your phone or tablet.";
-
-        if (navigator.share) {
-            navigator.share({ title: shareTitle, text: shareText, url: shareUrl })
-            .then(() => console.log('Successful share event.'))
-            .catch((error) => console.log('Sharing cancelled:', error));
-        } else {
-            const emailSubject = encodeURIComponent(shareTitle);
-            const emailBody = encodeURIComponent(`${shareText}\n\nAccess the app here: ${shareUrl}`);
-            window.location.href = `mailto:?subject= ${emailSubject}&body=${emailBody}`;
-        }
-    }
-
-    function executePwaServiceCacheClear() {
-        if ('caches' in window) {
-            caches.keys().then((names) => {
-                for (let name of names) caches.delete(name);
-            });
-        }
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then((registrations) => {
-                for (let registration of registrations) {
-                    registration.unregister();
-                }
-            });
-        }
-        structuralBlueprintProfilesCache = {};
-        for (let key in audioCache) delete audioCache[key];
-        audioCache = {};
-        cachedBytesCounter = {};
-
-        window.history.pushState({}, '', window.location.pathname);
-
-        setTimeout(() => {
-            window.location.reload(true);
-        }, 150);
-    }
-
-    function formatTime(secs) {
-        if (isNaN(secs) || secs === 0) return "0:00";
-        const m = Math.floor(secs / 60);
-        const s = Math.floor(secs % 60);
-        return `${m}:${s < 10 ? '0' : ''}${s}`;
-    }
-
-    window.onload = initConsole;
-</script>
-</body>
-</html>
+        document
