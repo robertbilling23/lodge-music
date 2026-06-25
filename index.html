@@ -749,9 +749,11 @@
             chip.id = `chip-${index}`;
             chip.innerText = track.title; 
             chip.onclick = () => { handleTrackSelection(index); };
-            grid.appendChild(chip);
+            grid.appendChild(chip); // <-- CLEAN & LOCKED INPLACE
         });
     }
+
+    
 
     async function cacheAllAudioToRAM() {
         if (!audioCtx) {
