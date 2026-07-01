@@ -1,17 +1,116 @@
 [
   {
-    "id": "track1",
+    "title": "Door to Kneeling",
+    "file": "music/FC/19 door to kneeling.mp3",
+    "cue": "Play as candidate moves from door to kneeling position.",
+    "color": "darkblue"
+  },
+  {
     "title": "So Mote It Be",
-    "color": "purple",
-    "file": "audio/1-Open-1st-SMIB-Faster.mp3",
-    "cue": "When the Chaplain says HARMONY",
-    "lyrics": [
-      "The Lodge being duly formed",
-      "Before it is declared open",
-      "Let us invoke a blessing from the GAOTU on all our undertakings",
-      "may our Labours thus begun in peace",
-      "Be closed in HARMONY",
-      "SO MOTE IT BE"
-    ]
+    "file": "music/FC/20 SMIB.mp3",
+    "cue": "Play SMIB after prayer.",
+    "color": "blue"
+  },
+  {
+    "title": "Kneeling to WM",
+    "file": "music/FC/21.1 kneeling to WM.mp3",
+    "cue": "Play as candidate moves from kneeling to WM.",
+    "color": "blue"
+  },
+  {
+    "title": "WM to JW",
+    "file": "music/FC/21.2 WM to JW.mp3",
+    "cue": "Play as candidate moves from WM to JW.",
+    "color": "blue"
+  },
+  {
+    "title": "JW to SW",
+    "file": "music/FC/21.3 JW to SW.mp3",
+    "cue": "Play as candidate moves from JW to SW.",
+    "color": "blue"
+  },
+  {
+    "title": "Properly Prepared",
+    "file": "music/FC/22.1 properly prepared to WM.mp3",
+    "cue": "Play when candidate is reported properly prepared to WM.",
+    "color": "darkblue"
+  },
+  {
+    "title": "WM to JW (Prep)",
+    "file": "music/FC/22.2 WM to JW.mp3",
+    "cue": "Play as candidate passes from WM to JW.",
+    "color": "blue"
+  },
+  {
+    "title": "JW to SW (Prep)",
+    "file": "music/FC/22.3 JW to SW.mp3",
+    "cue": "Play as candidate passes from JW to SW.",
+    "color": "blue"
+  },
+  {
+    "title": "SW to Advance",
+    "file": "music/FC/22.4 SW to Advance.mp3",
+    "cue": "Play after SW instructs candidate to advance.",
+    "color": "blue"
+  },
+  {
+    "title": "Kneel",
+    "file": "music/FC/23 Kneel.mp3",
+    "cue": "Play when candidate kneels for the obligation.",
+    "color": "yellow"
+  },
+  {
+    "title": "Keep Thy",
+    "file": "music/FC/24 Keep Thy.mp3",
+    "cue": "Play during the solemn support segment.",
+    "color": "blue"
+  },
+  {
+    "title": "Lap after Obligation",
+    "file": "music/FC/25 Lap after Obligation.mp3",
+    "cue": "Play for perambulation directly following the obligation.",
+    "color": "blue"
+  },
+  {
+    "title": "Secrets to JW",
+    "file": "music/FC/26.1 Secrets to JW.mp3",
+    "cue": "Play as candidate goes to present secrets to JW.",
+    "color": "purple"
+  },
+  {
+    "title": "JW to SW (Secrets)",
+    "file": "music/FC/26.2 JW to SW.mp3",
+    "cue": "Play as candidate moves from JW to SW.",
+    "color": "purple"
+  },
+  {
+    "title": "After Badge Extension",
+    "file": "music/FC/27 After Badge Extension.mp3",
+    "cue": "Play immediately following the badge extension address.",
+    "color": "green"
+  },
+  {
+    "title": "After WTs",
+    "file": "music/FC/28 After WTs.mp3",
+    "cue": "Play after the Working Tools address is completed.",
+    "color": "orange"
+  },
+  {
+    "title": "After Final to WM",
+    "file": "music/FC/29.1 After Final to WM.mp3",
+    "cue": "Play as candidate is conducted to the WM after final address.",
+    "color": "blue"
+  },
+  {
+    "title": "WM to Saluting Base",
+    "file": "music/FC/29.2 WM to Saluting Base.mp3",
+    "cue": "Play as candidate moves from WM to the saluting base.",
+    "color": "green"
+  },
+  {
+    "title": "Leaving Lodge Room",
+    "file": "music/FC/29.3 Leaving Lodge Room.mp3",
+    "cue": "Play as the candidate leaves the lodge room.",
+    "color": "red"
   }
 ]

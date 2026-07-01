@@ -4,6 +4,21 @@
     "label": "Craft General",
     "file": "craft.json"
   },
+  {
+    "id": 2,
+    "label": "1st Degree",
+    "file": "ea.json"
+  },
+  {
+    "id": 3,
+    "label": "2nd Degree",
+    "file": "fc.json"
+  },
+  {
+    "id": 4,
+    "label": "3rd Degree",
+    "file": "mm.json"
+  },
     {
     "id": 5,
     "label": "Installation",

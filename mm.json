@@ -1,13 +1,170 @@
 [
   {
-    "id": "track1",
+    "title": "Open 3rd SMIB",
+    "file": "music/MM/30 Open 3rd SMIB.mp3",
+    "cue": "Play SMIB during the opening of the Third Degree.",
+    "color": "blue"
+  },
+  {
+    "title": "Open 3rd Tracing Board",
+    "file": "music/MM/31 Open 3rd TB.mp3",
+    "cue": "Play during the opening of the Third Degree Tracing Board.",
+    "color": "darkblue"
+  },
+  {
+    "title": "Open 3rd All Glory",
+    "file": "music/MM/32 Open 3rd AllGlory.mp3",
+    "cue": "Play 'All Glory to the Most High' during the 3rd degree opening.",
+    "color": "blue"
+  },
+  {
+    "title": "Grave Cloth (Largo)",
+    "file": "music/MM/32b GraveCloth_Largo from Xerxes.mp3",
+    "cue": "Play Handel's Largo from Xerxes for the Grave Cloth sequence.",
+    "color": "purple"
+  },
+  {
+    "title": "Door to Kneeling Stool",
+    "file": "music/MM/33 door to kneeling stool.mp3",
+    "cue": "Play as candidate moves from the door to the kneeling stool.",
+    "color": "darkblue"
+  },
+  {
     "title": "So Mote It Be",
-    "color": "yellow",
-    "file": "audio/1-Open-1st-SMIB-Faster.mp3",
-    "cue": "When the Chaplain says HARMONY",
-    "lyrics": [
-      "The lodge being duly formed, before it is declared",
-      "open let us invoke a blessing from the GAOTU on all our undertakings. May our labours, thus begun in order, be conducted in peace, and closed in harmony."
-    ]
+    "file": "music/MM/34 SMIB.mp3",
+    "cue": "Play SMIB after prayer.",
+    "color": "blue"
+  },
+  {
+    "title": "Kneeling to WM",
+    "file": "music/MM/35.1 kneeling to WM.mp3",
+    "cue": "Play as candidate moves from kneeling stool to WM.",
+    "color": "blue"
+  },
+  {
+    "title": "WM to JW",
+    "file": "music/MM/35.2 WM to JW.mp3",
+    "cue": "Play as candidate moves from WM to JW.",
+    "color": "blue"
+  },
+  {
+    "title": "JW to SW",
+    "file": "music/MM/35.3 JW to SW.mp3",
+    "cue": "Play as candidate moves from JW to SW.",
+    "color": "blue"
+  },
+  {
+    "title": "SW to WM",
+    "file": "music/MM/35.4 SW to WM.mp3",
+    "cue": "Play as candidate moves from SW to WM.",
+    "color": "blue"
+  },
+  {
+    "title": "WM to JW (Loop 2)",
+    "file": "music/MM/35.5 WM to JW.mp3",
+    "cue": "Play as candidate moves from WM to JW on the subsequent circuit.",
+    "color": "blue"
+  },
+  {
+    "title": "JW to SW (Loop 2)",
+    "file": "music/MM/35.6 JW to SW.mp3",
+    "cue": "Play as candidate moves from JW to SW on the subsequent circuit.",
+    "color": "blue"
+  },
+  {
+    "title": "Properly Prepared to WM",
+    "file": "music/MM/36.1 Properly Prepared to WM.mp3",
+    "cue": "Play when candidate is reported properly prepared and passes to WM.",
+    "color": "darkblue"
+  },
+  {
+    "title": "WM to JW (Prep)",
+    "file": "music/MM/36.2 WM to JW.mp3",
+    "cue": "Play as candidate passes from WM to JW.",
+    "color": "blue"
+  },
+  {
+    "title": "JW to SW (Prep)",
+    "file": "music/MM/36.3 JW to SW.mp3",
+    "cue": "Play as candidate passes from JW to SW.",
+    "color": "blue"
+  },
+  {
+    "title": "Kneel",
+    "file": "music/MM/37 Kneel.mp3",
+    "cue": "Play when candidate kneels for the obligation.",
+    "color": "yellow"
+  },
+  {
+    "title": "Keep Thy",
+    "file": "music/MM/38 Keep Thy.mp3",
+    "cue": "Play during the solemn support segment of the obligation.",
+    "color": "blue"
+  },
+  {
+    "title": "After Laid on Ground",
+    "file": "music/MM/39 After Laid on Ground.mp3",
+    "cue": "Play immediately after the candidate is laid on the ground.",
+    "color": "purple"
+  },
+  {
+    "title": "Ceremonial Interlude (39a)",
+    "file": "music/MM/39a.mp3",
+    "cue": "Play continuation interlude for the traditional ceremony.",
+    "color": "purple"
+  },
+  {
+    "title": "JW Walks Around",
+    "file": "music/MM/40 JW walks around.mp3",
+    "cue": "Play as the Junior Warden perambulates.",
+    "color": "blue"
+  },
+  {
+    "title": "SW Walks Around",
+    "file": "music/MM/41 SW walks around.mp3",
+    "cue": "Play as the Senior Warden perambulates.",
+    "color": "blue"
+  },
+  {
+    "title": "Now Make Trial",
+    "file": "music/MM/42 after now make trial.mp3",
+    "cue": "Play after the command to 'now make trial'.",
+    "color": "yellow"
+  },
+  {
+    "title": "After EOM",
+    "file": "music/MM/43 after EOM.mp3",
+    "cue": "Play following the completion of the Exhortation / Onward March.",
+    "color": "blue"
+  },
+  {
+    "title": "After Badge Extension",
+    "file": "music/MM/44 after badge extension.mp3",
+    "cue": "Play immediately following the Master Mason badge extension address.",
+    "color": "green"
+  },
+  {
+    "title": "After WTs",
+    "file": "music/MM/45 after WTs.mp3",
+    "cue": "Play after the Working Tools address is completed.",
+    "color": "orange"
+  },
+  {
+    "title": "After Final Address",
+    "file": "music/MM/46.1 after final.mp3",
+    "cue": "Play after the final traditional charge is completed.",
+    "color": "blue"
+  },
+  {
+    "title": "WM to Saluting Base",
+    "file": "music/MM/46.2 from WM to Saluting Base.mp3",
+    "cue": "Play as candidate moves from WM to the saluting base.",
+    "color": "green"
+  },
+  {
+    "title": "Heads Out the Door",
+    "file": "music/MM/46.3 Heads out the door.mp3",
+    "cue": "Play as the candidate retiring leaves the lodge room.",
+    "color": "red"
   }
 ]
