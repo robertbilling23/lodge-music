@@ -461,7 +461,8 @@
             100% { box-shadow: 0 0 20px 4px var(--stop-red); }
         }
 
-        .operations-modal-overlay {
+      /* ================= RESTORED PLAY OPTIONS MODAL OVERLAY SHEET ================= */
+.operations-modal-overlay {
     position: fixed; 
     top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(5, 7, 10, 0.85);
@@ -470,6 +471,84 @@
     align-items: center;
     padding: 16px;
     z-index: 1000;
+}
+
+.operations-dialog-box {
+    background: #131a24;
+    border: 2px solid var(--panel-border);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    padding: 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--panel-border);
+    padding-bottom: 8px;
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--cue-gold);
+}
+
+.btn-modal-close {
+    background: var(--footer-blue);
+    border: 1px solid var(--panel-border);
+    color: white;
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+    padding: 12px 24px;
+    cursor: pointer;
+}
+
+.track-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.current-track-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--text-bright);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.running-time {
+    font-family: monospace;
+    font-size: 1.05rem;
+    color: var(--active-blue);
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.volume-status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+}
+
+.volume-pct-display {
+    font-weight: bold;
+    color: var(--active-blue);
 }
     </style>
 </head>
