@@ -460,6 +460,17 @@
             50% { box-shadow: 0 0 40px 12px var(--stop-red); filter: brightness(1.25); }
             100% { box-shadow: 0 0 20px 4px var(--stop-red); }
         }
+
+        .operations-modal-overlay {
+    position: fixed; 
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(5, 7, 10, 0.85);
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    z-index: 1000;
+}
     </style>
 </head>
 <body>
@@ -533,7 +544,7 @@
 
 
     <!-- ================= CONSOLIDATED PLAY OPTIONS MODAL DIALOG ================= -->
-<div class="operations-modal-overlay" id="operationsModal" style="display: none;">
+<div class="operations-modal-overlay" id="operationsModal">
         <div class="operations-dialog-box">
             <div class="modal-header">
                 <span class="modal-title">🎛️ Play Options</span>
