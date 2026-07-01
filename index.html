@@ -704,7 +704,8 @@
         }
 
         try {
-            const response = await fetch('sets.json');
+            const response = await fetch('sets.json?v=' + Date.now());
+            //const response = await fetch('sets.json');
             dynamicSets = await response.json();
             
             if (dynamicSets.length > 0) {
@@ -798,7 +799,8 @@
         }
 
         try {
-            const response = await fetch(jsonPath);
+            //const response = await fetch(jsonPath);
+            const response = await fetch(jsonPath + '?v=' + Date.now());
             tracks = await response.json();
             structuralBlueprintProfilesCache[jsonPath] = tracks;
             
