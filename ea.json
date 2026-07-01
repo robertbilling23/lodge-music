@@ -1,115 +1,115 @@
 [
   {
-    "title": "Inner Guard Sign",
-    "file": "music/EA/3 after IG says SI.mp3",
+    "title": "3 IG says SI",
+    "file": "audio/EA/3 after IG says SI.mp3",
     "cue": "Play after IG says SI.",
     "color": "darkblue"
   },
   {
     "title": "So Mote It Be",
-    "file": "music/EA/4 SMIB after Prayer.mp3",
+    "file": "audio/EA/4 SMIB after Prayer.mp3",
     "cue": "Play SMIB after Prayer.",
-    "color": "blue"
+    "color": "yellow"
   },
   {
-    "title": "To Be Made",
-    "file": "music/EA/5.1 after WM says to be made a Freemason.mp3",
+    "title": "5.1 Made a Freemason to JW",
+    "file": "audio/EA/5.1 after WM says to be made a Freemason.mp3",
     "cue": "Play after WM says to be made a Freemason.",
     "color": "blue"
   },
   {
-    "title": "Pass Free",
-    "file": "music/EA/5.2 after JW says pass free and of GR.mp3",
+    "title": "5.2 JW to SW",
+    "file": "audio/EA/5.2 after JW says pass free and of GR.mp3",
     "cue": "Play after JW says pass free and of GR.",
     "color": "blue"
   },
   {
-    "title": "SW Instructs JD",
-    "file": "music/EA/6 after SW instructs JD.mp3",
+    "title": "6 SW to Advance",
+    "file": "audio/EA/6 after SW instructs JD.mp3",
     "cue": "Play after SW instructs JD.",
     "color": "darkblue"
   },
   {
-    "title": "Kneel",
-    "file": "music/EA/7 Kneel. after WM knocks.mp3",
+    "title": "7 Kneel",
+    "file": "audio/EA/7 Kneel. after WM knocks.mp3",
     "cue": "Play after WM knocks.",
     "color": "yellow"
   },
   {
-    "title": "Keep Thy",
-    "file": "music/EA/8 Keep Thy. after WM says on the VSL.mp3",
+    "title": "8 Keep Thy",
+    "file": "audio/EA/8 Keep Thy. after WM says on the VSL.mp3",
     "cue": "Play after WM says on the VSL.",
-    "color": "blue"
+    "color": "yellow"
   },
   {
-    "title": "Restored to Light",
-    "file": "music/EA/9 Light. after WM says restored to the C.mp3",
+    "title": "9 Restored to Light",
+    "file": "audio/EA/9 Light. after WM says restored to the C.mp3",
     "cue": "Play after WM says restored to the C.",
     "color": "yellow"
   },
   {
-    "title": "Brother Among Masons",
-    "file": "music/EA/10 after WM says brother among masons.mp3",
+    "title": "10 After Obligation",
+    "file": "audio/EA/10 after WM says brother among masons.mp3",
     "cue": "Play after WM says brother among masons.",
     "color": "blue"
   },
   {
-    "title": "Secrets",
-    "file": "music/EA/11.1 after secrets.mp3",
+    "title": "11.1 Secrets to JW",
+    "file": "audio/EA/11.1 after secrets.mp3",
     "cue": "Play after secrets.",
     "color": "purple"
   },
   {
-    "title": "Pass B.",
-    "file": "music/EA/11.2 after JW says pass B.mp3",
+    "title": "11.2 JW tO SW",
+    "file": "audio/EA/11.2 after JW says pass B.mp3",
     "cue": "Play after JW says pass B.",
     "color": "purple"
   },
   {
-    "title": "Badge Extension",
-    "file": "music/EA/12 after badge extension.mp3",
+    "title": "12 After Badge Extension",
+    "file": "audio/EA/12 after badge extension.mp3",
     "cue": "Play after badge extension.",
     "color": "green"
   },
   {
-    "title": "Give Freely",
-    "file": "music/EA/13 after JW reports he would give freely.mp3",
-    "cue": "Play after JW reports he would give freely.",
+    "title": "13 Charity",
+    "file": "audio/EA/13 after JW reports he would give freely.mp3",
+    "cue": "Play after JD reports he would give freely.",
     "color": "blue"
   },
   {
-    "title": "NE Charge Done",
-    "file": "music/EA/14 after NE charge is done.mp3",
+    "title": "14 After NE Charge",
+    "file": "audio/EA/14 after NE charge is done.mp3",
     "cue": "Play after NE charge is done.",
     "color": "orange"
   },
   {
-    "title": "WT Charge Finished",
-    "file": "music/EA/15.1 after WT charge is finished.mp3",
+    "title": "15.1 After WTs",
+    "file": "audio/EA/15.1 after WT charge is finished.mp3",
     "cue": "Play after WT charge is finished.",
     "color": "orange"
   },
   {
-    "title": "WM Finishes",
-    "file": "music/EA/15.2 after WM finishes and before Final.mp3",
+    "title": "15.2 Before Final",
+    "file": "audio/EA/15.2 after WM finishes and before Final.mp3",
     "cue": "Play after WM finishes and before Final.",
     "color": "blue"
   },
   {
-    "title": "Cand. to East",
-    "file": "music/EA/16.1 as Cand comes up to East.mp3",
+    "title": "16.1 After Final",
+    "file": "audio/EA/16.1 as Cand comes up to East.mp3",
     "cue": "Play as Candidate comes up to East.",
     "color": "green"
   },
   {
-    "title": "Cand. to West",
-    "file": "music/EA/16.2 as Cand goes back to West.mp3",
+    "title": "16.2 Back to Saluting Base",
+    "file": "audio/EA/16.2 as Cand goes back to West.mp3",
     "cue": "Play as Candidate goes back to West.",
     "color": "green"
   },
   {
-    "title": "Cand. Leaves",
-    "file": "music/EA/16.3 as Cand leaves.mp3",
+    "title": "16.3 Leaving Lodge Room",
+    "file": "audio/EA/16.3 as Cand leaves.mp3",
     "cue": "Play as Candidate leaves.",
     "color": "red"
   }
