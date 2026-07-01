@@ -1,6 +1,26 @@
 [
   {
     "id": "track1",
+    "title": "Entry FF",
+    "color": "red",
+    "file": "audio/Installation/Entry FF.mp3",
+    "cue": "FF",
+    "lyrics": [
+      ""
+    ]
+  },
+    {
+    "id": "track1",
+    "title": "Entry FF2",
+    "color": "red",
+    "file": "audio/Installation/Entry2 FF.mp3",
+    "cue": "FF",
+    "lyrics": [
+      ""
+    ]
+  },
+  {
+    "id": "track1",
     "title": "Entry March",
     "color": "purple",
     "file": "audio/Installation/1 GL Entry by Don.wav",
@@ -18,6 +38,17 @@
     "cue": "After the Proclaiming Officer says - Be Seated, Brethren.",
     "lyrics": [
       "Keep an eye on the Proclaiming Officer.  If he sits, end the tune.  If he comes out to do Grand Honors, end it before he needs to talk"
+    ]
+  },
+
+    {
+    "id": "track1",
+    "title": "Grand FF",
+    "color": "red",
+    "file": "audio/Installation/Grand FF.mp3",
+    "cue": "FF",
+    "lyrics": [
+      ""
     ]
   },
   { "id": "2",
@@ -111,6 +142,37 @@
     "cue": "After the IG turns to go to the door",
     "lyrics": [
       "The PO asks the IG to admit EAs or other, then the IG will turn to do that.","March of the Angry Men"
+    ]
+  },
+
+    {
+    "id": "track1",
+    "title": "East FF",
+    "color": "red",
+    "file": "audio/Installation/East FF.mp3",
+    "cue": "FF",
+    "lyrics": [
+      ""
+    ]
+  },
+    {
+    "id": "track1",
+    "title": "West FF",
+    "color": "red",
+    "file": "audio/Installation/West FF.mp3",
+    "cue": "FF",
+    "lyrics": [
+      ""
+    ]
+  },
+    {
+    "id": "track1",
+    "title": "South FF",
+    "color": "red",
+    "file": "audio/Installation/South FF.mp3",
+    "cue": "FF",
+    "lyrics": [
+      ""
     ]
   },
   {
