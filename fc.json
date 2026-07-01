@@ -1,6 +1,12 @@
 [
   {
-    "title": "19 Door to Kneeling",
+    "title": "18 Open 2nd TB",
+    "file": "audio/FC/18 Open 2nd TB.mp3",
+    "cue": "Play after IG/Tyler knocks",
+    "color": "blue"
+  },
+    {
+    "title": "19 Door to KS",
     "file": "audio/FC/19 door to kneeling.mp3",
     "cue": "Play as candidate moves from door to kneeling position.",
     "color": "darkblue"
@@ -12,7 +18,7 @@
     "color": "blue"
   },
   {
-    "title": "21.1 Kneeling to WM",
+    "title": "21.1 KS to WM",
     "file": "audio/FC/21.1 kneeling to WM.mp3",
     "cue": "Play as candidate moves from kneeling to WM.",
     "color": "blue"
