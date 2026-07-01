@@ -9,16 +9,7 @@
       ""
     ]
   },
-    {
-    "id": "track1",
-    "title": "Entry FF2",
-    "color": "red",
-    "file": "audio/Installation/Entry2 FF.mp3",
-    "cue": "FF",
-    "lyrics": [
-      ""
-    ]
-  },
+    
   {
     "id": "track1",
     "title": "Entry March",
@@ -38,6 +29,16 @@
     "cue": "After the Proclaiming Officer says - Be Seated, Brethren.",
     "lyrics": [
       "Keep an eye on the Proclaiming Officer.  If he sits, end the tune.  If he comes out to do Grand Honors, end it before he needs to talk"
+    ]
+  },
+{
+    "id": "track1",
+    "title": "Rise Note",
+    "color": "red",
+    "file": "audio/Installation/Rise Note.mp3",
+    "cue": "FF",
+    "lyrics": [
+      ""
     ]
   },
 
