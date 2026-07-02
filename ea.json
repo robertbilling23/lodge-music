@@ -1,116 +1,177 @@
 [
   {
-    "title": "3 IG says SI",
+    "title": "3 Cand Enters",
     "file": "audio/EA/3 after IG says SI.mp3",
-    "cue": "Play after IG says SI.",
-    "color": "darkblue"
+    "cue": "After IG says SI.",
+    "color": "blue",
+    "lyrics": [
+      "Deacons move to door.  They face the door.  SD is on the right.  Step apart.  Turn towards each other.  SD changes wand.",
+      "IG brings in candidate, says his line, then play music"
+    ]
   },
   {
-    "title": "So Mote It Be",
+    "title": "4 SMIB",
     "file": "audio/EA/4 SMIB after Prayer.mp3",
-    "cue": "Play SMIB after Prayer.",
-    "color": "yellow"
+    "cue": "At the end of the prayer",
+    "color": "yellow",
+    "lyrics": [
+      "Prayer is given, then this."
+    ]
   },
   {
-    "title": "5.1 Made a Freemason to JW",
+    "title": "5.1 Prepared to JW",
     "file": "audio/EA/5.1 after WM says to be made a Freemason.mp3",
-    "cue": "Play after WM says to be made a Freemason.",
-    "color": "blue"
+    "cue": "Play after WM says - to be made a Freemason.",
+    "color": "blue",
+    "lyrics": [
+      "The procession has halted just past the NW corner", "The WM has a line, then this"
+    ]
   },
   {
     "title": "5.2 JW to SW",
     "file": "audio/EA/5.2 after JW says pass free and of GR.mp3",
-    "cue": "Play after JW says pass free and of GR.",
-    "color": "blue"
+    "cue": "After JW says his line",
+    "color": "blue",
+    "lyrics": [
+      "The JW be standing and will shake the hand of the Cand"
+    ]
   },
   {
-    "title": "6 SW to Advance",
+    "title": "6 After Questions",
     "file": "audio/EA/6 after SW instructs JD.mp3",
-    "cue": "Play after SW instructs JD.",
-    "color": "darkblue"
+    "cue": "After the SW instructs the JD",
+    "color": "blue",
+    "lyrics": [
+      "Nothing is played after the shakes the hand of the Cand","This plays as the Cand is escorted from the SW"
+    ]
   },
   {
     "title": "7 Kneel",
     "file": "audio/EA/7 Kneel. after WM knocks.mp3",
-    "cue": "Play after WM knocks.",
-    "color": "yellow"
+    "cue": "After the WMs knock",
+    "color": "yellow",
+    "lyrics": [
+      "As the wands go up, this plays"
+    ]
   },
   {
     "title": "8 Keep Thy",
     "file": "audio/EA/8 Keep Thy. after WM says on the VSL.mp3",
-    "cue": "Play after WM says on the VSL.",
-    "color": "yellow"
+    "cue": "The WM finishes saying - the VSL",
+    "color": "yellow",
+    "lyrics": [
+      "This is at the end of the obligation"
+    ]
   },
   {
-    "title": "9 Restored to Light",
+    "title": "9 Light",
     "file": "audio/EA/9 Light. after WM says restored to the C.mp3",
-    "cue": "Play after WM says restored to the C.",
-    "color": "yellow"
+    "cue": "After the WM tells the SD to restore..",
+    "color": "blue",
+    "lyrics": [
+      "And God Said, Let There Be Light.  And. There. Was. Light"
+    ]
   },
   {
-    "title": "10 After Obligation",
+    "title": "10 After Oblig",
     "file": "audio/EA/10 after WM says brother among masons.mp3",
-    "cue": "Play after WM says brother among masons.",
-    "color": "blue"
+    "cue": "After the Cand stands",
+    "color": "blue",
+    "lyrics": [
+      "The Cand will do a lap of the lodge as this plays"
+    ]
   },
   {
     "title": "11.1 Secrets to JW",
     "file": "audio/EA/11.1 after secrets.mp3",
-    "cue": "Play after secrets.",
-    "color": "purple"
+    "cue": "As the brother who gave the secrets returns to his chair",
+    "color": "blue",
+    "lyrics": [
+      "The Cand should move to the JW as this plays"
+    ]
   },
   {
     "title": "11.2 JW tO SW",
     "file": "audio/EA/11.2 after JW says pass B.mp3",
-    "cue": "Play after JW says pass B.",
-    "color": "purple"
+    "cue": "After the JW says pass",
+    "color": "blue",
+    "lyrics": [
+      ""
+    ]
   },
   {
     "title": "12 After Badge Extension",
     "file": "audio/EA/12 after badge extension.mp3",
-    "cue": "Play after badge extension.",
-    "color": "green"
+    "cue": "After the badge extension is delivered",
+    "color": "blue",
+    "lyrics": [
+      "The Cand should stay in place during this"
+    ]
   },
   {
     "title": "13 Charity",
     "file": "audio/EA/13 after JW reports he would give freely.mp3",
-    "cue": "Play after JD reports he would give freely.",
-    "color": "blue"
+    "cue": "After the JD has reported - or he would give freely.",
+    "color": "blue",
+    "lyrics": [
+      "The JD will wait until this ode finishes before handing things back to the secretary table"
+    ]
   },
   {
     "title": "14 After NE Charge",
     "file": "audio/EA/14 after NE charge is done.mp3",
-    "cue": "Play after NE charge is done.",
-    "color": "orange"
+    "cue": "As the brother who delivered the NE charge returns to his seat",
+    "color": "blue",
+    "lyrics": [
+      ""
+    ]
   },
   {
     "title": "15.1 After WTs",
     "file": "audio/EA/15.1 after WT charge is finished.mp3",
-    "cue": "Play after WT charge is finished.",
-    "color": "orange"
+    "cue": "As the brother who delivered the WTs charge returns to his seat",
+    "color": "blue",
+    "lyrics": [
+      ""
+    ]
   },
   {
     "title": "15.2 Before Final",
     "file": "audio/EA/15.2 after WM finishes and before Final.mp3",
-    "cue": "Play after WM finishes and before Final.",
-    "color": "blue"
+    "cue": "After the Cand has been addressed by the WM",
+    "color": "blue",
+    "lyrics": [
+      "This plays as the Cand moves back up to the West",
+      "The WM has just said - I now direct your attention to an ancient charge, etc"
+    ]
   },
   {
     "title": "16.1 After Final",
     "file": "audio/EA/16.1 as Cand comes up to East.mp3",
-    "cue": "Play as Candidate comes up to East.",
-    "color": "green"
+    "cue": "After the WM has congratulated the Cand",
+    "color": "blue",
+    "lyrics": [
+      "The Final will finish and that brother will sit",
+      "Then the WM will deliver a line to the Cand",
+      "This plays as the Cand is escorted back to the east"
+    ]
   },
   {
-    "title": "16.2 Back to Saluting Base",
+    "title": "16.2 to Saluting Base",
     "file": "audio/EA/16.2 as Cand goes back to West.mp3",
-    "cue": "Play as Candidate goes back to West.",
-    "color": "green"
+    "cue": "After the WM/Chap has finished addressing the Cand",
+    "color": "blue",
+    "lyrics": [
+      "This plays as the Cand is escorted from the WM back to the west"
+    ]
   },
   {
     "title": "16.3 Leaving Lodge Room",
     "file": "audio/EA/16.3 as Cand leaves.mp3",
-    "cue": "Play as Candidate leaves.",
-    "color": "red"
+    "cue": "After instruction by the JD, and the Cand is leaving",
+    "color": "red",
+    "lyrics": [
+      "Plays as the Cand goes towards the door"
+    ]
   }
 ]

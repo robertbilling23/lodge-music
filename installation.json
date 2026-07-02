@@ -4,9 +4,12 @@
     "title": "Entry FF",
     "color": "red",
     "file": "audio/Installation/Entry FF.mp3",
-    "cue": "FF",
+    "cue": "After the PO says - Grand Lodge",
     "lyrics": [
-      ""
+      "Outside the lodge room, after the PO has spoken with the IM and returned to the head of the procession",
+      "The PO says - Grand Lodge - and the fanfare starts.",
+      "After the fanfare, the Tyler knocks once on the door.",
+      "The WM should also knock once and the IG should open both doors"
     ]
   },
     
@@ -36,9 +39,9 @@
     "title": "Rise Note",
     "color": "red",
     "file": "audio/Installation/Rise Note.mp3",
-    "cue": "FF",
+    "cue": "When the PO is in position",
     "lyrics": [
-      ""
+      "All Brethren should rise on this note"
     ]
   },
 
@@ -47,9 +50,10 @@
     "title": "Grand FF",
     "color": "red",
     "file": "audio/Installation/Grand FF.mp3",
-    "cue": "FF",
+    "cue": "After all have risen",
     "lyrics": [
-      ""
+      "PO has put down the baton and is at centre east, facing west",
+      "First play the rise note.  Then play this."
     ]
   },
   { "id": "2",
@@ -81,7 +85,8 @@
     "file": "audio/Installation/2_CollarCollect_incidental230.mp3",
     "cue": "After the Grand Deacons stand up",
     "lyrics": [
-      "The Proclaiming Officer will have just retiring officers to remove their collars"
+      "The Proclaiming Officer will have just asked retiring officers to remove their collars",
+      "The PO will spin and raise the deacons with the SOF"
     ]
   },
   {
@@ -91,7 +96,8 @@
     "file": "audio/Filler/Beethoven_Sonata.mp3",
     "cue": "After the Grand Deacons stand",
     "lyrics": [
-      "This happens as soon as the Installed Board is opened","Beethoven Sonata"
+      "This happens as soon as the Installed Board is opened",
+      "The PO will be facing East and will raise the deacons with the SOF","Beethoven Sonata"
     ]
   },
   {
@@ -151,9 +157,9 @@
     "title": "East FF",
     "color": "red",
     "file": "audio/Installation/East FF.mp3",
-    "cue": "FF",
+    "cue": "When the PO reaches centre east",
     "lyrics": [
-      ""
+      "Play the rise note first","The PO will put down his baton and come out to centre east, facing west."
     ]
   },
     {
@@ -161,9 +167,9 @@
     "title": "West FF",
     "color": "red",
     "file": "audio/Installation/West FF.mp3",
-    "cue": "FF",
+    "cue": "When the PO reaches centre west",
     "lyrics": [
-      ""
+      "Play the rise note first","The PO will put down his baton and come around the centre west, facing east"
     ]
   },
     {
@@ -171,9 +177,9 @@
     "title": "South FF",
     "color": "red",
     "file": "audio/Installation/South FF.mp3",
-    "cue": "FF",
+    "cue": "When the PO reaches centre south",
     "lyrics": [
-      ""
+      "Play the rise note first","The PO will put down his baton and come across to centre south, facing north"
     ]
   },
   {
